@@ -1,9 +1,0 @@
-{
-	"id": "VpUdJDwUZKgFRoo",
-	"json": "{\"id\":\"VpUdJDwUZKgFRoo\",\"url\":\"https://www.rubyshop.co.th/products?layout=product-full-width&categories%5B%5D=70&page=2\",\"loadedUrl\":\"https://www.rubyshop.co.th/products?layout=product-full-width&categories%5B%5D=70&page=2\",\"uniqueKey\":\"https://www.rubyshop.co.th/products?categories%5B%5D=70&layout=product-full-width&page=2\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:53.006Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/products?categories%5B%5D=70&layout=product-full-width&page=2",
-	"url": "https://www.rubyshop.co.th/products?layout=product-full-width&categories%5B%5D=70&page=2"
-}

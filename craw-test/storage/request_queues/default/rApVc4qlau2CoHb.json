@@ -1,9 +1,0 @@
-{
-	"id": "rApVc4qlau2CoHb",
-	"json": "{\"id\":\"rApVc4qlau2CoHb\",\"url\":\"https://www.rubyshop.co.th/product-categories/airless-spray-guns\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/airless-spray-guns\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/airless-spray-guns\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:09.374Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/product-categories/airless-spray-guns",
-	"url": "https://www.rubyshop.co.th/product-categories/airless-spray-guns"
-}

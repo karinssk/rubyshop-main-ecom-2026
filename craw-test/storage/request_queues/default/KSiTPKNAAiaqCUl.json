@@ -1,9 +1,0 @@
-{
-	"id": "KSiTPKNAAiaqCUl",
-	"json": "{\"id\":\"KSiTPKNAAiaqCUl\",\"url\":\"https://www.rubyshop.co.th/product-categories/wall-dry-sander\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/wall-dry-sander\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/wall-dry-sander\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:14.398Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/product-categories/wall-dry-sander",
-	"url": "https://www.rubyshop.co.th/product-categories/wall-dry-sander"
-}

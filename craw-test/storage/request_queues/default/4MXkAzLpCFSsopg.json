@@ -1,9 +1,0 @@
-{
-	"id": "4MXkAzLpCFSsopg",
-	"json": "{\"id\":\"4MXkAzLpCFSsopg\",\"url\":\"https://www.rubyshop.co.th/products/ruby-shop-rb5300-inverter-1\",\"loadedUrl\":\"https://www.rubyshop.co.th/products/ruby-shop-rb5300-inverter-1\",\"uniqueKey\":\"https://www.rubyshop.co.th/products/ruby-shop-rb5300-inverter-1\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:53.652Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/products/ruby-shop-rb5300-inverter-1",
-	"url": "https://www.rubyshop.co.th/products/ruby-shop-rb5300-inverter-1"
-}

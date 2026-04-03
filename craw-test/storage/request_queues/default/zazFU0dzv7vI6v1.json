@@ -1,9 +1,0 @@
-{
-	"id": "zazFU0dzv7vI6v1",
-	"json": "{\"id\":\"zazFU0dzv7vI6v1\",\"url\":\"https://www.rubyshop.co.th/product-categories/paddle-mixer\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/paddle-mixer\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/paddle-mixer\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:18.702Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/product-categories/paddle-mixer",
-	"url": "https://www.rubyshop.co.th/product-categories/paddle-mixer"
-}

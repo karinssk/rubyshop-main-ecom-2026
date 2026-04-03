@@ -38,6 +38,12 @@
 /__MACOSX/
 
 /craw-test/node_modules/
+/craw-test/storage/
+/resources/views/promotion.zip
+/resources/views/__MACOSX/
+/storage/cache_keys.json
+/storage/debugbar/
+/storage/fonts/
 
 .DS_Store
 Thumbs.db

@@ -1,9 +1,0 @@
-{
-	"id": "gZ079X3yRD5POeg",
-	"json": "{\"id\":\"gZ079X3yRD5POeg\",\"url\":\"https://www.rubyshop.co.th/product-categories/phosset-injection-pump\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/phosset-injection-pump\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/phosset-injection-pump\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:28.278Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/product-categories/phosset-injection-pump",
-	"url": "https://www.rubyshop.co.th/product-categories/phosset-injection-pump"
-}

@@ -1,9 +1,0 @@
-{
-	"id": "0fFIXP08ZqWWr3W",
-	"json": "{\"id\":\"0fFIXP08ZqWWr3W\",\"url\":\"https://www.rubyshop.co.th/product-categories/concrete-cutting-diamond-blade\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/concrete-cutting-diamond-blade\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/concrete-cutting-diamond-blade\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:28.219Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/product-categories/concrete-cutting-diamond-blade",
-	"url": "https://www.rubyshop.co.th/product-categories/concrete-cutting-diamond-blade"
-}

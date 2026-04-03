@@ -1,9 +1,0 @@
-{
-	"id": "aq8gorSISY8EE47",
-	"json": "{\"id\":\"aq8gorSISY8EE47\",\"url\":\"https://www.rubyshop.co.th/product-categories/plastering-trowel\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/plastering-trowel\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/plastering-trowel\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:28.335Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/product-categories/plastering-trowel",
-	"url": "https://www.rubyshop.co.th/product-categories/plastering-trowel"
-}

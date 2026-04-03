@@ -1,9 +1,0 @@
-{
-	"id": "Mlil1R2Q3NJia2F",
-	"json": "{\"id\":\"Mlil1R2Q3NJia2F\",\"url\":\"https://www.rubyshop.co.th/promotion/dws-180s-rubyshop\",\"loadedUrl\":\"https://www.rubyshop.co.th/promotion/dws-180s-rubyshop\",\"uniqueKey\":\"https://www.rubyshop.co.th/promotion/dws-180s-rubyshop\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:34:26.268Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/promotion/dws-180s-rubyshop",
-	"url": "https://www.rubyshop.co.th/promotion/dws-180s-rubyshop"
-}

@@ -1,9 +1,0 @@
-{
-	"id": "tK4uUCS1o6StF0V",
-	"json": "{\"id\":\"tK4uUCS1o6StF0V\",\"url\":\"https://www.rubyshop.co.th/product-categories/mortar-sprayer-rubyshop\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/mortar-sprayer-rubyshop\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/mortar-sprayer-rubyshop\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:44.726Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/product-categories/mortar-sprayer-rubyshop",
-	"url": "https://www.rubyshop.co.th/product-categories/mortar-sprayer-rubyshop"
-}

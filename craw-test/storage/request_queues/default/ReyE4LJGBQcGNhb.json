@@ -1,9 +1,0 @@
-{
-	"id": "ReyE4LJGBQcGNhb",
-	"json": "{\"id\":\"ReyE4LJGBQcGNhb\",\"url\":\"https://www.rubyshop.co.th/product-categories/rotorstator\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/rotorstator\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/rotorstator\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:17.134Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.rubyshop.co.th/product-categories/rotorstator",
-	"url": "https://www.rubyshop.co.th/product-categories/rotorstator"
-}
