@@ -12,6 +12,9 @@ use App\Http\Controllers\HealthController;
 
 // Health check route
 Route::get('/health', [HealthController::class, 'check'])->name('health.check');
+Route::view('/privacy-policy', 'legal.privacy-policy')->name('privacy.policy');
+Route::view('/terms-of-service', 'legal.terms')->name('terms.policy');
+Route::view('/return-policy', 'legal.return-policy')->name('return.policy');
 
 // Old route pattern (you can keep this for backward compatibility)
 Route::get('/promotion/{promotionName}', [PromotionController::class, 'show'])

@@ -22,6 +22,9 @@
     <meta name="twitter:title" content="เครื่องกรีดผนัง RUBY SHOP รุ่น RB-1009 4800W">
     <meta name="twitter:description" content="2-in-1 ระบบน้ำและแห้ง พร้อมถังเก็บฝุ่นในตัว กำลัง 4800W">
     <meta name="twitter:image" content="https://www.rubyshop.co.th/storage/products/1009/01-1009-2-800x800.jpg">
+    @if (env('GOOGLE_SITE_VERIFICATION'))
+    <meta name="google-site-verification" content="{{ env('GOOGLE_SITE_VERIFICATION') }}">
+    @endif
 
     <link rel="icon" type="image/png" href="https://www.rubyshop.co.th/storage/logo/icon-rubyshop-ico.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,19 +33,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://analytics.ahrefs.com/analytics.js" data-key="+yln8X9wf8523X4GDZmCqA" async></script>
+    <!-- Google Analytics 4 — รวม 2 Property ไว้ใน script เดียว (ลด render-blocking) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0PWGSWH0P4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-0PWGSWH0P4');
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHBT4DYH7D"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
       gtag('config', 'G-NHBT4DYH7D');
+      gtag('config', 'AW-1065750118');
     </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -194,6 +193,14 @@
         "https://www.rubyshop.co.th/storage/products/1009/01-1009-4-800x800.jpg",
         "https://www.rubyshop.co.th/storage/products/1009/01-1009-5-800x800.jpg"
       ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "4",
+        "reviewCount": "4"
+      },
       "offers": {
         "@type": "Offer",
         "priceCurrency": "THB",
@@ -205,6 +212,129 @@
       }
     }
     </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "RUBY SHOP",
+      "url": "https://www.rubyshop.co.th",
+      "logo": "https://www.rubyshop.co.th/storage/logo/rubyshop-no-bg.png",
+      "email": "info@rubyshop.co.th",
+      "telephone": "+66-89-666-7802",
+      "sameAs": [
+        "https://www.facebook.com/rubyshopcoth",
+        "https://page.line.me/rubyshop168?openQrModal=true",
+        "https://www.instagram.com/rubyshop_168/",
+        "https://www.youtube.com/channel/UCxiaZiIC8qs2C228jwIjcHg"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "RUBY SHOP",
+      "image": "https://www.rubyshop.co.th/storage/logo/rubyshop-no-bg.png",
+      "url": "https://www.rubyshop.co.th/products/rb-1009",
+      "telephone": "+66-89-666-7802",
+      "email": "info@rubyshop.co.th",
+      "priceRange": "THB 16,500",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "97/60 โกสุมรวมใจ ซอย 39 หมู่ 4 แขวงดอนเมือง",
+        "addressLocality": "เขตดอนเมือง",
+        "addressRegion": "กรุงเทพมหานคร",
+        "postalCode": "10210",
+        "addressCountry": "TH"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 13.9104803,
+        "longitude": 100.5742382
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "https://schema.org/Monday",
+            "https://schema.org/Tuesday",
+            "https://schema.org/Wednesday",
+            "https://schema.org/Thursday",
+            "https://schema.org/Friday",
+            "https://schema.org/Saturday"
+          ],
+          "opens": "08:30",
+          "closes": "17:30"
+        }
+      ],
+      "sameAs": [
+        "https://www.facebook.com/rubyshopcoth",
+        "https://page.line.me/rubyshop168?openQrModal=true",
+        "https://www.instagram.com/rubyshop_168/",
+        "https://www.youtube.com/channel/UCxiaZiIC8qs2C228jwIjcHg"
+      ]
+    }
+    </script>
+
+    <!-- FAQPage Schema — ช่วยให้ Google แสดง Rich Snippet FAQ ใน Search Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "เครื่องกรีดผนัง RB-1009 ใช้กับผนังอะไรได้บ้าง?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "รองรับอิฐแดง อิฐมวลเบา คอนกรีต และแกรนิต เหมาะกับงานเซาะร่องในหน้างานก่อสร้างและรีโนเวททั่วไป"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ระบบน้ำและระบบแห้งของ RB-1009 ต่างกันอย่างไร?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ระบบน้ำเหมาะกับงานที่ต้องการช่วยลดฝุ่นเพิ่มขึ้น ส่วนระบบแห้งเหมาะกับงานที่ต้องการความคล่องตัว พร้อมทำงานร่วมกับถังเก็บฝุ่นในตัวได้"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "RB-1009 กรีดได้ลึกสุดและกว้างสุดเท่าไร?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "รุ่น RB-1009 กรีดได้ลึกสูงสุด 42 มม. และความกว้างสูงสุด 48 มม. รองรับงานเดินระบบที่ต้องการขนาดร่องชัดเจน"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "เครื่องกรีดผนัง RB-1009 ต้องใช้ใบตัดขนาดไหน?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ตัวเครื่องรองรับใบตัดขนาด 135 มม. จำนวน 5 ใบ พร้อมความเร็วรอบ 6500 RPM เพื่อช่วยให้แนวร่องดูสม่ำเสมอขึ้น"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "RB-1009 เหมาะกับงานในอาคารไหม?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "เหมาะมาก โดยเฉพาะงานที่ต้องควบคุมความสะอาด เพราะมีถังเก็บฝุ่นในตัวและเลือกใช้งานระบบน้ำหรือระบบแห้งได้ตามพื้นที่"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "เครื่องกรีดผนัง RB-1009 เหมาะกับใครบ้าง?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "เหมาะกับช่างไฟ ช่างประปา ทีมรีโนเวท และผู้รับเหมาที่ต้องการเพิ่มความคล่องตัวของงานเซาะร่อง พร้อมลดฝุ่นในพื้นที่ใช้งานจริง"
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 text-slate-900">
 
@@ -212,22 +342,42 @@
       โปรโมชันพิเศษวันนี้ รุ่น RB-1009 ราคา <strong>16,500 บาท</strong> ติดต่อรับราคาหน้างานได้ทันที
     </div>
 
-    <header class="hidden md:block sticky top-0 z-40 backdrop-blur bg-white/90 border-b border-slate-200">
+    <header class="sticky top-0 z-40 backdrop-blur bg-white/95 border-b border-slate-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <a href="/" class="flex items-center gap-3">
           <img src="https://www.rubyshop.co.th/storage/logo/rubyshop-no-bg.png" alt="RUBY SHOP" class="h-9">
         </a>
+        <!-- Desktop Nav -->
         <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
           <a href="#overview" class="hover:text-brand-700">ภาพรวม</a>
           <a href="#features" class="hover:text-brand-700">ทำไมต้องรุ่นนี้</a>
           <a href="#compare" class="hover:text-brand-700">เปรียบเทียบ</a>
           <a href="#specs" class="hover:text-brand-700">สเปก</a>
           <a href="#gallery" class="hover:text-brand-700">รูปภาพ</a>
+          <a href="#reviews" class="hover:text-brand-700">รีวิว</a>
           <a href="#contact" class="hover:text-brand-700">ติดต่อ</a>
         </nav>
-        <a href="#contact" class="hidden sm:inline-flex items-center rounded-full bg-brand-600 hover:bg-brand-700 text-white text-sm px-4 py-2">
+        <a href="#contact" class="hidden md:inline-flex items-center rounded-full bg-brand-600 hover:bg-brand-700 text-white text-sm px-4 py-2">
           ขอใบเสนอราคา
         </a>
+        <!-- Mobile Hamburger Button -->
+        <button id="mobileMenuBtn" class="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-slate-100" aria-label="เปิดเมนู" aria-expanded="false">
+          <span class="block w-6 h-0.5 bg-slate-800 transition-all duration-300" id="ham1"></span>
+          <span class="block w-6 h-0.5 bg-slate-800 transition-all duration-300" id="ham2"></span>
+          <span class="block w-6 h-0.5 bg-slate-800 transition-all duration-300" id="ham3"></span>
+        </button>
+      </div>
+      <!-- Mobile Drawer Menu -->
+      <div id="mobileMenu" class="md:hidden hidden bg-white border-t border-slate-200 px-4 py-4 shadow-lg">
+        <nav class="flex flex-col gap-1">
+          <a href="#overview"  class="mobile-nav-link rounded-lg px-4 py-3 text-slate-700 font-medium hover:bg-brand-50 hover:text-brand-700">ภาพรวม</a>
+          <a href="#features"  class="mobile-nav-link rounded-lg px-4 py-3 text-slate-700 font-medium hover:bg-brand-50 hover:text-brand-700">ทำไมต้องรุ่นนี้</a>
+          <a href="#compare"   class="mobile-nav-link rounded-lg px-4 py-3 text-slate-700 font-medium hover:bg-brand-50 hover:text-brand-700">เปรียบเทียบ</a>
+          <a href="#specs"     class="mobile-nav-link rounded-lg px-4 py-3 text-slate-700 font-medium hover:bg-brand-50 hover:text-brand-700">สเปก</a>
+          <a href="#gallery"   class="mobile-nav-link rounded-lg px-4 py-3 text-slate-700 font-medium hover:bg-brand-50 hover:text-brand-700">รูปภาพ</a>
+          <a href="#reviews"   class="mobile-nav-link rounded-lg px-4 py-3 text-slate-700 font-medium hover:bg-brand-50 hover:text-brand-700">รีวิว</a>
+          <a href="#contact"   class="mobile-nav-link mt-2 rounded-full bg-brand-600 hover:bg-brand-700 px-4 py-3 text-center text-white font-semibold">ขอใบเสนอราคา</a>
+        </nav>
       </div>
     </header>
 
@@ -597,8 +747,29 @@
       <section id="video" class="py-14 bg-slate-900 text-white reveal-section reveal-zoom">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center">
-            <div class="rounded-2xl overflow-hidden border border-slate-700 aspect-video">
-              <iframe class="w-full h-full" src="https://www.youtube.com/embed/w5fv0WZ--p8" title="RB-1009 Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="rounded-2xl overflow-hidden border border-slate-700 aspect-video bg-slate-950">
+              <button
+                type="button"
+                id="youtubePlayerTrigger"
+                class="group relative flex h-full w-full items-center justify-center overflow-hidden"
+                aria-label="เล่นวิดีโอการใช้งาน RB-1009"
+                data-youtube-id="w5fv0WZ--p8">
+                <img
+                  src="https://i.ytimg.com/vi/w5fv0WZ--p8/maxresdefault.jpg"
+                  alt="ตัวอย่างวิดีโอการใช้งาน RB-1009"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
+                  <span class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-white/90 text-brand-700 shadow-2xl transition-transform duration-300 group-hover:scale-110">
+                    <i class="fas fa-play text-2xl ml-1"></i>
+                  </span>
+                  <div>
+                    <p class="text-lg font-bold text-white">คลิกเพื่อเล่นวิดีโอ</p>
+                    <p class="mt-1 text-sm text-slate-200">โหลด YouTube เมื่อผู้ใช้กดเล่นจริงเท่านั้น</p>
+                  </div>
+                </div>
+              </button>
             </div>
             <div>
               <p class="text-sm font-semibold tracking-[0.22em] text-red-200 uppercase">Video</p>
@@ -815,6 +986,109 @@
         </div>
       </section>
 
+      <!-- ════════════ CUSTOMER REVIEWS SECTION ════════════ -->
+      <section id="reviews" class="py-14 md:py-20 bg-slate-50 border-y border-slate-200 reveal-section reveal-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          <div class="text-center max-w-3xl mx-auto mb-10">
+            <p class="text-sm font-semibold tracking-[0.22em] text-brand-700 uppercase">Customer Reviews</p>
+            <h2 class="mt-3 text-2xl md:text-4xl font-extrabold text-slate-900">ลูกค้าพูดถึง RB-1009 ว่าอย่างไร</h2>
+            <p class="mt-3 text-slate-600">รีวิวจากลูกค้าจริงที่นำไปใช้งานหน้างาน ช่างไฟ ช่างประปา และทีมรีโนเวท</p>
+            <div class="mt-5 inline-flex items-center gap-3 rounded-2xl bg-white border border-slate-200 px-6 py-3 shadow-sm">
+              <div class="flex gap-1 text-yellow-400 text-xl">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
+              <div class="text-left">
+                <p class="font-bold text-slate-900 leading-tight">5.0 / 5</p>
+                <p class="text-xs text-slate-500">จากรีวิวลูกค้าจริง</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer review-img-card"
+                 data-image="https://www.rubyshop.co.th/storage/reviews/610910789-1393989735940969-8771406742697005085-n.jpg">
+              <div class="relative overflow-hidden">
+                <img src="https://www.rubyshop.co.th/storage/reviews/610910789-1393989735940969-8771406742697005085-n.jpg"
+                     alt="รีวิวลูกค้า เครื่องกรีดผนัง RB-1009 รูปที่ 1" loading="lazy"
+                     class="w-full aspect-square object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                  <span class="text-white text-sm font-semibold bg-black/50 rounded-full px-3 py-1"><i class="fas fa-expand mr-1"></i>ดูขนาดเต็ม</span>
+                </div>
+              </div>
+              <div class="p-4">
+                <div class="flex gap-0.5 text-yellow-400 text-sm mb-1">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">รีวิวจากลูกค้า Facebook</p>
+              </div>
+            </div>
+
+            <div class="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer review-img-card"
+                 data-image="https://www.rubyshop.co.th/storage/reviews/616836081-1406478114692131-230808810993130757-n.jpg">
+              <div class="relative overflow-hidden">
+                <img src="https://www.rubyshop.co.th/storage/reviews/616836081-1406478114692131-230808810993130757-n.jpg"
+                     alt="รีวิวลูกค้า เครื่องกรีดผนัง RB-1009 รูปที่ 2" loading="lazy"
+                     class="w-full aspect-square object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                  <span class="text-white text-sm font-semibold bg-black/50 rounded-full px-3 py-1"><i class="fas fa-expand mr-1"></i>ดูขนาดเต็ม</span>
+                </div>
+              </div>
+              <div class="p-4">
+                <div class="flex gap-0.5 text-yellow-400 text-sm mb-1">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">รีวิวจากลูกค้า Facebook</p>
+              </div>
+            </div>
+
+            <div class="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer review-img-card"
+                 data-image="https://www.rubyshop.co.th/storage/reviews/616826989-1407637274576215-2280305834920479793-n.jpg">
+              <div class="relative overflow-hidden">
+                <img src="https://www.rubyshop.co.th/storage/reviews/616826989-1407637274576215-2280305834920479793-n.jpg"
+                     alt="รีวิวลูกค้า เครื่องกรีดผนัง RB-1009 รูปที่ 3" loading="lazy"
+                     class="w-full aspect-square object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                  <span class="text-white text-sm font-semibold bg-black/50 rounded-full px-3 py-1"><i class="fas fa-expand mr-1"></i>ดูขนาดเต็ม</span>
+                </div>
+              </div>
+              <div class="p-4">
+                <div class="flex gap-0.5 text-yellow-400 text-sm mb-1">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">รีวิวจากลูกค้า Facebook</p>
+              </div>
+            </div>
+
+            <div class="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer review-img-card"
+                 data-image="https://www.rubyshop.co.th/storage/reviews/619591830-1410821384257804-8086591646843031415-n.jpg">
+              <div class="relative overflow-hidden">
+                <img src="https://www.rubyshop.co.th/storage/reviews/619591830-1410821384257804-8086591646843031415-n.jpg"
+                     alt="รีวิวลูกค้า เครื่องกรีดผนัง RB-1009 รูปที่ 4" loading="lazy"
+                     class="w-full aspect-square object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                  <span class="text-white text-sm font-semibold bg-black/50 rounded-full px-3 py-1"><i class="fas fa-expand mr-1"></i>ดูขนาดเต็ม</span>
+                </div>
+              </div>
+              <div class="p-4">
+                <div class="flex gap-0.5 text-yellow-400 text-sm mb-1">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">รีวิวจากลูกค้า Facebook</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-10 text-center">
+            <p class="text-slate-600 mb-4">สนใจทดลองใช้งานจริงหรือขอดูข้อมูลเพิ่ม?</p>
+            <a href="#contact" class="inline-flex items-center justify-center rounded-full bg-brand-600 hover:bg-brand-700 text-white font-semibold px-8 py-3.5">
+              <i class="fas fa-calendar-check mr-2"></i>นัดสาธิตฟรีที่หน้างาน
+            </a>
+          </div>
+        </div>
+      </section>
+      <!-- ════════════ END REVIEWS ════════════ -->
+
       <section id="faq" class="py-14 md:py-20 bg-white border-y border-slate-200 reveal-section reveal-up">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-3xl mx-auto">
@@ -893,13 +1167,13 @@
               </p>
 
               <div class="flex flex-wrap gap-3 mb-6">
-                <a href="tel:0896667802" class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-red-50">
+                <a href="tel:0896667802" data-track="phone" data-track-label="contact-card-phone" class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-red-50">
                   <i class="fas fa-phone-alt text-brand-700"></i> โทรเลย
                 </a>
-                <a href="https://page.line.me/rubyshop168?openQrModal=true" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+                <a href="https://page.line.me/rubyshop168?openQrModal=true" data-track="line" data-track-label="contact-card-line" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
                   <i class="fab fa-line"></i> Line OA
                 </a>
-                <a href="https://m.me/rubyshop168" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+                <a href="https://m.me/rubyshop168" data-track="messenger" data-track-label="contact-card-messenger" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
                   <i class="fab fa-facebook-messenger"></i> Messenger
                 </a>
               </div>
@@ -912,22 +1186,22 @@
 
                 <div class="mb-4">
                   <label for="name" class="block mb-2">ชื่อ-นามสกุล <span class="text-red-300">*</span></label>
-                  <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-lg bg-white bg-gray-100 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-red-500 text-black transition" placeholder="กรุณากรอกชื่อ-นามสกุล">
+                  <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-red-500 text-black transition" placeholder="กรุณากรอกชื่อ-นามสกุล">
                 </div>
 
                 <div class="mb-4">
                   <label for="phone" class="block mb-2">เบอร์โทรศัพท์ <span class="text-red-300">*</span></label>
-                  <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 rounded-lg bg-white bg-gray-100 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-red-500 text-black transition" placeholder="0xx-xxx-xxxx">
+                  <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-red-500 text-black transition" placeholder="0xx-xxx-xxxx">
                 </div>
 
                 <div class="mb-4">
                   <label for="email" class="block mb-2">อีเมล (ถ้ามี)</label>
-                  <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg bg-white bg-gray-100 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-red-500 text-black transition" placeholder="example@email.com">
+                  <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-red-500 text-black transition" placeholder="example@email.com">
                 </div>
 
                 <div class="mb-6">
                   <label for="content" class="block mb-2">ข้อความ <span class="text-red-300">*</span></label>
-                  <textarea id="content" name="content" rows="4" required class="w-full px-4 py-3 rounded-lg bg-white bg-gray-100 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-red-500 text-black transition resize-none" placeholder="เช่น งานไฟฟ้าในคอนโด ผนังคอนกรีต ต้องการนัดสาธิตหรือขอใบเสนอราคา"></textarea>
+                  <textarea id="content" name="content" rows="4" required class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-red-500 text-black transition resize-none" placeholder="เช่น งานไฟฟ้าในคอนโด ผนังคอนกรีต ต้องการนัดสาธิตหรือขอใบเสนอราคา"></textarea>
                 </div>
 
                 <div id="formSuccessMessage" class="hidden mb-4 p-4 text-sm text-green-700 bg-green-100 rounded-lg border border-green-200">
@@ -955,7 +1229,7 @@
                   </li>
                   <li class="flex items-start">
                     <i class="fas fa-phone-alt mt-1 mr-3 text-red-300"></i>
-                    <a class="hover:text-red-200 hover:underline" href="tel:0896667802">
+                    <a class="hover:text-red-200 hover:underline" href="tel:0896667802" data-track="phone" data-track-label="contact-detail-phone">
                       <span>089-666-7802</span>
                     </a>
                   </li>
@@ -975,7 +1249,7 @@
                   <a href="https://www.facebook.com/rubyshopcoth" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all" target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-facebook-f"></i>
                   </a>
-                  <a href="https://page.line.me/rubyshop168?openQrModal=true" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all" target="_blank" rel="noopener noreferrer">
+                  <a href="https://page.line.me/rubyshop168?openQrModal=true" data-track="line" data-track-label="contact-social-line" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all" target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-line"></i>
                   </a>
                   <a href="https://www.instagram.com/rubyshop_168/" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all" target="_blank" rel="noopener noreferrer">
@@ -1057,7 +1331,7 @@
               </li>
               <li class="flex items-start">
                 <i class="fas fa-phone-alt mt-1 mr-3 text-red-500"></i>
-                <a class="hover:text-white transition-colors hover:underline" href="tel:0896667802">
+                <a class="hover:text-white transition-colors hover:underline" href="tel:0896667802" data-track="phone" data-track-label="footer-phone">
                   <span class="text-gray-400">089-666-7802</span>
                 </a>
               </li>
@@ -1078,18 +1352,43 @@
         <div class="pt-8 border-t border-gray-800 text-center text-gray-400">
           <p class="mb-4">&copy; 2026 RUBYSHOP. All rights reserved.</p>
           <div class="flex justify-center space-x-4 text-sm">
-            <a href="https://www.rubyshop.co.th/cookie-policy" class="hover:text-white transition-colors">นโยบายความเป็นส่วนตัว</a>
+            <a href="{{ route('privacy.policy') }}" class="hover:text-white transition-colors">นโยบายความเป็นส่วนตัว</a>
             <span>|</span>
-            <a href="https://www.rubyshop.co.th/cookie-policy" class="hover:text-white transition-colors">เงื่อนไขการใช้บริการ</a>
+            <a href="{{ route('terms.policy') }}" class="hover:text-white transition-colors">เงื่อนไขการใช้บริการ</a>
             <span>|</span>
-            <a href="https://www.rubyshop.co.th/cookie-policy" class="hover:text-white transition-colors">นโยบายการคืนสินค้า</a>
+            <a href="{{ route('return.policy') }}" class="hover:text-white transition-colors">นโยบายการคืนสินค้า</a>
           </div>
         </div>
       </div>
     </footer>
 
+    <!-- ════════════════════════════════════════════════════════════
+         PDPA Cookie Consent Banner
+         ════════════════════════════════════════════════════════════ -->
+    <div id="cookieBanner" class="fixed bottom-0 inset-x-0 z-[9999] bg-slate-900 text-white px-4 py-4 shadow-2xl" style="display:none;">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between">
+        <div class="flex items-start gap-3">
+          <i class="fas fa-cookie-bite text-yellow-400 text-xl mt-0.5 shrink-0"></i>
+          <p class="text-sm text-slate-200 leading-relaxed">
+            เว็บไซต์นี้ใช้คุกกี้และเทคโนโลยีติดตาม (Google Analytics, Ads) เพื่อวิเคราะห์การใช้งานและปรับปรุงประสบการณ์ของคุณ
+            ตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล (PDPA)
+            <a href="https://www.rubyshop.co.th/cookie-policy" class="underline text-yellow-300 hover:text-yellow-200" target="_blank" rel="noopener">อ่านนโยบายคุกกี้</a>
+          </p>
+        </div>
+        <div class="flex gap-2 shrink-0">
+          <button id="cookieDecline" class="rounded-full border border-white/30 px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors">
+            ปฏิเสธ
+          </button>
+          <button id="cookieAccept" class="rounded-full bg-brand-600 hover:bg-brand-700 px-5 py-2 text-sm font-semibold text-white transition-colors">
+            ยอมรับทั้งหมด
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- End Cookie Consent Banner -->
+
     <!-- Facebook Messenger Floating Button -->
-    <a href="https://m.me/rubyshop168" target="_blank" rel="noopener noreferrer" id="messenger-float-btn" title="Chat with us on Messenger" style="position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0695FF,#A334FA,#FF6968);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.25);z-index:9998;text-decoration:none;transition:transform 0.3s,box-shadow 0.3s;">
+    <a href="https://m.me/rubyshop168" data-track="messenger" data-track-label="floating-messenger" target="_blank" rel="noopener noreferrer" id="messenger-float-btn" title="Chat with us on Messenger" style="position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0695FF,#A334FA,#FF6968);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.25);z-index:9998;text-decoration:none;transition:transform 0.3s,box-shadow 0.3s;">
       <svg width="32" height="32" viewBox="0 0 36 36" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M18 3C9.716 3 3 9.146 3 16.5c0 4.243 2.117 8.025 5.42 10.504V33l5.783-3.175c1.217.338 2.508.525 3.797.525 8.284 0 15-6.146 15-13.5S26.284 3 18 3zm1.488 18.182l-3.822-4.08-7.46 4.08 8.2-8.707 3.915 4.08 7.367-4.08-8.2 8.707z"/></svg>
     </a>
     <!-- End Facebook Messenger Floating Button -->
@@ -1239,6 +1538,24 @@
                 if (successBox) successBox.classList.remove('hidden');
                 leadForm.reset();
                 updateRoiCalculator();
+
+                // ─── Google Ads Conversion Tracking ──────────────────────────
+                // Conversion: ส่งฟอร์ม RB-1009 (1) — AW-1065750118/I36kCOmd4pQcEOacmPwD
+                if (typeof gtag === 'function') {
+                  gtag('event', 'conversion', {
+                    'send_to': 'AW-1065750118/I36kCOmd4pQcEOacmPwD',
+                    'value': 16500.0,
+                    'currency': 'THB'
+                  });
+                }
+                // ─── GA4 Lead Event ───────────────────────────────────────────
+                if (typeof gtag === 'function') {
+                  gtag('event', 'generate_lead', {
+                    'currency': 'THB',
+                    'value': 16500.0
+                  });
+                }
+                // ─────────────────────────────────────────────────────────────
               })
               .catch(function (error) {
                 let message = 'ไม่สามารถส่งข้อมูลได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง';
@@ -1270,12 +1587,51 @@
         const lightboxImage = document.getElementById('lightboxImage');
         const closeLightbox = document.getElementById('closeLightbox');
         const thumbs = document.querySelectorAll('.gallery-thumb');
+        const youtubePlayerTrigger = document.getElementById('youtubePlayerTrigger');
+
+        function trackEvent(eventName, params) {
+          if (typeof gtag === 'function') {
+            gtag('event', eventName, params || {});
+          }
+        }
+
+        function trackContactClick(channel, label) {
+          const payload = {
+            event_category: 'contact',
+            event_label: label,
+            method: channel,
+            value: 16500,
+            currency: 'THB'
+          };
+
+          trackEvent('contact_click', payload);
+
+          if (channel === 'phone') {
+            trackEvent('generate_lead', payload);
+            trackEvent('conversion', {
+              send_to: 'AW-1065750118/I36kCOmd4pQcEOacmPwD',
+              value: 16500.0,
+              currency: 'THB'
+            });
+          }
+        }
 
         thumbs.forEach(function (thumb) {
           thumb.addEventListener('click', function () {
             const image = thumb.getAttribute('data-image');
             lightboxImage.src = image;
             lightbox.classList.remove('hidden');
+          });
+        });
+
+        // Review images also open lightbox
+        document.querySelectorAll('.review-img-card').forEach(function (card) {
+          card.addEventListener('click', function () {
+            const image = card.getAttribute('data-image');
+            if (lightboxImage && lightbox) {
+              lightboxImage.src = image;
+              lightbox.classList.remove('hidden');
+            }
           });
         });
 
@@ -1292,7 +1648,113 @@
             }
           });
         }
+
+        document.querySelectorAll('[data-track]').forEach(function (element) {
+          element.addEventListener('click', function () {
+            trackContactClick(
+              element.getAttribute('data-track'),
+              element.getAttribute('data-track-label') || element.href || 'unknown'
+            );
+          });
+        });
+
+        if (youtubePlayerTrigger) {
+          youtubePlayerTrigger.addEventListener('click', function () {
+            const youtubeId = youtubePlayerTrigger.getAttribute('data-youtube-id');
+            const iframe = document.createElement('iframe');
+            iframe.className = 'w-full h-full';
+            iframe.src = 'https://www.youtube.com/embed/' + youtubeId + '?autoplay=1&rel=0';
+            iframe.title = 'RB-1009 Video';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            iframe.loading = 'lazy';
+            youtubePlayerTrigger.replaceWith(iframe);
+
+            trackEvent('video_play', {
+              event_category: 'engagement',
+              event_label: 'rb-1009-youtube-video'
+            });
+          }, { once: true });
+        }
       })();
+
+      // ─── Mobile Hamburger Menu ────────────────────────────────────────────
+      (function () {
+        var btn = document.getElementById('mobileMenuBtn');
+        var menu = document.getElementById('mobileMenu');
+        var ham1 = document.getElementById('ham1');
+        var ham2 = document.getElementById('ham2');
+        var ham3 = document.getElementById('ham3');
+
+        if (!btn || !menu) return;
+
+        btn.addEventListener('click', function () {
+          var isOpen = !menu.classList.contains('hidden');
+          if (isOpen) {
+            menu.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
+            ham1.style.transform = '';
+            ham2.style.opacity = '';
+            ham3.style.transform = '';
+          } else {
+            menu.classList.remove('hidden');
+            btn.setAttribute('aria-expanded', 'true');
+            ham1.style.transform = 'translateY(8px) rotate(45deg)';
+            ham2.style.opacity = '0';
+            ham3.style.transform = 'translateY(-8px) rotate(-45deg)';
+          }
+        });
+
+        // ปิด menu เมื่อกดลิงก์ใน drawer
+        document.querySelectorAll('.mobile-nav-link').forEach(function (link) {
+          link.addEventListener('click', function () {
+            menu.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
+            ham1.style.transform = '';
+            ham2.style.opacity = '';
+            ham3.style.transform = '';
+          });
+        });
+      })();
+
+      // ─── PDPA Cookie Consent Banner ──────────────────────────────────────
+      (function () {
+        var banner = document.getElementById('cookieBanner');
+        var acceptBtn = document.getElementById('cookieAccept');
+        var declineBtn = document.getElementById('cookieDecline');
+        var COOKIE_KEY = 'rb_cookie_consent';
+
+        function setCookie(name, value, days) {
+          var expires = new Date(Date.now() + days * 864e5).toUTCString();
+          document.cookie = name + '=' + value + '; expires=' + expires + '; path=/; SameSite=Lax';
+        }
+        function getCookie(name) {
+          var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+          return match ? match[2] : null;
+        }
+
+        if (!getCookie(COOKIE_KEY) && banner) {
+          // แสดง banner หลัง 1 วินาที
+          setTimeout(function () { banner.style.display = 'block'; }, 1000);
+        }
+
+        if (acceptBtn) {
+          acceptBtn.addEventListener('click', function () {
+            setCookie(COOKIE_KEY, 'accepted', 365);
+            if (banner) banner.style.display = 'none';
+          });
+        }
+        if (declineBtn) {
+          declineBtn.addEventListener('click', function () {
+            setCookie(COOKIE_KEY, 'declined', 90);
+            if (banner) banner.style.display = 'none';
+            // ปิด analytics เมื่อปฏิเสธ
+            window['ga-disable-G-0PWGSWH0P4'] = true;
+            window['ga-disable-G-NHBT4DYH7D'] = true;
+          });
+        }
+      })();
+      // ─────────────────────────────────────────────────────────────────────
     </script>
 </body>
 </html>
