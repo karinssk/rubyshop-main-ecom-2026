@@ -1,0 +1,9 @@
+{
+	"id": "epEWZebK4Sl3VLO",
+	"json": "{\"id\":\"epEWZebK4Sl3VLO\",\"url\":\"https://www.rubyshop.co.th/promotion/wallcd-350-1-rubyshop\",\"loadedUrl\":\"https://www.rubyshop.co.th/promotion/wallcd-350-1-rubyshop\",\"uniqueKey\":\"https://www.rubyshop.co.th/promotion/wallcd-350-1-rubyshop\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:34:08.840Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/promotion/wallcd-350-1-rubyshop",
+	"url": "https://www.rubyshop.co.th/promotion/wallcd-350-1-rubyshop"
+}

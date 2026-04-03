@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Helpers;
+
+class PromotionHelper
+{
+    public static function getPromotionUrl($viewName)
+    {
+        $slugMap = [
+            'promotion1' => 'เครื่องพ่นปูนฉาบ-RB-MR004',
+            // Add more mappings as needed
+        ];
+        
+        if (isset($slugMap[$viewName])) {
+            return url('/promotion/' . $slugMap[$viewName]);
+        }
+        
+        return url('/promotion/' . $viewName);
+    }
+}

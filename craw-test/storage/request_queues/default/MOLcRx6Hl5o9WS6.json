@@ -1,0 +1,9 @@
+{
+	"id": "MOLcRx6Hl5o9WS6",
+	"json": "{\"id\":\"MOLcRx6Hl5o9WS6\",\"url\":\"https://www.rubyshop.co.th/products/rubyshop-rb-360-1\",\"loadedUrl\":\"https://www.rubyshop.co.th/products/rubyshop-rb-360-1\",\"uniqueKey\":\"https://www.rubyshop.co.th/products/rubyshop-rb-360-1\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":3,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:55.663Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/products/rubyshop-rb-360-1",
+	"url": "https://www.rubyshop.co.th/products/rubyshop-rb-360-1"
+}

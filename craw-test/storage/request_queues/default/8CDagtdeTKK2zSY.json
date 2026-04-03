@@ -1,0 +1,9 @@
+{
+	"id": "8CDagtdeTKK2zSY",
+	"json": "{\"id\":\"8CDagtdeTKK2zSY\",\"url\":\"https://www.rubyshop.co.th/product-categories/paint-remover\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/paint-remover\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/paint-remover\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:21.429Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/product-categories/paint-remover",
+	"url": "https://www.rubyshop.co.th/product-categories/paint-remover"
+}

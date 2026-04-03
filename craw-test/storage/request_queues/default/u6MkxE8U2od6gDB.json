@@ -1,0 +1,9 @@
+{
+	"id": "u6MkxE8U2od6gDB",
+	"json": "{\"id\":\"u6MkxE8U2od6gDB\",\"url\":\"https://www.rubyshop.co.th/promotion/promotions-rubyshop\",\"loadedUrl\":\"https://www.rubyshop.co.th/promotion/promotions-rubyshop\",\"uniqueKey\":\"https://www.rubyshop.co.th/promotion/promotions-rubyshop\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:43.930Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/promotion/promotions-rubyshop",
+	"url": "https://www.rubyshop.co.th/promotion/promotions-rubyshop"
+}

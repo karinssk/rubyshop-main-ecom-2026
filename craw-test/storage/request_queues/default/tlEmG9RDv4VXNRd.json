@@ -1,0 +1,9 @@
+{
+	"id": "tlEmG9RDv4VXNRd",
+	"json": "{\"id\":\"tlEmG9RDv4VXNRd\",\"url\":\"https://www.rubyshop.co.th/product-categories/motar-sprayer-220v-380v\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/motar-sprayer-220v-380v\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/motar-sprayer-220v-380v\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:19.339Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/product-categories/motar-sprayer-220v-380v",
+	"url": "https://www.rubyshop.co.th/product-categories/motar-sprayer-220v-380v"
+}

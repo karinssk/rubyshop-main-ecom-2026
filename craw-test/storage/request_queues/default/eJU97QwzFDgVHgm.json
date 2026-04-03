@@ -1,0 +1,9 @@
+{
+	"id": "eJU97QwzFDgVHgm",
+	"json": "{\"id\":\"eJU97QwzFDgVHgm\",\"url\":\"https://www.rubyshop.co.th/promotion/wallcd-100a-rubyshop\",\"loadedUrl\":\"https://www.rubyshop.co.th/promotion/wallcd-100a-rubyshop\",\"uniqueKey\":\"https://www.rubyshop.co.th/promotion/wallcd-100a-rubyshop\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:34:41.292Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/promotion/wallcd-100a-rubyshop",
+	"url": "https://www.rubyshop.co.th/promotion/wallcd-100a-rubyshop"
+}

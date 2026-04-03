@@ -1,0 +1,9 @@
+{
+	"id": "LEaYNh26sJdv5nc",
+	"json": "{\"id\":\"LEaYNh26sJdv5nc\",\"url\":\"https://www.rubyshop.co.th/contact\",\"loadedUrl\":\"https://www.rubyshop.co.th/contact\",\"uniqueKey\":\"https://www.rubyshop.co.th/contact\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":3,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:34:55.787Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/contact",
+	"url": "https://www.rubyshop.co.th/contact"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "fEj6rurPWLJgeGy",
+	"json": "{\"id\":\"fEj6rurPWLJgeGy\",\"url\":\"https://www.rubyshop.co.th/promotion/rb-hp30-rubyshop\",\"loadedUrl\":\"https://www.rubyshop.co.th/promotion/rb-hp30-rubyshop\",\"uniqueKey\":\"https://www.rubyshop.co.th/promotion/rb-hp30-rubyshop\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:35:11.299Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/promotion/rb-hp30-rubyshop",
+	"url": "https://www.rubyshop.co.th/promotion/rb-hp30-rubyshop"
+}

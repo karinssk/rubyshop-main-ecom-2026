@@ -1,0 +1,9 @@
+{
+	"id": "OvwBC7LO9vYWphL",
+	"json": "{\"id\":\"OvwBC7LO9vYWphL\",\"url\":\"https://www.rubyshop.co.th/products/ruby-shop-rb899\",\"loadedUrl\":\"https://www.rubyshop.co.th/products/ruby-shop-rb899\",\"uniqueKey\":\"https://www.rubyshop.co.th/products/ruby-shop-rb899\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:54.256Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/products/ruby-shop-rb899",
+	"url": "https://www.rubyshop.co.th/products/ruby-shop-rb899"
+}

@@ -1,0 +1,41 @@
+{
+  "requestsFinished": 84,
+  "requestsFailed": 0,
+  "requestsRetries": 1,
+  "requestsFailedPerMinute": 0,
+  "requestsFinishedPerMinute": 36,
+  "requestMinDurationMillis": 1257,
+  "requestMaxDurationMillis": 37703,
+  "requestTotalFailedDurationMillis": 0,
+  "requestTotalFinishedDurationMillis": 575645,
+  "crawlerStartedAt": "2025-11-13T03:32:55.157Z",
+  "crawlerFinishedAt": "2025-11-13T03:35:13.684Z",
+  "statsPersistedAt": "2025-11-13T03:35:13.684Z",
+  "crawlerRuntimeMillis": 138633,
+  "crawlerLastStartTimestamp": 1763004775051,
+  "requestRetryHistogram": [
+    83,
+    1
+  ],
+  "statsId": 0,
+  "requestAvgFailedDurationMillis": null,
+  "requestAvgFinishedDurationMillis": 6853,
+  "requestTotalDurationMillis": 575645,
+  "requestsTotal": 84,
+  "requestsWithStatusCode": {
+    "200": 77,
+    "404": 8
+  },
+  "errors": {},
+  "retryErrors": {
+    "/Applications/MAMP/htdocs/rubyshop-co-th/craw-test/server.js:10:50": {
+      "missing error code": {
+        "TimeoutError": {
+          "page.goto: Timeout 30000ms exceeded.": {
+            "count": 1
+          }
+        }
+      }
+    }
+  }
+}

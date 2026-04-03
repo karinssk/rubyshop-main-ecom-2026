@@ -1,0 +1,298 @@
+/* Base Styles */
+:root {
+    --primary-50: #f0f9ff;
+    --primary-100: #e0f2fe;
+    --primary-200: #bae6fd;
+    --primary-300: #fc7d7d;
+    --primary-400: #f83838;
+    --primary-500: #e90e0e;
+    --primary-600: #c70202;
+    --primary-700: #0369a1;
+    --primary-800: #075985;
+    --primary-900: #0c4a6e;
+}
+
+body {
+    font-family: 'Prompt', sans-serif;
+    scroll-behavior: smooth;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark Mode */
+.dark {
+    color-scheme: dark;
+}
+
+/* Gradient Background */
+.gradient-bg {
+    background: linear-gradient(135deg, var(--primary-700), var(--primary-900));
+}
+
+/* Glass Card Effect */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/hero-bg.webp');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.7);
+    z-index: -1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Product Showcase */
+.product-showcase {
+    position: relative;
+}
+
+.product-image {
+    transition: transform 0.5s ease;
+}
+
+.product-image:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+
+.hotspot {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: var(--primary-500);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(122, 11, 11, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(14, 165, 233, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(14, 165, 233, 0);
+    }
+}
+
+.hotspot-content {
+    position: absolute;
+    width: 200px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 3;
+}
+
+.dark .hotspot-content {
+    background-color: #1f2937;
+    color: white;
+}
+
+.hotspot:hover .hotspot-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Features Section */
+.feature-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.feature-icon {
+    transition: transform 0.3s;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.2);
+}
+
+/* Specifications Section */
+.spec-item {
+    transition: background-color 0.3s;
+}
+
+.spec-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Gallery Section */
+.gallery-item {
+    transition: transform 0.3s;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Testimonial Slider */
+.testimonial-slider {
+    position: relative;
+}
+
+.testimonial-track {
+    transition: transform 0.5s ease;
+}
+
+.testimonial-dot {
+    transition: background-color 0.3s;
+}
+
+.testimonial-dot.active {
+    background-color: white;
+}
+
+/* FAQ Section */
+.faq-question {
+    transition: background-color 0.3s;
+}
+
+.faq-question:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.faq-question .fa-chevron-down {
+    transition: transform 0.3s;
+}
+
+.faq-question.active .fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+/* Contact Form */
+input, textarea, select {
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Back to Top Button */
+#backToTop {
+    z-index: 99;
+}
+
+#backToTop.visible {
+    transform: scale(1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero-content {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    
+    .product-showcase {
+        margin-top: 40px;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animation Utilities */
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Aspect Ratio Utilities */
+.aspect-w-16 {
+    position: relative;
+    padding-bottom: 56.25%;
+}
+
+.aspect-w-16 > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background-color: white;
+    z-index: 100;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+}
+
+.dark .mobile-menu {
+    background-color: #1f2937;
+}
+
+.mobile-menu.open {
+    right: 0;
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.menu-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}

@@ -1,0 +1,9 @@
+{
+	"id": "04yBzQ6o3K14ZI5",
+	"json": "{\"id\":\"04yBzQ6o3K14ZI5\",\"url\":\"https://www.rubyshop.co.th/categories\",\"loadedUrl\":\"https://www.rubyshop.co.th/categories\",\"uniqueKey\":\"https://www.rubyshop.co.th/categories\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:30.519Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/categories",
+	"url": "https://www.rubyshop.co.th/categories"
+}

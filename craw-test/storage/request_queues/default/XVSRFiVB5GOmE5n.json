@@ -1,0 +1,9 @@
+{
+	"id": "XVSRFiVB5GOmE5n",
+	"json": "{\"id\":\"XVSRFiVB5GOmE5n\",\"url\":\"https://www.rubyshop.co.th/product-categories/texture-sprayer\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/texture-sprayer\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/texture-sprayer\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:17.676Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/product-categories/texture-sprayer",
+	"url": "https://www.rubyshop.co.th/product-categories/texture-sprayer"
+}

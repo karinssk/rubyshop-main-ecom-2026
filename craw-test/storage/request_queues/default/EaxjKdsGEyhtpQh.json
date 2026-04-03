@@ -1,0 +1,9 @@
+{
+	"id": "EaxjKdsGEyhtpQh",
+	"json": "{\"id\":\"EaxjKdsGEyhtpQh\",\"url\":\"https://www.rubyshop.co.th/promotion/rb-mt-m6-rubyshop\",\"loadedUrl\":\"https://www.rubyshop.co.th/promotion/rb-mt-m6-rubyshop\",\"uniqueKey\":\"https://www.rubyshop.co.th/promotion/rb-mt-m6-rubyshop\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:34:15.875Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/promotion/rb-mt-m6-rubyshop",
+	"url": "https://www.rubyshop.co.th/promotion/rb-mt-m6-rubyshop"
+}

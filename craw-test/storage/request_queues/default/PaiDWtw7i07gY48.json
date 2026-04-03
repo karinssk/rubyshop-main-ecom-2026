@@ -1,0 +1,9 @@
+{
+	"id": "PaiDWtw7i07gY48",
+	"json": "{\"id\":\"PaiDWtw7i07gY48\",\"url\":\"https://www.rubyshop.co.th/currency/switch/NGN\",\"loadedUrl\":\"https://www.rubyshop.co.th/orders/tracking\",\"uniqueKey\":\"https://www.rubyshop.co.th/currency/switch/NGN\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:05.901Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/currency/switch/NGN",
+	"url": "https://www.rubyshop.co.th/currency/switch/NGN"
+}

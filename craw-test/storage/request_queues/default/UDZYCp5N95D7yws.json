@@ -1,0 +1,9 @@
+{
+	"id": "UDZYCp5N95D7yws",
+	"json": "{\"id\":\"UDZYCp5N95D7yws\",\"url\":\"https://www.rubyshop.co.th/promotion/rb-1009b-rubyshop\",\"loadedUrl\":\"https://www.rubyshop.co.th/promotion/rb-1009b-rubyshop\",\"uniqueKey\":\"https://www.rubyshop.co.th/promotion/rb-1009b-rubyshop\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:34:13.518Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/promotion/rb-1009b-rubyshop",
+	"url": "https://www.rubyshop.co.th/promotion/rb-1009b-rubyshop"
+}

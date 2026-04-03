@@ -1,0 +1,9 @@
+{
+	"id": "3DdRyZZvFg1c2wa",
+	"json": "{\"id\":\"3DdRyZZvFg1c2wa\",\"url\":\"https://www.rubyshop.co.th/cookie-policy\",\"loadedUrl\":\"https://www.rubyshop.co.th/cookie-policy\",\"uniqueKey\":\"https://www.rubyshop.co.th/cookie-policy\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":2,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:53.064Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/cookie-policy",
+	"url": "https://www.rubyshop.co.th/cookie-policy"
+}

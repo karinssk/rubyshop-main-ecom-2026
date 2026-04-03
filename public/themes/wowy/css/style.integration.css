@@ -1,0 +1,115 @@
+@media only screen and (min-width: 992px)and (max-width:1199px) {
+    .logo.logo-hm3 a img {
+        width:120px
+    }
+
+    .main-menu.main-menu-mrg-1 {
+        margin: 0 0 0 15px
+    }
+
+    .main-menu>nav>ul>li ul.sub-menu li ul.level-menu.level-menu-modify {
+        width: 165px
+    }
+
+    .main-menu>nav>ul>li ul.mega-menu li .menu-banner-wrap .menu-banner-content {
+        left: 20px;
+        top: 22px
+    }
+
+    .main-menu>nav>ul>li ul.mega-menu li .menu-banner-wrap .menu-banner-content h3 {
+        font-size: 20px;
+        line-height: 1.3;
+        margin: 5px 0 7px
+    }
+
+    .main-menu>nav>ul>li ul.mega-menu li .menu-banner-wrap .menu-banner-content .menu-banner-price {
+        margin: 0 0 10px
+    }
+
+    .main-menu>nav>ul>li ul.mega-menu li .menu-banner-wrap .menu-banner-content .menu-banner-btn a {
+        padding: 10px 16px 13px
+    }
+
+    .main-menu>nav>ul>li ul.mega-menu li .menu-banner-wrap .menu-banner-discount {
+        height: 70px;
+        line-height: 70px;
+        width: 70px
+    }
+
+    .main-menu.main-menu-padding-1>nav>ul>li {
+        padding: 0 8px
+    }
+
+    .main-menu.main-menu-padding-1.hm3-menu-padding>nav>ul>li {
+        padding: 0 6px
+    }
+
+    .search-style-1 {
+        margin-right: 15px
+    }
+
+    .search-style-1 form {
+        width: 170px
+    }
+
+    .header-action.header-action-hm3 .header-action-icon {
+        margin-right: 15px
+    }
+
+    .header-action.header-action-hm3 .header-action-icon.header-action-mrg-none2,.header-action.header-action-hm3 .header-action-icon:last-child {
+        margin-right: 0
+    }
+
+    .search-style-2 form input {
+        width: 340px
+    }
+
+    .hotline p {
+        font-size: 15px
+    }
+
+    .search-popup-wrap .search-popup-content form input {
+        width: 820px
+    }
+
+    .header-height-1 {
+        min-height: 157px
+    }
+
+    .header-height-2 {
+        min-height: 0px;
+    }
+
+    .header-height-3 {
+        min-height: 133px
+    }
+
+    .header-height-4 {
+        min-height: 144px
+    }
+}
+
+
+.title-detail {
+    font-size: 30px;
+}
+
+
+
+@media (max-width: 1026px)  {
+.container {
+        display: contents;
+        padding-left:12px;
+        padding-right: 12px;
+}
+}
+
+
+
+
+
+@media only screen and (max-width: 768px) {
+ 
+    .header-height-1,.header-height-2 {
+         min-height:0px; 
+    }

@@ -1,0 +1,9 @@
+{
+	"id": "cxpBFSwOR6ltLgS",
+	"json": "{\"id\":\"cxpBFSwOR6ltLgS\",\"url\":\"https://www.rubyshop.co.th/product-categories/plastering-smoothing-machine\",\"loadedUrl\":\"https://www.rubyshop.co.th/product-categories/plastering-smoothing-machine\",\"uniqueKey\":\"https://www.rubyshop.co.th/product-categories/plastering-smoothing-machine\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-11-13T03:33:21.413Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.rubyshop.co.th/product-categories/plastering-smoothing-machine",
+	"url": "https://www.rubyshop.co.th/product-categories/plastering-smoothing-machine"
+}
