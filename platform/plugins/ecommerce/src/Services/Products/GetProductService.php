@@ -55,7 +55,7 @@ class GetProductService
         }
 
         $contextSortColumn = $category
-            ? 'category_sort.sort_order'
+            ? 'category_sort_order'
             : 'ec_products.sort_order_product_page';
 
         $orderBy = [
