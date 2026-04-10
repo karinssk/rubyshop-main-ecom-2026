@@ -26,4 +26,20 @@ Theme::registerRoutes(function (): void {
     });
 });
 
+AdminHelper::registerRoutes(function (): void {
+    Route::group(['prefix' => 'ecommerce', 'as' => 'ecommerce.'], function (): void {
+        Route::get('product-sort', [
+            'as' => 'product-sort.index',
+            'uses' => ProductSortController::class . '@index',
+            'permission' => 'products.edit',
+        ]);
+
+        Route::post('product-sort', [
+            'as' => 'product-sort.update',
+            'uses' => ProductSortController::class . '@update',
+            'permission' => 'products.edit',
+        ]);
+    });
+});
+
 Theme::routes();
