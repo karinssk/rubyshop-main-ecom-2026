@@ -201,7 +201,7 @@ class HandleFrontPages
 
                 $request->merge(['categories' => [...$categoryIds, ...$requestCategories]]);
 
-                $products = app(GetProductService::class)->getProduct($request, null, null, $with);
+                $products = app(GetProductService::class)->getProduct($request, $category->getKey(), null, $with);
 
                 $request->merge([
                     'categories' => array_merge($category->parents->pluck('id')->all(), $categoryIds),
