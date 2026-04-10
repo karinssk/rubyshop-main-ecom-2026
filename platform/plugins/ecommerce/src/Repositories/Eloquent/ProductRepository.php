@@ -613,6 +613,14 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
                             ->where('category_sort.category_id', '=', $singleCategoryId);
                     })
                     ->addSelect(DB::raw('COALESCE(category_sort.sort_order, 0) as category_sort_order'));
+
+                $hasCategorySortOrderSelect = collect($params['select'])->contains(
+                    fn ($select) => is_string($select) && str_contains($select, 'category_sort_order')
+                );
+
+                if (! $hasCategorySortOrderSelect) {
+                    $params['select'][] = DB::raw('COALESCE(category_sort.sort_order, 0) as category_sort_order');
+                }
             }
         }
 
