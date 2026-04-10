@@ -14,7 +14,7 @@ class ProductSortController extends BaseController
         $this->pageTitle('Product Sort Manager');
 
         $products = Product::query()
-            ->select(['id', 'name', 'sku', 'image', 'sort_order_product_page', 'sort_order_category_page', 'order'])
+            ->select(['id', 'name', 'sku', 'image', 'price', 'sale_price', 'sort_order_product_page', 'sort_order_category_page', 'order'])
             ->orderByDesc('sort_order_product_page')
             ->orderByDesc('sort_order_category_page')
             ->orderBy('order')
