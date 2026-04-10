@@ -141,7 +141,7 @@ class GetProductService
             'ec_products.created_at' => 'DESC',
         ];
 
-        Log::debug('Ecommerce sort debug', [
+        $request->attributes->set('ecommerce_sort_debug', [
             'path' => $request->path(),
             'full_url' => $request->fullUrl(),
             'sort_by' => $queryVar['sort_by'] ?: 'default_sorting',

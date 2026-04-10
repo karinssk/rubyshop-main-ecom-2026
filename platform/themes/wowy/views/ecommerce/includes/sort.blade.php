@@ -3,6 +3,7 @@
     $shows = EcommerceHelper::getShowParams();
     $sortBy = BaseHelper::stringify(request()->input('sort-by', 'default_sorting'));
     $showing = BaseHelper::stringify(request()->integer('num', (int)theme_option('number_of_products_per_page', 12)));
+    $sortDebug = request()->attributes->get('ecommerce_sort_debug');
 @endphp
 
 <div class="sort-by-product-area">
@@ -49,3 +50,9 @@
         </div>
     </div>
 </div>
+
+@if (! empty($sortDebug))
+    <script>
+        console.log('Ecommerce sort debug', @json($sortDebug));
+    </script>
+@endif
