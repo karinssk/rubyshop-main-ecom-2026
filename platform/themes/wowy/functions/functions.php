@@ -177,9 +177,9 @@ app()->booted(function (): void {
                 'id' => 'cms-plugins-ecommerce-product-sort',
                 'priority' => 769,
                 'parent_id' => 'cms-plugins-ecommerce',
-                'name' => 'Product Sort Manager',
+                'name' => 'Product Sort (Products Page)',
                 'icon' => 'ti ti-sort-descending',
-                'url' => fn () => route('ecommerce.product-sort.index'),
+                'url' => fn () => route('ecommerce.product-sort.products.index'),
                 'permissions' => ['products.edit'],
             ])->registerItem([
                 'id' => 'cms-plugins-ecommerce-product-sort-categories',
