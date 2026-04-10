@@ -55,7 +55,7 @@ class GetProductService
         }
 
         $contextSortColumn = $category
-            ? 'ec_products.sort_order_category_page'
+            ? 'category_sort.sort_order'
             : 'ec_products.sort_order_product_page';
 
         $orderBy = [
@@ -135,6 +135,21 @@ class GetProductService
         if (! empty($conditions)) {
             $params['condition'] = $conditions;
         }
+
+        $legacyOrderBy = [
+            'ec_products.order' => 'ASC',
+            'ec_products.created_at' => 'DESC',
+        ];
+
+        Log::debug('Ecommerce sort debug', [
+            'path' => $request->path(),
+            'full_url' => $request->fullUrl(),
+            'sort_by' => $queryVar['sort_by'] ?: 'default_sorting',
+            'category_context_id' => $queryVar['single_category_id_for_sort'] ?? null,
+            'selected_order_by' => $orderBy,
+            'legacy_order_by' => $legacyOrderBy,
+            'categories_filter' => $queryVar['categories'],
+        ]);
 
         $products = $this->productRepository->filterProducts([
             'keyword' => $queryVar['keyword'],
