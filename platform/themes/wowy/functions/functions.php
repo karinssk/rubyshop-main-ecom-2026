@@ -1,6 +1,7 @@
 <?php
 
 use Botble\Ads\Models\Ads;
+use Botble\Base\Facades\DashboardMenu;
 use Botble\Base\Facades\MetaBox;
 use Botble\Blog\Models\Post;
 use Botble\Ecommerce\Models\FlashSale;
@@ -170,6 +171,18 @@ app()->booted(function (): void {
         add_filter('ecommerce_product_eager_loading_relations', function (array $with) {
             return array_merge($with, ['categories', 'categories.slugable']);
         }, 120);
+
+        DashboardMenu::beforeRetrieving(function (): void {
+            DashboardMenu::make()->registerItem([
+                'id' => 'cms-plugins-ecommerce-product-sort',
+                'priority' => 769,
+                'parent_id' => 'cms-plugins-ecommerce',
+                'name' => 'Product Sort Manager',
+                'icon' => 'ti ti-sort-descending',
+                'url' => fn () => route('ecommerce.product-sort.index'),
+                'permissions' => ['products.edit'],
+            ]);
+        });
     }
 
     add_filter(BASE_FILTER_BEFORE_RENDER_FORM, function ($form, $data) {
