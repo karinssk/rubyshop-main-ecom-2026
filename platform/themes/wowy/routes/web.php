@@ -30,15 +30,27 @@ Theme::registerRoutes(function (): void {
 
 AdminHelper::registerRoutes(function (): void {
     Route::group(['prefix' => 'ecommerce', 'as' => 'ecommerce.'], function (): void {
-        Route::get('product-sort', [
-            'as' => 'product-sort.index',
-            'uses' => ProductSortController::class . '@index',
+        Route::get('product-sort/products', [
+            'as' => 'product-sort.products.index',
+            'uses' => ProductSortController::class . '@productsIndex',
             'permission' => 'products.edit',
         ]);
 
-        Route::post('product-sort', [
-            'as' => 'product-sort.update',
-            'uses' => ProductSortController::class . '@update',
+        Route::post('product-sort/products', [
+            'as' => 'product-sort.products.update',
+            'uses' => ProductSortController::class . '@productsUpdate',
+            'permission' => 'products.edit',
+        ]);
+
+        Route::get('product-sort/categories', [
+            'as' => 'product-sort.categories.index',
+            'uses' => ProductSortController::class . '@categoriesIndex',
+            'permission' => 'products.edit',
+        ]);
+
+        Route::post('product-sort/categories', [
+            'as' => 'product-sort.categories.update',
+            'uses' => ProductSortController::class . '@categoriesUpdate',
             'permission' => 'products.edit',
         ]);
     });

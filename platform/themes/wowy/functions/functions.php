@@ -181,6 +181,14 @@ app()->booted(function (): void {
                 'icon' => 'ti ti-sort-descending',
                 'url' => fn () => route('ecommerce.product-sort.index'),
                 'permissions' => ['products.edit'],
+            ])->registerItem([
+                'id' => 'cms-plugins-ecommerce-product-sort-categories',
+                'priority' => 770,
+                'parent_id' => 'cms-plugins-ecommerce',
+                'name' => 'Product Sort (Category Pages)',
+                'icon' => 'ti ti-category',
+                'url' => fn () => route('ecommerce.product-sort.categories.index'),
+                'permissions' => ['products.edit'],
             ]);
         });
     }

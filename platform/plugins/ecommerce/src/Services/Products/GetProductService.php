@@ -47,6 +47,7 @@ class GetProductService
 
         if ($category) {
             $queryVar['categories'] = array_merge($queryVar['categories'], [$category]);
+            $queryVar['single_category_id_for_sort'] = (int) $category;
         }
 
         if ($brand) {
@@ -141,6 +142,7 @@ class GetProductService
             'max_price' => $queryVar['max_price'],
             'price_ranges' => array_values($queryVar['price_ranges']),
             'categories' => $queryVar['categories'],
+            'single_category_id_for_sort' => $queryVar['single_category_id_for_sort'] ?? null,
             'tags' => $queryVar['tags'],
             'collections' => $queryVar['collections'],
             'collection' => $queryVar['collection'],

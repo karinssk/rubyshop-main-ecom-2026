@@ -604,6 +604,14 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
                     return $query
                         ->whereIn('ec_product_category_product.category_id', $filters['categories']);
                 });
+
+            $singleCategoryId = (int) ($filters['single_category_id_for_sort'] ?? 0);
+            if ($singleCategoryId > 0) {
+                $this->model = $this->model->leftJoin('ec_product_category_product as category_sort', function ($join) use ($singleCategoryId) {
+                    $join->on('category_sort.product_id', '=', 'ec_products.id')
+                        ->where('category_sort.category_id', '=', $singleCategoryId);
+                });
+            }
         }
 
         // Filter product by tags
