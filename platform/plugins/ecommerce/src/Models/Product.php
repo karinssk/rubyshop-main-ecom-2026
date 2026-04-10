@@ -50,6 +50,8 @@ class Product extends BaseModel
         'video_media',
         'sku',
         'order',
+        'sort_order_product_page',
+        'sort_order_category_page',
         'quantity',
         'allow_checkout_when_out_of_stock',
         'with_storehouse_management',

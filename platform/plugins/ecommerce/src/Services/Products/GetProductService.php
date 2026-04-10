@@ -53,7 +53,12 @@ class GetProductService
             $queryVar['brands'] = array_merge(($queryVar['brands']), [$brand]);
         }
 
+        $contextSortColumn = $category
+            ? 'ec_products.sort_order_category_page'
+            : 'ec_products.sort_order_product_page';
+
         $orderBy = [
+            $contextSortColumn => 'DESC',
             'ec_products.order' => 'ASC',
             'ec_products.created_at' => 'DESC',
         ];

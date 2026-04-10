@@ -253,6 +253,35 @@ app()->booted(function (): void {
                     ]);
 
                 break;
+
+            case Product::class:
+                $form
+                    ->addAfter('order', 'sort_order_product_page', 'number', [
+                        'label' => __('Sort number (Products page)'),
+                        'label_attr' => ['class' => 'control-label'],
+                        'value' => $data->sort_order_product_page,
+                        'attr' => [
+                            'min' => 0,
+                            'placeholder' => __('Default 0 (unsorted)'),
+                        ],
+                        'help_block' => [
+                            'text' => __('Higher number shows first on /products page. Example: 10 before 9.'),
+                        ],
+                    ])
+                    ->addAfter('sort_order_product_page', 'sort_order_category_page', 'number', [
+                        'label' => __('Sort number (Category pages)'),
+                        'label_attr' => ['class' => 'control-label'],
+                        'value' => $data->sort_order_category_page,
+                        'attr' => [
+                            'min' => 0,
+                            'placeholder' => __('Default 0 (unsorted)'),
+                        ],
+                        'help_block' => [
+                            'text' => __('Higher number shows first on /product-categories/* pages. Example: 10 before 9.'),
+                        ],
+                    ]);
+
+                break;
         }
 
         return $form;
