@@ -1,7 +1,9 @@
 <?php
 
+use Botble\Base\Facades\AdminHelper;
 use Botble\Theme\Facades\Theme;
 use Illuminate\Support\Facades\Route;
+use Theme\Wowy\Http\Controllers\Admin\ProductSortController;
 use Theme\Wowy\Http\Controllers\WowyController;
 
 Theme::registerRoutes(function (): void {
