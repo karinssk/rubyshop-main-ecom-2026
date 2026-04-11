@@ -3,6 +3,7 @@
 use Botble\Base\Facades\AdminHelper;
 use Botble\Theme\Facades\Theme;
 use Illuminate\Support\Facades\Route;
+use Theme\Wowy\Http\Controllers\Admin\ProductLandingBuilderController;
 use Theme\Wowy\Http\Controllers\Admin\ProductSortController;
 use Theme\Wowy\Http\Controllers\WowyController;
 
@@ -53,6 +54,18 @@ AdminHelper::registerRoutes(function (): void {
             'uses' => ProductSortController::class . '@categoriesUpdate',
             'permission' => 'products.edit',
         ]);
+
+        Route::get('landing-builder', [
+            'as' => 'landing-builder.index',
+            'uses' => ProductLandingBuilderController::class . '@index',
+            'permission' => 'products.edit',
+        ]);
+
+        Route::post('landing-builder/{product}', [
+            'as' => 'landing-builder.update',
+            'uses' => ProductLandingBuilderController::class . '@update',
+            'permission' => 'products.edit',
+        ])->wherePrimaryKey();
     });
 });
 

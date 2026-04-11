@@ -189,6 +189,14 @@ app()->booted(function (): void {
                 'icon' => 'ti ti-category',
                 'url' => fn () => route('ecommerce.product-sort.categories.index'),
                 'permissions' => ['products.edit'],
+            ])->registerItem([
+                'id' => 'cms-plugins-ecommerce-landing-builder',
+                'priority' => 771,
+                'parent_id' => 'cms-plugins-ecommerce',
+                'name' => 'Landing Page Builder',
+                'icon' => 'ti ti-category',
+                'url' => fn () => route('ecommerce.landing-builder.index'),
+                'permissions' => ['products.edit'],
             ]);
         });
     }

@@ -77,7 +77,7 @@
                 <summary class="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 text-sm font-semibold text-gray-800 hover:text-red-500 transition">
                     <span class="flex items-center gap-3">
                         <img
-                            src="https://www.rubyshop.co.th/storage/logo/gmail-logo-201003176.webp"
+                            src="https://www.rubyshop.co.th/storage/logo/png-clipart-gmail-icon-gmail-email-logo-g-suite-google-gmail-angle-text-thumbnail.png"
                             alt="Email"
                             class="h-5 w-5 object-contain"
                             loading="lazy"

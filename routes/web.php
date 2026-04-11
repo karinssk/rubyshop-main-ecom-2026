@@ -7,6 +7,8 @@ use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\AboutCompanyController;
 use App\Http\Controllers\AllProductsController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\ProductLandingController;
 use App\Http\Controllers\Auth\LineAuthController;
 use App\Http\Controllers\HealthController;
 
@@ -48,6 +50,17 @@ Route::get('/allproducts', [AllProductsController::class, 'index'])->name('allpr
 
 // All categories page
 Route::get('/categories', [AllProductsController::class, 'categories'])->name('categories');
+
+// Product landing pages
+Route::get('/landing', [ProductLandingController::class, 'index'])->name('landing.index');
+Route::get('/landing/{slug}', [ProductLandingController::class, 'show'])->name('landing.product');
+
+// Catalog pages
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/catalog/page/{page}', [CatalogController::class, 'showPage'])
+    ->whereNumber('page')
+    ->name('catalog.page');
+Route::get('/catalog/file', [CatalogController::class, 'file'])->name('catalog.file');
 
 // Main category page (shows subcategories)
 Route::get('/sub/{slug}', [AllProductsController::class, 'mainCategory'])->name('main.category');

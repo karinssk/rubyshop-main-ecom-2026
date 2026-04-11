@@ -7,6 +7,7 @@ use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route; // Add this import
 use Botble\Theme\Facades\Theme;
+use Illuminate\Support\Collection;
 class AllProductsController extends Controller
 {
     /**
@@ -51,31 +52,13 @@ class AllProductsController extends Controller
      */
     public function categories()
     {
-        $categories = ProductCategory::where('status', 'published')
-            ->where('parent_id', 0)
+        $allCategories = ProductCategory::where('status', 'published')
             ->orderBy('order')
+            ->orderBy('id')
+            ->withCount('products')
             ->get();
 
-        foreach ($categories as $category) {
-            $category->subcategories = ProductCategory::where('status', 'published')
-                ->where('parent_id', $category->id)
-                ->orderBy('order')
-                ->get();
-
-            $category->products_count = Product::whereHas('categories', function ($query) use ($category) {
-                    $query->where('ec_product_category_product.category_id', $category->id);
-                })
-                ->where('status', 'published')
-                ->count();
-
-            foreach ($category->subcategories as $subcategory) {
-                $subcategory->products_count = Product::whereHas('categories', function ($query) use ($subcategory) {
-                        $query->where('ec_product_category_product.category_id', $subcategory->id);
-                    })
-                    ->where('status', 'published')
-                    ->count();
-            }
-        }
+        $categories = $this->buildCategoryTree($allCategories);
 
         Theme::layout('full-width');
         Theme::set('pageTitle', __('หมวดหมู่สินค้า'));
@@ -84,6 +67,19 @@ class AllProductsController extends Controller
             ->add(__('หมวดหมู่สินค้า'), url('product-categories'));
 
         return Theme::scope('custom.product-categories', compact('categories'))->render();
+    }
+
+    protected function buildCategoryTree(Collection $allCategories, int $parentId = 0): Collection
+    {
+        return $allCategories
+            ->filter(fn (ProductCategory $category) => (int) $category->parent_id === $parentId)
+            ->values()
+            ->map(function (ProductCategory $category) use ($allCategories): ProductCategory {
+                $category->products_count = (int) ($category->products_count ?? 0);
+                $category->subcategories = $this->buildCategoryTree($allCategories, (int) $category->id);
+
+                return $category;
+            });
     }
 
 
