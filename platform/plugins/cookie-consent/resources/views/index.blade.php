@@ -34,7 +34,7 @@
 </div>
 <div data-site-cookie-name="{{ $cookieConsentConfig['cookie_name'] ?? 'cookie_for_consent' }}"></div>
 <div data-site-cookie-lifetime="{{ $cookieConsentConfig['cookie_lifetime'] ?? 36000 }}"></div>
-<div data-site-cookie-domain="{{ config('session.domain') ?? request()->getHost() }}"></div>
+<div data-site-cookie-domain="{{ config('session.domain') }}"></div>
 <div data-site-session-secure="{{ config('session.secure') ? ';secure' : null }}"></div>
 
 <script>

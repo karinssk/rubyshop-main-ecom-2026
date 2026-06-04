@@ -11,7 +11,7 @@
     <div class="w-full sm:w-1/4 flex-shrink-0 rounded-lg overflow-hidden relative group cursor-pointer"> 
       <a href="https://www.rubyshop.co.th/product-categories/airless-sprayer">
         <div class="h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-        <img src="https://www.rubyshop.co.th/storage/home/airless-spayer-4.webp" alt="เครื่องพ่นสีแบบไร้อากาศ" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <img src="https://www.rubyshop.co.th/storage/home/airless-spayer-4.webp" alt="เครื่องพ่นสีแบบไร้อากาศ" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent pt-20 px-4 pb-4 text-white">
           <h2 class="text-lg font-bold transition-all duration-300 ease-in-out transform group-hover:text-red-500 group-hover:translate-x-1 cursor-pointer">เครื่องพ่นสีไร้อากาศระดับมืออาชีพ</h2>
           <p class="text-sm mt-1 opacity-90 transition-all duration-300 ease-in-out group-hover:text-red-100 group-hover:translate-x-1 cursor-pointer">เครื่องพ่นสีประสิทธิภาพสูงสำหรับงานทาสีระดับมืออาชีพ</p>
@@ -23,7 +23,7 @@
     <div class="w-full sm:w-1/4 flex-shrink-0 rounded-lg overflow-hidden relative group cursor-pointer">
       <a href="https://www.rubyshop.co.th/product-categories/cement-mortar-spraying-machine">
       <div class="h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-        <img src="https://www.rubyshop.co.th/storage/home/airless-sprayer.webp" alt="เครื่องพ่นสีแบบไร้อากาศ" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <img src="https://www.rubyshop.co.th/storage/home/airless-sprayer.webp" alt="เครื่องพ่นสีแบบไร้อากาศ" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent pt-20 px-4 pb-4 text-white">
           <h2 class="text-lg font-bold transition-all duration-300 ease-in-out transform group-hover:text-red-500 group-hover:translate-x-1 cursor-pointer">เครื่องพ่นปูน</h2>
           <p class="text-sm mt-1 opacity-90 transition-all duration-300 ease-in-out group-hover:text-red-100 group-hover:translate-x-1 cursor-pointer">การพ่นปูนที่มีประสิทธิภาพสำหรับพื้นผิวขนาดใหญ่และโครงการต่างๆ</p>
@@ -34,7 +34,7 @@
 
     <div class="w-full sm:w-1/4 flex-shrink-0 rounded-lg overflow-hidden relative group cursor-pointer">
       <div class="h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-        <img src="https://www.rubyshop.co.th/storage/home/rb-09.webp" alt="เครื่องพ่นสีแบบไร้อากาศ" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <img src="https://www.rubyshop.co.th/storage/home/rb-09.webp" alt="เครื่องพ่นสีแบบไร้อากาศ" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent pt-20 px-4 pb-4 text-white">
           <h2 class="text-lg font-bold transition-all duration-300 ease-in-out transform group-hover:text-red-500 group-hover:translate-x-1 cursor-pointer">เครื่องพ่นสีแบบกะทัดรัด</h2>
           <p class="text-sm mt-1 opacity-90 transition-all duration-300 ease-in-out group-hover:text-red-100 group-hover:translate-x-1 cursor-pointer">น้ำหนักเบาและอเนกประสงค์สำหรับใช้งานทั้งภายในและภายนอกอาคาร</p>
@@ -44,7 +44,7 @@
 
     <div class="w-full sm:w-1/4 flex-shrink-0 rounded-lg overflow-hidden relative group cursor-pointer">
       <div class="h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-        <img src="https://www.rubyshop.co.th/storage/home/1009b.webp" alt="เครื่องกรีดผนัง" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <img src="https://www.rubyshop.co.th/storage/home/1009b.webp" alt="เครื่องกรีดผนัง" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent pt-20 px-4 pb-4 text-white">
           <h2 class="text-lg font-bold transition-all duration-300 ease-in-out transform group-hover:text-red-500 group-hover:translate-x-1 cursor-pointer">ชุดเครื่องมือระดับมืออาชีพ</h2>
           <p class="text-sm mt-1 opacity-90 transition-all duration-300 ease-in-out group-hover:text-red-100 group-hover:translate-x-1 cursor-pointer">ชุดอุปกรณ์ครบชุดสำหรับงานก่อสร้างและโครงการปรับปรุงบ้าน</p>
@@ -54,7 +54,7 @@
 
     <div class="w-full sm:w-1/4 flex-shrink-0 rounded-lg overflow-hidden relative group cursor-pointer">
       <div class="h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-        <img src="https://www.rubyshop.co.th/storage/home/man-cutting-wall-with-rb-2001.webp" alt="เครื่องกรีดผนัง" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <img src="https://www.rubyshop.co.th/storage/home/man-cutting-wall-with-rb-2001.webp" alt="เครื่องกรีดผนัง" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent pt-20 px-4 pb-4 text-white">
           <h2 class="text-lg font-bold transition-all duration-300 ease-in-out transform group-hover:text-red-500 group-hover:translate-x-1 cursor-pointer">เครื่องกรีดผนัง</h2>
           <p class="text-sm mt-1 opacity-90 transition-all duration-300 ease-in-out group-hover:text-red-100 group-hover:translate-x-1 cursor-pointer">เครื่องมือกรีดผนังที่แม่นยำสำหรับมืออาชีพในงานก่อสร้าง</p>
@@ -64,7 +64,7 @@
 
     <div class="w-full sm:w-1/4 flex-shrink-0 rounded-lg overflow-hidden relative group cursor-pointer">
       <div class="h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-        <img src="https://www.rubyshop.co.th/storage/home/airless-spayer-4.webp" alt="เครื่องพ่นสีแรงดันสูง" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <img src="https://www.rubyshop.co.th/storage/home/airless-spayer-4.webp" alt="เครื่องพ่นสีแรงดันสูง" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent pt-20 px-4 pb-4 text-white">
           <h2 class="text-lg font-bold transition-all duration-300 ease-in-out transform group-hover:text-red-500 group-hover:translate-x-1 cursor-pointer">เครื่องพ่นสีสำหรับงานหนัก</h2>
           <p class="text-sm mt-1 opacity-90 transition-all duration-300 ease-in-out group-hover:text-red-100 group-hover:translate-x-1 cursor-pointer">อุปกรณ์พ่นสีระดับอุตสาหกรรมสำหรับการใช้งานเชิงพาณิชย์</p>
@@ -74,7 +74,7 @@
 
     <div class="w-full sm:w-1/4 flex-shrink-0 rounded-lg overflow-hidden relative group cursor-pointer">
       <div class="h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-        <img src="https://www.rubyshop.co.th/storage/home/08.webp" alt="เครื่องพ่นสีแรงดันสูง" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <img src="https://www.rubyshop.co.th/storage/home/08.webp" alt="เครื่องพ่นสีแรงดันสูง" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent pt-20 px-4 pb-4 text-white">
           <h2 class="text-lg font-bold transition-all duration-300 ease-in-out transform group-hover:text-red-500 group-hover:translate-x-1 cursor-pointer">ระบบพ่นสีระดับพรีเมียม</h2>
           <p class="text-sm mt-1 opacity-90 transition-all duration-300 ease-in-out group-hover:text-red-100 group-hover:translate-x-1 cursor-pointer">เทคโนโลยีขั้นสูงสำหรับการพ่นสีที่เรียบเนียนและสม่ำเสมอ</p>
@@ -84,7 +84,7 @@
 
     <div class="w-full sm:w-1/4 flex-shrink-0 rounded-lg overflow-hidden relative group cursor-pointer">
       <div class="h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden">
-        <img src="https://www.rubyshop.co.th/storage/home/rb-09.webp" alt="เครื่องพ่นสีแรงดันสูง" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <img src="https://www.rubyshop.co.th/storage/home/rb-09.webp" alt="เครื่องพ่นสีแรงดันสูง" width="800" height="600" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent pt-20 px-4 pb-4 text-white">
           <h2 class="text-lg font-bold transition-all duration-300 ease-in-out transform group-hover:text-red-500 group-hover:translate-x-1 cursor-pointer">เครื่องพ่นสีอเนกประสงค์</h2>
           <p class="text-sm mt-1 opacity-90 transition-all duration-300 ease-in-out group-hover:text-red-100 group-hover:translate-x-1 cursor-pointer">ระบบพ่นสีที่หลากหลายสำหรับการใช้งานเคลือบผิวประเภทต่างๆ</p>
@@ -217,7 +217,7 @@
     <div class="relative h-[450px] sm:h-[500px] md:h-[600px] overflow-hidden group">
       <img 
         src="https://www.rubyshop.co.th/storage/home/dsc04562.webp" 
-        alt="RUBY SHOP เครื่องกรีดผนัง เซาะร่อง ระบบน้ำ รุ่น RB-J17 2800w" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+        alt="RUBY SHOP เครื่องกรีดผนัง เซาะร่อง ระบบน้ำ รุ่น RB-J17 2800w" width="1200" height="900" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
       />
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-4 sm:p-6 lg:p-8 transition-all duration-300 group-hover:from-black/90 group-hover:via-black/50">
         <div class="max-w-xl mx-auto md:mr-0 md:ml-auto">
@@ -238,7 +238,7 @@
     <div class="relative h-[450px] sm:h-[500px] md:h-[600px] overflow-hidden group">
       <img 
         src="https://www.rubyshop.co.th/storage/home/-1742034513.webp" 
-        alt="RUBYSHOP คนงานพ่นสีกับเครื่องพ่นสี" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+        alt="RUBYSHOP คนงานพ่นสีกับเครื่องพ่นสี" width="1200" height="900" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
       />
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-4 sm:p-6 lg:p-8 transition-all duration-300 group-hover:from-black/90 group-hover:via-black/50">
         <div class="max-w-xl mx-auto md:ml-0 md:mr-auto">

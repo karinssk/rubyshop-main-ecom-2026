@@ -15,10 +15,46 @@
     Theme::asset()->container('footer')->usePath()->add('jquery-ui-touch-punch-js', 'js/plugins/jquery.ui.touch-punch.min.js');
 
     $products->loadMissing(['categories', 'categories.slugable']);
+
+    $categoryBreadcrumbStructuredData = null;
+
+    if (isset($category) && $category) {
+        $categoryBreadcrumbStructuredData = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            '@id' => $category->url . '#breadcrumb',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => __('Home'),
+                    'item' => route('public.index'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => __('Products'),
+                    'item' => route('public.products'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => $category->name,
+                    'item' => $category->url,
+                ],
+            ],
+        ];
+    }
 @endphp
 
+@if ($categoryBreadcrumbStructuredData)
+    <script type="application/ld+json">
+        {!! json_encode($categoryBreadcrumbStructuredData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
+@endif
+
 <style>
-    .product-cart-wrap .product-content-wrap .product-category a {
+    .products-listing .product-cart-wrap .product-content-wrap .product-category a {
         color: var(--color-grey-4);
         font-size: 10px;
         letter-spacing: 0px;
@@ -27,7 +63,7 @@
     }
 </style>
 
-<div class="container mb-30">
+<div class="container mb-30 category-products-page">
     <h1 class="visually-hidden">
         {{ isset($category) && $category ? $category->name : __('Products') }}
     </h1>
@@ -108,144 +144,521 @@
 
 <!-- Mobile optimizations -->
 <style>
-    /* Base mobile optimizations */
-    @media (max-width: 767px) {
-        .container {
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-        
-        .shop-filter-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 15px;
-            background: #f7f7f7;
-            border-radius: 5px;
-            margin-bottom: 15px !important;
-            font-weight: 500;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        
-        .shop-filter-toggle .title {
-            flex-grow: 1;
-        }
-        
-        /* Improve filter panel on mobile */
-        #products-filter-ajax,
-        #sidebar-filter-mobile {
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        /* Product grid optimizations */
-        .products-listing .row {
-            margin-left: -5px;
-            margin-right: -5px;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        
-        /* Make each product take up 50% width (2 columns) */
-        .products-listing .row > div[class*="col-"] {
-            flex: 0 0 50%;
-            max-width: 50%;
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-        
-        /* Product card optimizations */
-        .products-listing .product-cart-wrap {
-            padding: 8px;
-            margin-bottom: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        
-        /* Optimize product image */
-        .products-listing .product-img {
-            margin-bottom: 8px;
-        }
-        
-        .products-listing .product-img img {
-            max-height: 140px;
-            object-fit: contain;
-            transition: transform 0.3s ease;
-        }
-        
-        /* Optimize product content */
-        .products-listing .product-content-wrap {
-            padding: 8px 0 0 0;
-        }
-        
-        /* Optimize product title */
-        .product-title, 
-        .product-cart-wrap h2,
-        .product-content-wrap h2,
-        .text-truncate {
-            font-size: 0.85rem !important;
-            margin-bottom: 5px !important;
-            height: 20px !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            white-space: nowrap !important;
+    .shop-filter-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        min-height: 44px;
+        padding: 10px 15px;
+        background: #f7f7f7;
+        border-radius: 6px;
+        font-weight: 500;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .shop-filter-toggle {
+        width: fit-content;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #111827;
+    }
+
+    .shop-filter-toggle:hover,
+    .shop-filter-toggle[aria-expanded="true"] {
+        border-color: #dc2626;
+        color: #dc2626;
+    }
+
+    .shop-filter-toggle .title {
+        flex-grow: 1;
+    }
+
+    .shop-filter-toggle .angle-up,
+    .shop-filter-toggle[aria-expanded="true"] .angle-down {
+        display: none;
+    }
+
+    .shop-filter-toggle[aria-expanded="true"] .angle-up {
+        display: inline-block;
+    }
+
+    .products-listing {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .category-products-page {
+        display: block !important;
+        width: 100% !important;
+        max-width: 1320px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding-left: clamp(12px, 3vw, 24px) !important;
+        padding-right: clamp(12px, 3vw, 24px) !important;
+        overflow: hidden;
+    }
+
+    .category-products-page > .row,
+    .category-products-page .products-listing .product-grid {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .products-listing .product-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 22px;
+        margin: 0 !important;
+    }
+
+    .products-listing .product-grid > div[class*="col-"] {
+        grid-column: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .products-listing .product-item-wrapper.product-cart-wrap {
+        height: 100% !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 12px !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+        overflow: hidden;
+    }
+
+    .products-listing .product-item-wrapper .product-img {
+        height: 190px !important;
+        min-height: 0 !important;
+        aspect-ratio: auto !important;
+        margin-bottom: 10px !important;
+    }
+
+    .products-listing .product-item-wrapper .product-img img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+    }
+
+    .products-listing .product-item-wrapper .hover-img {
+        display: none !important;
+    }
+
+    .products-listing .product-item-wrapper .product-content-wrap {
+        position: static !important;
+        display: flex !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        flex-direction: column;
+    }
+
+    .products-listing .product-item-wrapper .product-category {
+        min-height: 18px !important;
+        max-height: 18px !important;
+        margin-bottom: 6px !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .products-listing .product-item-wrapper .product-category a {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .products-listing .product-item-wrapper .product-title,
+    .products-listing .product-item-wrapper h2.product-title,
+    .products-listing .product-item-wrapper .text-truncate {
+        display: block !important;
+        height: 22px !important;
+        min-height: 22px !important;
+        max-height: 22px !important;
+        margin: 0 0 8px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+        font-size: 14px !important;
+        line-height: 22px !important;
+    }
+
+    .products-listing .product-item-wrapper .product-title a {
+        display: block !important;
+        width: 100% !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .products-listing .product-item-wrapper .rating_wrap {
+        min-height: 20px !important;
+        margin: 0 0 8px !important;
+    }
+
+    .products-listing .product-item-wrapper .product-price {
+        min-height: 30px !important;
+        margin-top: auto !important;
+        margin-bottom: 0 !important;
+    }
+
+    .products-listing .shop-product-filter {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: nowrap;
+        margin-bottom: 18px;
+    }
+
+    .products-listing .shop-product-filter .total-product {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .products-listing .shop-product-filter .total-product p {
+        margin: 0 !important;
+        line-height: 1.45;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #products-filter-ajax,
+    #sidebar-filter-mobile {
+        display: block !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10060;
+        width: min(390px, calc(100vw - 28px));
+        height: 100dvh;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff;
+        box-shadow: 20px 0 50px rgba(15, 23, 42, 0.22);
+        transform: translateX(calc(-100% - 24px));
+        transition: transform 0.24s ease;
+        overflow: hidden;
+    }
+
+    #products-filter-ajax.show,
+    #sidebar-filter-mobile.show {
+        transform: translateX(0);
+    }
+
+    .ruby-filter-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 10050;
+        background: rgba(15, 23, 42, 0.48);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .ruby-filter-backdrop.is-visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    body.ruby-filter-open {
+        overflow: hidden;
+    }
+
+    .ruby-filter-panel {
+        display: flex !important;
+        height: 100%;
+        flex-direction: column;
+        margin: 0 !important;
+        background: #fff;
+    }
+
+    .ruby-filter-panel__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 20px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .ruby-filter-panel__eyebrow {
+        display: block;
+        margin-bottom: 2px;
+        color: #dc2626;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .ruby-filter-panel__head h2 {
+        margin: 0;
+        color: #111827;
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 1.25;
+    }
+
+    .ruby-filter-close {
+        display: inline-flex;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+    }
+
+    .ruby-filter-panel__body {
+        display: block !important;
+        flex: 1 1 auto;
+        margin: 0 !important;
+        padding: 16px 20px 112px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .ruby-filter-panel__body > [class*="col-"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 0 14px !important;
+    }
+
+    .ruby-filter-section {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: #fff;
+        overflow: hidden;
+    }
+
+    .ruby-filter-section .widget__title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 48px;
+        margin: 0 !important;
+        padding: 14px 16px !important;
+        border: 0 !important;
+        background: #f8fafc;
+        color: #111827;
+        font-size: 14px;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+
+    .ruby-filter-options,
+    .ruby-filter-section .price-filter {
+        max-height: 280px;
+        padding: 12px 16px 16px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .ruby-filter-options ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .ruby-filter-options .form-check,
+    .ruby-filter-options > .form-check {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        min-height: 42px;
+        margin: 0 !important;
+        padding: 9px 0 !important;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .ruby-filter-options .form-check:last-child {
+        border-bottom: 0;
+    }
+
+    .ruby-filter-options .form-check-input {
+        flex: 0 0 18px;
+        width: 18px;
+        height: 18px;
+        margin: 2px 0 0 !important;
+        border-color: #cbd5e1;
+    }
+
+    .ruby-filter-options .form-check-label {
+        flex: 1 1 auto;
+        margin: 0 !important;
+        color: #334155;
+        font-size: 14px;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
+
+    .ruby-filter-options .form-check .form-check {
+        margin-left: 12px !important;
+        padding-left: 12px !important;
+        border-left: 2px solid #f1f5f9;
+    }
+
+    .ruby-filter-actions {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        padding: 14px 20px 18px;
+        border-top: 1px solid #e5e7eb;
+        background: #fff;
+        box-shadow: 0 -10px 26px rgba(15, 23, 42, 0.08);
+    }
+
+    .ruby-filter-actions .btn {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        margin: 0 !important;
+        border-radius: 8px;
+        font-weight: 700;
+    }
+
+    .ruby-filter-apply {
+        border-color: #dc2626 !important;
+        background: #dc2626 !important;
+        color: #fff !important;
+    }
+
+    .ruby-filter-clear {
+        border-color: #e5e7eb !important;
+        background: #fff !important;
+        color: #475569 !important;
+    }
+
+    .show-advanced-filters,
+    .advanced-search-widgets {
+        margin: 0 20px;
+    }
+
+    @media (max-width: 991px) {
+        .category-products-page {
             width: 100% !important;
-        }
-        
-        /* Make sure the title links also truncate */
-        .product-title a, 
-        .product-cart-wrap h2 a,
-        .product-content-wrap h2 a {
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            width: 100% !important;
-            display: inline-block !important;
-        }
-        
-        /* Optimize product price */
-        .products-listing .product-price {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-        
-        /* Optimize product buttons */
-        .products-listing .add-cart a {
-            padding: 5px 10px;
-            font-size: 0.8rem;
-        }
-        
-        /* Add pull-to-refresh indicator */
-        .pull-to-refresh {
-            height: 0;
+            max-width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            padding-left: 12px !important;
+            padding-right: 12px !important;
             overflow: hidden;
-            text-align: center;
-            transition: height 0.3s;
-            position: relative;
-            padding: 10px 0;
         }
-        
-        .pull-to-refresh.active {
-            height: 50px;
+
+        .category-products-page > .row {
+            display: block !important;
+            width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
-        
-        .pull-to-refresh .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-top-color: #3BB77E;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
+
+        .category-products-page > .row > .mt-4 {
+            width: 100%;
+            max-width: 100%;
+            padding-left: 0;
+            padding-right: 0;
         }
-        
+
+        .products-listing .product-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        .products-listing .product-grid > div[class*="col-"] {
+            grid-column: auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            margin-bottom: 0 !important;
+            min-width: 0 !important;
+        }
+
+        .products-listing .shop-product-filter {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .products-listing .shop-product-filter .total-product {
+            font-size: 14px;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .products-listing .shop-product-filter .total-product p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .products-listing .shop-product-filter .sort-by-product-area {
+            flex: 0 1 auto;
+            min-width: 0;
+        }
+
+        .products-listing .product-item-wrapper.product-cart-wrap {
+            padding: 8px !important;
+        }
+
+        .products-listing .product-item-wrapper .product-img {
+            height: clamp(104px, 31vw, 142px) !important;
+            margin-bottom: 8px !important;
+        }
+
+        .products-listing .product-item-wrapper .product-category {
+            min-height: 16px !important;
+            max-height: 16px !important;
+            margin-bottom: 4px !important;
+        }
+
+        .products-listing .product-item-wrapper .product-title,
+        .products-listing .product-item-wrapper h2.product-title,
+        .products-listing .product-item-wrapper .text-truncate {
+            height: 20px !important;
+            min-height: 20px !important;
+            max-height: 20px !important;
+            font-size: 12px !important;
+            line-height: 20px !important;
+            margin-bottom: 6px !important;
+        }
+
+        .products-listing .product-item-wrapper .rating_wrap {
+            min-height: 18px !important;
+            margin-bottom: 4px !important;
+        }
+
+        .products-listing .product-item-wrapper .product-price span {
+            font-size: 16px !important;
+            line-height: 1.2 !important;
+        }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
-        /* Improve pagination on mobile */
+
         .pagination {
             flex-wrap: wrap;
             justify-content: center;
@@ -255,7 +668,6 @@
             margin-bottom: 5px;
         }
         
-        /* Add scroll to top button */
         #scroll-top {
             position: fixed;
             bottom: 20px;
@@ -274,25 +686,12 @@
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
+
         #scroll-top.visible {
             opacity: 1;
             visibility: visible;
         }
-        
-        /* Improve filter widgets */
-        .widget-filter-item {
-            margin-bottom: 15px;
-        }
-        
-        .widget-filter-item .widget-title {
-            font-size: 1rem;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        /* Optimize price range slider */
+
         .price-range-slider {
             margin-top: 15px;
         }
@@ -307,16 +706,19 @@
             top: -6px !important;
         }
     }
-    
-    /* Tablet optimizations */
+
     @media (min-width: 768px) and (max-width: 991px) {
-        .products-listing .row > div[class*="col-"] {
-            flex: 0 0 33.333%;
-            max-width: 33.333%;
+        .products-listing .product-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 992px) and (max-width: 1199px) {
+        .products-listing .product-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
     }
     
-    /* Add loading state for AJAX requests */
     .products-listing.loading::after {
         content: "";
         position: absolute;
@@ -326,6 +728,7 @@
         bottom: 0;
         background: rgba(255,255,255,0.7);
         z-index: 2;
+        pointer-events: none;
     }
     
     .products-listing.loading::before {
@@ -341,169 +744,104 @@
         border-radius: 50%;
         animation: spin 1s linear infinite;
         z-index: 3;
+        pointer-events: none;
     }
 </style>
 
 <!-- Add JavaScript for enhanced mobile experience -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let productsContainer = document.querySelector('.products-listing');
+    function initCategoryProductControls() {
+        if (window.__rubyCategoryProductControlsReady) {
+            return;
+        }
 
-        // Initialize filter toggles
-        const filterToggles = document.querySelectorAll('.shop-filter-toggle');
-        filterToggles.forEach(toggle => {
-            toggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('aria-controls');
-                const target = document.getElementById(targetId);
-                
-                // Toggle the collapse
-                if (target) {
-                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
-                    this.setAttribute('aria-expanded', !isExpanded);
-                    
-                    if (isExpanded) {
-                        target.classList.remove('show');
-                    } else {
-                        target.classList.add('show');
-                    }
+        window.__rubyCategoryProductControlsReady = true;
+
+        const productsContainer = document.querySelector('.products-listing');
+        const body = document.body;
+        const filterBackdrop = document.createElement('button');
+        filterBackdrop.type = 'button';
+        filterBackdrop.className = 'ruby-filter-backdrop';
+        filterBackdrop.setAttribute('aria-label', '{{ __('Close filters') }}');
+        document.body.appendChild(filterBackdrop);
+
+        function closeFilters() {
+            document.querySelectorAll('.shop-filter-toggle').forEach(toggle => {
+                toggle.setAttribute('aria-expanded', 'false');
+            });
+
+            document.querySelectorAll('#products-filter-ajax, #sidebar-filter-mobile').forEach(panel => {
+                panel.classList.remove('show');
+            });
+
+            filterBackdrop.classList.remove('is-visible');
+            body.classList.remove('ruby-filter-open');
+        }
+
+        document.querySelectorAll('.shop-filter-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const target = document.getElementById(this.getAttribute('aria-controls'));
+                if (!target) {
+                    return;
                 }
+
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', (!isExpanded).toString());
+                target.classList.toggle('show', !isExpanded);
+                filterBackdrop.classList.toggle('is-visible', !isExpanded);
+                body.classList.toggle('ruby-filter-open', !isExpanded);
             });
         });
-        
-        // Add scroll to top button
+
+        filterBackdrop.addEventListener('click', closeFilters);
+
+        document.querySelectorAll('.ruby-filter-close').forEach(button => {
+            button.addEventListener('click', closeFilters);
+        });
+
         const scrollTopBtn = document.createElement('button');
         scrollTopBtn.id = 'scroll-top';
+        scrollTopBtn.type = 'button';
         scrollTopBtn.innerHTML = '<i class="fi-rs-arrow-up"></i>';
         document.body.appendChild(scrollTopBtn);
-        
-        // Show/hide scroll to top button
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-        
-        // Scroll to top when button is clicked
-        scrollTopBtn.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-        
-        // Add pull-to-refresh functionality
-        let touchStartY = 0;
-        let touchEndY = 0;
-        const refreshThreshold = 100;
-        let isRefreshing = false;
-        
-        // Create pull-to-refresh indicator
-        const refreshIndicator = document.createElement('div');
-        refreshIndicator.className = 'pull-to-refresh';
-        refreshIndicator.innerHTML = '<div class="spinner"></div><p>Release to refresh</p>';
-        
-        const container = document.querySelector('.container');
-        if (container) {
-            container.insertBefore(refreshIndicator, container.firstChild);
-        }
-        
-        // Touch events for pull-to-refresh
-        document.addEventListener('touchstart', function(e) {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-        
-                document.addEventListener('touchmove', function(e) {
-            if (isRefreshing) return;
-            
-            touchEndY = e.touches[0].clientY;
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            
-            // Only enable pull-to-refresh when at the top of the page
-            if (scrollTop <= 0 && touchEndY - touchStartY > 30) {
-                refreshIndicator.classList.add('active');
-                refreshIndicator.querySelector('p').textContent = 
-                    touchEndY - touchStartY > refreshThreshold ? 'Release to refresh' : 'Pull down to refresh';
-            }
-        }, { passive: true });
-        
-        document.addEventListener('touchend', function() {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            
-            if (scrollTop <= 0 && touchEndY - touchStartY > refreshThreshold && !isRefreshing) {
-                // Perform refresh
-                isRefreshing = true;
-                refreshIndicator.querySelector('p').textContent = 'Refreshing...';
-                
-                // Reload the page after a short delay
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            } else {
-                // Hide refresh indicator
-                refreshIndicator.classList.remove('active');
-            }
-            
-            touchStartY = 0;
-            touchEndY = 0;
-        }, { passive: true });
-        
-        // Optimize images for mobile
-    // Optimize images for mobile - UPDATED
-if (window.innerWidth <= 768) {
-    // Add lazy loading to all images
-    document.querySelectorAll('.product-img img').forEach(img => {
-        if (!img.hasAttribute('loading')) {
-            img.setAttribute('loading', 'lazy');
-        }
-        
-        // Removed opacity transition code
-        
-        // Optional: Add error handling for images
-        img.addEventListener('error', function() {
-            // Replace broken images with a placeholder
-            this.src = '/themes/wowy/images/placeholder.jpg';
-        });
-    });
-    
-    // Rest of the code remains the same...
-}
 
-            
-            // Optimize product grid for touch
-            const productCards = document.querySelectorAll('.product-cart-wrap');
-            productCards.forEach(card => {
-                card.addEventListener('touchstart', function() {
-                    this.style.transform = 'scale(0.98)';
-                }, { passive: true });
-                
-                card.addEventListener('touchend', function() {
-                    this.style.transform = 'scale(1)';
-                }, { passive: true });
+        window.addEventListener('scroll', function () {
+            scrollTopBtn.classList.toggle('visible', window.pageYOffset > 300);
+        }, { passive: true });
+
+        scrollTopBtn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('.product-img img').forEach(img => {
+                if (!img.hasAttribute('loading')) {
+                    img.setAttribute('loading', 'lazy');
+                }
+
+                img.addEventListener('error', function () {
+                    this.src = '/themes/wowy/images/placeholder.jpg';
+                });
             });
         }
-        
-        // Enhance filter interactions
-        const filterItems = document.querySelectorAll('.widget-filter-item');
-        filterItems.forEach(item => {
-            const title = item.querySelector('.widget-title');
-            const content = item.querySelector('.widget-content');
-            
+
+        document.querySelectorAll('.widget-filter-item').forEach((item, index) => {
+            const title = item.querySelector('.widget__title, .widget-title');
+            const content = item.querySelector('.widget-content, .custome-checkbox, .price-range-slider, .ps-custom-scrollbar');
+
             if (title && content && window.innerWidth <= 768) {
-                // Add toggle functionality for filter sections on mobile
                 title.style.cursor = 'pointer';
-                
-                // Add indicator
+
                 const indicator = document.createElement('span');
                 indicator.innerHTML = '<i class="fi-rs-angle-small-down"></i>';
                 indicator.style.float = 'right';
                 title.appendChild(indicator);
-                
-                title.addEventListener('click', function() {
+
+                title.addEventListener('click', function () {
                     const isVisible = content.style.display !== 'none';
-                    
+
                     if (isVisible) {
                         content.style.display = 'none';
                         indicator.innerHTML = '<i class="fi-rs-angle-small-down"></i>';
@@ -512,41 +850,34 @@ if (window.innerWidth <= 768) {
                         indicator.innerHTML = '<i class="fi-rs-angle-small-up"></i>';
                     }
                 });
-                
-                // Initially hide all but the first filter section
-                if (item !== filterItems[0]) {
+
+                if (index !== 0) {
                     content.style.display = 'none';
                 }
             }
         });
-        
-        // Enhance AJAX filtering
+
         const filterForm = document.getElementById('products-filter-ajax');
         if (filterForm) {
-            // Add debounce function for filter inputs
             function debounce(func, wait) {
                 let timeout;
-                return function() {
+                return function () {
                     const context = this;
                     const args = arguments;
                     clearTimeout(timeout);
                     timeout = setTimeout(() => func.apply(context, args), wait);
                 };
             }
-            
-            // Handle filter changes
-            const filterInputs = filterForm.querySelectorAll('input, select');
-            filterInputs.forEach(input => {
-                const eventType = input.type === 'checkbox' || input.type === 'radio' || input.tagName === 'SELECT' 
+
+            filterForm.querySelectorAll('input, select').forEach(input => {
+                const eventType = input.type === 'checkbox' || input.type === 'radio' || input.tagName === 'SELECT'
                     ? 'change' : 'input';
-                
-                input.addEventListener(eventType, debounce(function() {
-                    // Show loading state
+
+                input.addEventListener(eventType, debounce(function () {
                     if (productsContainer) {
                         productsContainer.classList.add('loading');
                     }
-                    
-                    // Submit form via AJAX
+
                     const formData = new FormData(filterForm);
                     const requestUrl = new URL(filterForm.action, window.location.origin);
                     formData.forEach((value, key) => {
@@ -561,136 +892,66 @@ if (window.innerWidth <= 768) {
                     })
                     .then(response => response.text())
                     .then(html => {
-                        // Update products container
-                        if (productsContainer) {
-                            productsContainer.innerHTML = html;
-                            productsContainer.classList.remove('loading');
-                            
-                            // Reinitialize any scripts needed for the new content
-                            // ...
-                            
-                            // Scroll to top of products if not already visible
-                            const rect = productsContainer.getBoundingClientRect();
-                            if (rect.top < 0) {
-                                window.scrollTo({
-                                    top: window.scrollY + rect.top - 20,
-                                    behavior: 'smooth'
-                                });
-                            }
+                        if (!productsContainer) {
+                            return;
+                        }
+
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        const nextProducts = doc.querySelector('.products-listing');
+                        productsContainer.innerHTML = nextProducts ? nextProducts.innerHTML : html;
+
+                        const rect = productsContainer.getBoundingClientRect();
+                        if (rect.top < 0) {
+                            window.scrollTo({
+                                top: window.scrollY + rect.top - 20,
+                                behavior: 'smooth'
+                            });
                         }
                     })
                     .catch(error => {
                         console.error('Error updating products:', error);
-                        productsContainer.classList.remove('loading');
+                    })
+                    .finally(() => {
+                        if (productsContainer) {
+                            productsContainer.classList.remove('loading');
+                        }
                     });
                 }, 500));
             });
         }
-        
-        // Add swipe navigation for product images (if any sliders exist)
+
         const productSliders = document.querySelectorAll('.product-img-slider');
         if (productSliders.length > 0) {
             productSliders.forEach(slider => {
                 let touchStartX = 0;
                 let touchEndX = 0;
-                
-                slider.addEventListener('touchstart', function(e) {
+
+                slider.addEventListener('touchstart', function (e) {
                     touchStartX = e.touches[0].clientX;
                 }, { passive: true });
-                
-                slider.addEventListener('touchend', function(e) {
+
+                slider.addEventListener('touchend', function (e) {
                     touchEndX = e.changedTouches[0].clientX;
                     const distance = touchStartX - touchEndX;
-                    
-                    // If significant horizontal swipe detected
+
                     if (Math.abs(distance) > 50) {
-                        // Find next/prev buttons
                         const nextBtn = slider.querySelector('.slick-next') || slider.querySelector('.next');
                         const prevBtn = slider.querySelector('.slick-prev') || slider.querySelector('.prev');
-                        
+
                         if (distance > 0 && nextBtn) {
-                            // Swipe left, go to next slide
                             nextBtn.click();
                         } else if (distance < 0 && prevBtn) {
-                            // Swipe right, go to previous slide
                             prevBtn.click();
                         }
                     }
                 }, { passive: true });
             });
         }
-        
-        // Add infinite scroll for product listings (if pagination exists)
-        const pagination = document.querySelector('.pagination');
-        const nextPageLink = pagination ? pagination.querySelector('a[rel="next"]') : null;
-        
-        if (nextPageLink && productsContainer) {
-            // Create loading indicator for infinite scroll
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.className = 'text-center py-4 loading-more';
-            loadingIndicator.innerHTML = '<div class="spinner d-inline-block"></div><p class="mt-2">Loading more products...</p>';
-            loadingIndicator.style.display = 'none';
-            
-            // Add loading indicator after products container
-            productsContainer.parentNode.insertBefore(loadingIndicator, pagination);
-            
-            // Set up intersection observer for infinite scroll
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && nextPageLink && !isRefreshing) {
-                        // Show loading indicator
-                        loadingIndicator.style.display = 'block';
-                        
-                        // Load next page
-                        fetch(nextPageLink.href, {
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        })
-                        .then(response => response.text())
-                        .then(html => {
-                            // Parse the HTML
-                            const parser = new DOMParser();
-                            const doc = parser.parseFromString(html, 'text/html');
-                            
-                            // Get new products
-                            const newProducts = doc.querySelector('.products-listing .row');
-                            
-                            if (newProducts) {
-                                // Append new products
-                                const currentProducts = productsContainer.querySelector('.row');
-                                if (currentProducts) {
-                                    currentProducts.innerHTML += newProducts.innerHTML;
-                                }
-                                
-                                // Update next page link
-                                const newNextPageLink = doc.querySelector('.pagination a[rel="next"]');
-                                if (newNextPageLink) {
-                                    nextPageLink.href = newNextPageLink.href;
-                                } else {
-                                    // No more pages, remove observer
-                                    observer.disconnect();
-                                    loadingIndicator.style.display = 'none';
-                                    pagination.style.display = 'none';
-                                }
-                            }
-                            
-                            // Hide loading indicator
-                            loadingIndicator.style.display = 'none';
-                        })
-                        .catch(error => {
-                            console.error('Error loading more products:', error);
-                            loadingIndicator.style.display = 'none';
-                        });
-                    }
-                });
-            }, {
-                rootMargin: '200px',
-                threshold: 0.1
-            });
-            
-            // Observe the pagination element
-            observer.observe(pagination);
-        }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCategoryProductControls);
+    } else {
+        initCategoryProductControls();
+    }
 </script>

@@ -349,6 +349,10 @@
     ------------------------- */
     var shopFiltericon = $('.shop-filter-toggle');
     shopFiltericon.on('click', function (e) {
+        if ($(this).attr('aria-controls')) {
+            return;
+        }
+
         e.preventDefault();
         $('.shop-product-filter-header').slideToggle();
         $('.shop-filter-toggle').toggleClass('active');
@@ -570,7 +574,21 @@
                 dots: false,
                 focusOnSelect: true,
                 prevArrow: '<button type="button" class="slick-prev"><i class="fa fa-angle-left"></i></button>',
-                nextArrow: '<button type="button" class="slick-next"><i class="fa fa-angle-right"></i></button>'
+                nextArrow: '<button type="button" class="slick-next"><i class="fa fa-angle-right"></i></button>',
+                responsive: [
+                    {
+                        breakpoint: 576,
+                        settings: {
+                            slidesToShow: 4
+                        }
+                    },
+                    {
+                        breakpoint: 420,
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    }
+                ]
             });
 
             // Remove active class from all thumbnail slides

@@ -2,7 +2,6 @@
 
 namespace Botble\Ecommerce\Listeners;
 
-use Botble\Ecommerce\Facades\EcommerceHelper;
 use Botble\Ecommerce\Models\Brand;
 use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductCategory;
@@ -70,9 +69,6 @@ class RenderingSiteMapListener
                     break;
                 case 'pages':
                     SiteMapManager::add(route('public.products'), null, '1', 'monthly');
-                    if (EcommerceHelper::isCartEnabled()) {
-                        SiteMapManager::add(route('public.cart'), null, '1', 'monthly');
-                    }
 
                     break;
             }

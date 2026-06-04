@@ -522,6 +522,7 @@ body.show-admin-bar {
     display: none;
     margin: -15px;
     border-radius: 3px;
+    pointer-events: none;
 
     .half-circle-spinner {
         .circle.circle-1 {

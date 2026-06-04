@@ -1,0 +1,132 @@
+.ruby-performance {
+    width: 100%;
+    background: #111827;
+}
+
+.ruby-performance,
+.ruby-performance * {
+    box-sizing: border-box;
+}
+
+.ruby-performance__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+}
+
+.ruby-performance__panel {
+    position: relative;
+    min-height: 600px;
+    overflow: hidden;
+    background: #111827;
+}
+
+.ruby-performance__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1);
+    transition: transform 0.7s ease;
+}
+
+.ruby-performance__panel:hover .ruby-performance__image {
+    transform: scale(1.045);
+}
+
+.ruby-performance__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 40px;
+    background:
+        linear-gradient(to top, rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.52) 46%, rgba(0, 0, 0, 0.08) 100%);
+    color: #fff;
+    text-align: center;
+}
+
+.ruby-performance__content {
+    width: min(560px, 100%);
+    margin: 0 auto;
+}
+
+.ruby-performance__title {
+    margin: 0 0 14px;
+    color: #fff;
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 900;
+    line-height: 1.08;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+.ruby-performance__description {
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(15px, 1.5vw, 18px);
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.ruby-performance__action {
+    margin-top: 22px;
+}
+
+.ruby-performance__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 11px 26px;
+    border-radius: 999px;
+    background: #dc2626;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1.2;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 0 10px 24px rgba(220, 38, 38, 0.28);
+    transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ruby-performance__button:hover {
+    background: #ef4444;
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(220, 38, 38, 0.36);
+}
+
+@media (max-width: 991px) {
+    .ruby-performance__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ruby-performance__panel {
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 767px) {
+    .ruby-performance__panel {
+        min-height: 440px;
+    }
+
+    .ruby-performance__overlay {
+        padding: 28px 18px;
+    }
+
+    .ruby-performance__title {
+        margin-bottom: 10px;
+    }
+
+    .ruby-performance__description {
+        font-size: 14px;
+        line-height: 1.65;
+    }
+}

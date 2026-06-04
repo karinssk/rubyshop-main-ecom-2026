@@ -6,10 +6,111 @@
     Theme::asset()->usePath()->add('lightGallery-css', 'plugins/lightGallery/css/lightgallery.min.css');
     Theme::asset()->container('footer')->usePath()
         ->add('lightGallery-js', 'plugins/lightGallery/js/lightgallery.min.js', ['jquery']);
+
+    $productCanonicalUrl = $productCanonicalUrl ?? url()->current();
+    $productSeoDescription = trim(strip_tags((string) ($seoDescription ?? $product->description ?? $product->content ?? '')));
+    $productSchemaImages = collect($productImages ?? [$product->image])
+        ->filter()
+        ->map(fn ($image) => RvMedia::getImageUrl($image, 'origin', false, RvMedia::getDefaultImage()))
+        ->filter()
+        ->unique()
+        ->values()
+        ->all();
+
+    if (empty($productSchemaImages)) {
+        $productSchemaImages = [RvMedia::getImageUrl($product->image, 'origin', false, RvMedia::getDefaultImage())];
+    }
+
+    $productOfferSchema = [
+        '@type' => 'Offer',
+        'url' => $productCanonicalUrl,
+        'priceCurrency' => get_application_currency()->title ?: 'THB',
+        'price' => (string) $product->front_sale_price_with_taxes,
+        'availability' => $product->isOutOfStock() ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+        'itemCondition' => 'https://schema.org/NewCondition',
+    ];
+
+    $productStructuredData = [
+        '@type' => 'Product',
+        '@id' => $productCanonicalUrl . '#product',
+        'name' => $product->name,
+        'description' => $productSeoDescription,
+        'image' => $productSchemaImages,
+        'sku' => $product->sku ?: (string) $product->getKey(),
+        'brand' => [
+            '@type' => 'Brand',
+            'name' => $product->brand?->name ?: 'RUBYSHOP',
+        ],
+        'offers' => $productOfferSchema,
+    ];
+
+    $breadcrumbStructuredData = [
+        '@type' => 'BreadcrumbList',
+        '@id' => $productCanonicalUrl . '#breadcrumb',
+        'itemListElement' => [
+            [
+                '@type' => 'ListItem',
+                'position' => 1,
+                'name' => __('Home'),
+                'item' => route('public.index'),
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => __('Products'),
+                'item' => route('public.products'),
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 3,
+                'name' => $product->name,
+                'item' => $productCanonicalUrl,
+            ],
+        ],
+    ];
+
+    $productPageStructuredData = [
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            $productStructuredData,
+            $breadcrumbStructuredData,
+        ],
+    ];
 @endphp
+<script type="application/ld+json">
+{!! json_encode($productPageStructuredData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
 <style>
     .product-detail .detail-gallery img {
         background-color: transparent !important;
+    }
+
+    .product-detail .product-image-slider figure {
+        margin: 0;
+        aspect-ratio: 1 / 1;
+        background: #fff;
+    }
+
+    .product-detail .product-image-slider figure a {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .product-detail .product-image-slider figure img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .product-detail .slider-nav-thumbnails img {
+        aspect-ratio: 1 / 1;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        background: #fff;
     }
 
     .product-detail .single-social-share .mobile-social-icon a {
@@ -126,9 +227,80 @@
         }
 
         .product-detail .detail-extralink {
+            align-items: stretch !important;
+            flex-wrap: wrap !important;
+            overflow: visible !important;
+            gap: 8px !important;
+            padding-bottom: 0;
+        }
+
+        .product-detail .detail-extralink .detail-qty {
+            height: 44px;
+        }
+
+        .product-detail .detail-extralink .product-extra-link2 {
+            display: grid !important;
+            flex: 1 1 100% !important;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+            gap: 8px !important;
+            width: 100%;
+        }
+
+        .product-detail .detail-extralink .product-extra-link2 .button {
+            display: flex !important;
+            min-width: 0 !important;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px !important;
+            white-space: normal !important;
+            line-height: 1.2 !important;
+            text-align: center;
+        }
+
+        .product-detail .product-extra-link2 .product-more-actions {
+            margin-left: 0 !important;
+        }
+
+        .product-detail .product-more-actions .more-btn {
+            width: 44px;
+            height: 44px;
+        }
+
+        .product-detail .tab-style3 .nav-tabs {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 2px;
+            gap: 14px;
+            padding-bottom: 4px;
+        }
+
+        .product-detail .tab-style3 .nav-tabs .nav-item {
+            flex: 0 0 auto;
+        }
+
+        .product-detail .tab-style3 .nav-tabs .nav-link {
+            margin: 0 !important;
+            white-space: nowrap;
+        }
+
+        .product-detail .tp-product-details-additional-info {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .product-detail .tp-product-details-additional-info table {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .product-detail .tp-product-details-additional-info th,
+        .product-detail .tp-product-details-additional-info td {
+            width: auto !important;
+            padding: 10px 12px !important;
+            word-break: break-word;
         }
     }
 
@@ -190,6 +362,18 @@
             margin-bottom: 0.75rem !important;
         }
     }
+
+    @media (max-width: 420px) {
+        .product-detail .detail-extralink .product-extra-link2 {
+            grid-template-columns: 1fr;
+        }
+
+        .product-detail .product-more-actions,
+        .product-detail .product-more-actions .more-btn {
+            width: 100%;
+            border-radius: 8px;
+        }
+    }
 </style>
 <div class="product-detail accordion-detail mx-4">
     <div class="row mb-50">
@@ -199,14 +383,14 @@
                     @foreach ($productImages as $img)
                         <figure class="border-radius-10">
                             <a href="{{ RvMedia::getImageUrl($img) }}">
-                                <img src="{{ RvMedia::getImageUrl($img, 'medium') }}" alt="{{ $product->name }}">
+                                <img src="{{ RvMedia::getImageUrl($img, 'medium') }}" alt="{{ $product->name }}" width="800" height="800" @if ($loop->first) loading="eager" fetchpriority="high" @else loading="lazy" @endif decoding="async">
                             </a>
                         </figure>
                     @endforeach
                 </div>
                 <div class="slider-nav-thumbnails pl-15 pr-15">
                     @foreach ($productImages as $img)
-                        <div><img src="{{ RvMedia::getImageUrl($img, 'thumb') }}" alt="{{ $product->name }}"></div>
+                        <div><img src="{{ RvMedia::getImageUrl($img, 'thumb') }}" alt="{{ $product->name }}" width="150" height="150" loading="lazy" decoding="async"></div>
                     @endforeach
                 </div>
             </div>
@@ -310,7 +494,15 @@
                     @if ($product->categories->isNotEmpty())
                         <li class="mb-5"><span class="d-inline-block me-1">{{ __('Categories') }}:</span>
                         @foreach($product->categories as $category)
-                            <a href="{{ $category->url }}" title="{{ $category->name }}">{{ $category->name }}</a>@if (!$loop->last),@endif
+                            @php
+                                $categoryCanLink = $category && $category->status == \Botble\Base\Enums\BaseStatusEnum::PUBLISHED && $category->url;
+                            @endphp
+                            @if ($categoryCanLink)
+                                <a href="{{ $category->url }}" title="{{ $category->name }}">{{ $category->name }}</a>
+                            @else
+                                <span title="{{ $category->name }}">{{ $category->name }}</span>
+                            @endif
+                            @if (!$loop->last),@endif
                         @endforeach
                     </li>
                     @endif

@@ -4,7 +4,7 @@
 <section class="bg-white" data-featuredv1-section>
     <div class="container mx-auto px-4 py-8">
         @if ($title)
-            <h1 class="hidden lg:block text-2xl font-bold mb-6">{!! BaseHelper::clean($title) !!}</h1>
+            <h2 class="hidden lg:block text-2xl font-bold mb-6">{!! BaseHelper::clean($title) !!}</h2>
         @endif
         <div class="flex items-center justify-between flex-wrap gap-4 pt-4">
             <div>
@@ -27,7 +27,7 @@
                 <a href="{{ $product->url }}" class="group flex-none w-[80vw] sm:w-64 lg:w-auto snap-center">
                     <div class="bg-gray-100 border border-gray-200 rounded-lg p-4 h-full transition-all duration-300 ease-in-out group-hover:shadow-[rgba(0,0,0,0.1)_0px_4px_6px,rgba(0,0,0,0.1)_0px_1px_3px] group-hover:-translate-y-1">
                         <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4 flex items-center justify-center">
-                            <img src="{{ RvMedia::getImageUrl($product->image, 'medium') }}" alt="{{ $product->name }}" class="w-full h-full object-contain imgMixBlendMode"/>
+                            <img src="{{ RvMedia::getImageUrl($product->image, 'medium') }}" alt="{{ $product->name }}" width="800" height="800" loading="lazy" decoding="async" class="w-full h-full object-contain imgMixBlendMode"/>
                         </div>
                         <div class="flex-1">
                             <p class="text-base text-gray-800 font-medium line-clamp-2 leading-relaxed">{{ $product->name }}</p>

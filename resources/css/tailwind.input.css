@@ -5,12 +5,16 @@
 @source "../views/**/*.blade.php";
 @source "../../resources/views/**/*.blade.php";
 @source "../../platform/themes/wowy/**/*.blade.php";
+@source "../../platform/themes/wowy/**/*.php";
 @source "../../platform/themes/wowy/**/*.js";
 @source "../../platform/themes/wowy/**/*.vue";
 @source "../../platform/plugins/**/*.blade.php";
+@source "../../platform/plugins/**/*.php";
 @source "../../platform/plugins/**/*.js";
 @source "../../platform/packages/**/*.blade.php";
+@source "../../platform/packages/**/*.php";
 @source "../../platform/packages/**/*.js";
 @source "../../platform/core/**/*.blade.php";
+@source "../../platform/core/**/*.php";
 @source "../../platform/core/**/*.js";
 @source "../../storage/framework/views/*.php";

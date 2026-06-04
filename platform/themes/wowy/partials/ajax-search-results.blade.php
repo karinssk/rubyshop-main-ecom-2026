@@ -7,7 +7,7 @@
                         <div class="col-xl-2 col-3 product-img-action-wrap mb-0">
                             <div class="product-img product-img-zoom">
                                 <a href="{{ $product->url }}">
-                                    <img class="default-img" src="{{ RvMedia::getImageUrl($product->image, 'product-thumb', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}">
+                                    <img class="default-img" src="{{ RvMedia::getImageUrl($product->image, 'product-thumb', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}" width="400" height="400" loading="lazy" decoding="async">
                                 </a>
                             </div>
                         </div>

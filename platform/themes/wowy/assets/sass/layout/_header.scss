@@ -1223,12 +1223,14 @@ header {
     width: 100%;
     cursor: crosshair;
     z-index: 9999;
+    pointer-events: none;
 }
 
 .mobile-menu-active {
     .body-overlay-1 {
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
     }
 }
 

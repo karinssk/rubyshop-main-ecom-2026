@@ -1,7 +1,207 @@
 <style>
+    #contact {
+        background: linear-gradient(180deg, #fff 0%, #f9fafb 100%);
+        padding: 40px 0 64px;
+    }
+
     #contact p {
         margin-bottom: 0.5rem !important;
         line-height: 1.6;
+    }
+
+    #contact > div {
+        width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    #contact .mt-12 {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 40px;
+        margin-top: 48px;
+    }
+
+    #contact .space-y-6 > * + * {
+        margin-top: 24px;
+    }
+
+    #contact .bg-white {
+        background: #fff;
+    }
+
+    #contact .rounded-3xl {
+        border-radius: 24px;
+    }
+
+    #contact .rounded-2xl {
+        border-radius: 16px;
+    }
+
+    #contact .border {
+        border: 1px solid #f0f0f0 !important;
+    }
+
+    #contact .shadow,
+    #contact .shadow-lg,
+    #contact .shadow-2xl {
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    #contact .p-8 {
+        padding: 32px;
+    }
+
+    #contact .p-6 {
+        padding: 24px;
+    }
+
+    #contact .p-5 {
+        padding: 20px;
+    }
+
+    #contact ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    #contact li.flex,
+    #contact .flex {
+        display: flex;
+    }
+
+    #contact .items-start {
+        align-items: flex-start;
+    }
+
+    #contact .items-center {
+        align-items: center;
+    }
+
+    #contact .justify-center {
+        justify-content: center;
+    }
+
+    #contact .gap-4 {
+        gap: 16px;
+    }
+
+    #contact .gap-3 {
+        gap: 12px;
+    }
+
+    #contact .grid {
+        display: grid;
+    }
+
+    #contact .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #contact .md\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #contact .gap-6 {
+        gap: 24px;
+    }
+
+    #contact .gap-4 {
+        gap: 16px;
+    }
+
+    #contact input,
+    #contact textarea {
+        width: 100%;
+        min-height: 48px;
+        padding: 12px 16px;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 16px;
+        background: #fff;
+        color: #111827;
+    }
+
+    #contact textarea {
+        min-height: 132px;
+        resize: vertical;
+    }
+
+    #contact input:focus,
+    #contact textarea:focus {
+        border-color: #dc2626 !important;
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+        outline: none;
+    }
+
+    #contact label {
+        display: block;
+        margin-bottom: 4px;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    #contact button[type="submit"] {
+        display: inline-flex;
+        width: 100%;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 0;
+        border-radius: 16px;
+        background: #dc2626;
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 12px 24px rgba(220, 38, 38, 0.18);
+    }
+
+    #contact .contact-message {
+        display: none;
+        padding: 16px;
+        border-radius: 16px;
+        font-size: 0.875rem;
+    }
+
+    #contact .contact-success-message {
+        color: #047857;
+        background: #d1fae5;
+    }
+
+    #contact .contact-error-message {
+        color: #b91c1c;
+        background: #fee2e2;
+    }
+
+    #contact .hidden {
+        display: none !important;
+    }
+
+    @media (max-width: 1199px) {
+        #contact .mt-12 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 767px) {
+        #contact {
+            padding: 32px 0 48px;
+        }
+
+        #contact .p-8 {
+            padding: 22px;
+        }
+
+        #contact .md\:grid-cols-2,
+        #contact .md\:grid-cols-3 {
+            grid-template-columns: 1fr;
+        }
+
+        #contact .mt-16 {
+            margin-top: 40px;
+        }
     }
 </style>
 
@@ -9,7 +209,7 @@
     <div class="w-full px-4 sm:px-6 lg:px-12 2xl:px-16">
         <div class="w-full text-center">
             <div class="flex justify-center mb-5">
-                <img src="https://www.rubyshop.co.th/storage/logo/rubyshop-no-bg-250pxx100px.jpg" alt="RUBYSHOP" class="h-12 md:h-16 object-contain">
+                <img src="https://www.rubyshop.co.th/storage/logo/rubyshop-no-bg-250pxx100px.jpg" alt="RUBYSHOP" width="250" height="100" loading="lazy" decoding="async" class="h-12 md:h-16 object-contain">
             </div>
             <p class="uppercase tracking-[0.3em] text-xs text-red-500 font-semibold mb-3">{{ __('Rubyshop Contact') }}</p>
             <h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4">
@@ -201,6 +401,7 @@
 
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
+            e.stopPropagation();
 
             const formData = new FormData(contactForm);
             const submitBtn = contactForm.querySelector('button[type="submit"]');
@@ -226,11 +427,15 @@
                 if (data.error) {
                     errorMessage.textContent = data.message;
                     errorMessage.classList.remove('hidden');
+                    errorMessage.style.display = 'block';
                     successMessage.classList.add('hidden');
+                    successMessage.style.display = 'none';
                 } else {
                     successMessage.textContent = data.message;
                     successMessage.classList.remove('hidden');
+                    successMessage.style.display = 'block';
                     errorMessage.classList.add('hidden');
+                    errorMessage.style.display = 'none';
                     contactForm.reset();
                     successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
@@ -241,7 +446,9 @@
 
                 errorMessage.textContent = '{{ __('เกิดข้อผิดพลาด โปรดลองอีกครั้ง') }}';
                 errorMessage.classList.remove('hidden');
+                errorMessage.style.display = 'block';
                 successMessage.classList.add('hidden');
+                successMessage.style.display = 'none';
             });
         });
     });

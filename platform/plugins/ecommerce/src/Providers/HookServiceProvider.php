@@ -517,13 +517,17 @@ class HookServiceProvider extends ServiceProvider
                         ) ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
                     ];
 
-                    if ($privacyPolicyUrl = theme_option('merchant_return_policy_url')) {
-                        $offers['hasMerchantReturnPolicy'] = [
-                            '@type' => 'MerchantReturnPolicy',
-                            'returnPolicyCategory' => $privacyPolicyUrl,
-                            'merchantReturnDays' => theme_option('merchant_return_days', 30),
-                        ];
-                    }
+                    $returnPolicyUrl = theme_option('merchant_return_policy_url') ?: url('/return-policy');
+
+                    $offers['hasMerchantReturnPolicy'] = [
+                        '@type' => 'MerchantReturnPolicy',
+                        'applicableCountry' => 'TH',
+                        'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                        'merchantReturnDays' => (int) theme_option('merchant_return_days', 30),
+                        'returnMethod' => 'https://schema.org/ReturnByMail',
+                        'returnFees' => 'https://schema.org/ReturnFeesCustomerResponsibility',
+                        'url' => $returnPolicyUrl,
+                    ];
 
                     // Build breadcrumb for product schema
                     $breadcrumbItems = [];
@@ -656,6 +660,8 @@ class HookServiceProvider extends ServiceProvider
                         [
                             '@context' => 'https://schema.org/',
                             '@type' => 'Product',
+                            '@id' => $object->url . '#product',
+                            'url' => $object->url,
                             'name' => BaseHelper::clean($object->name),
                             'image' => $productImages,
                             'description' => Str::limit(
@@ -668,12 +674,10 @@ class HookServiceProvider extends ServiceProvider
                         ]
                     ];
 
-                    if ($object->brand->name) {
-                        $schemas[1]['brand'] = [
-                            '@type' => 'Brand',
-                            'name' => $object->brand->name,
-                        ];
-                    }
+                    $schemas[1]['brand'] = [
+                        '@type' => 'Brand',
+                        'name' => $object->brand->name ?? theme_option('site_title', 'RUBYSHOP'),
+                    ];
 
                     if (EcommerceHelper::isReviewEnabled() && $object->reviews_count > 0) {
                         $schemas[1]['aggregateRating'] = [

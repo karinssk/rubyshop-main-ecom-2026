@@ -2460,10 +2460,6 @@ document.addEventListener('DOMContentLoaded', function() {
         <span class="hidden md:inline text-gray-500">|</span>
         <a href="https://www.rubyshop.co.th/products" class="hover:text-red-400 transition-colors py-1">Shop</a>
       </div>
-      
-      <div class="mt-4 text-center text-xs text-gray-400">
-        <p>เว็บไซต์นี้ใช้คุกกี้เพื่อมอบประสบการณ์การใช้งานที่ดีที่สุด โดยการใช้เว็บไซต์นี้ คุณยอมรับ<a href="https://www.rubyshop.co.th/cookie-policy" class="text-red-400 hover:underline">นโยบายคุกกี้</a>ของเรา</p>
-      </div>
     </div>
   </div>
   <!-- Google tag (gtag.js) -->
@@ -2546,7 +2542,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </a>
 </body>
 </html>
-
 
 
 

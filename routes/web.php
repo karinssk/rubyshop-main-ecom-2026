@@ -13,9 +13,15 @@ use App\Http\Controllers\ProductLandingController;
 use App\Http\Controllers\Rb360LandingController;
 use App\Http\Controllers\Auth\LineAuthController;
 use App\Http\Controllers\HealthController;
+use Illuminate\Http\Request;
 
 // Health check route
 Route::get('/health', [HealthController::class, 'check'])->name('health.check');
+Route::get('/ajax/csrf-token', function (Request $request) {
+    return response()->json([
+        'token' => csrf_token(),
+    ]);
+})->name('ajax.csrf-token');
 Route::view('/privacy-policy', 'legal.privacy-policy')->name('privacy.policy');
 Route::view('/terms-of-service', 'legal.terms')->name('terms.policy');
 Route::view('/return-policy', 'legal.return-policy')->name('return.policy');
@@ -81,9 +87,10 @@ Route::redirect('/product-categories-test/{slug}', '/allproducts/category/{slug}
 
 // Categories overview page
 Route::get('/product-categories', [AllProductsController::class, 'categories'])->name('product.categories.index');
+Route::get('/product-categories/{slug}', [AllProductsController::class, 'category'])->name('product.categories.slug');
 
-// Product detail page - use slug
-// Route::get('/products/{slug}', [AllProductsController::class, 'show'])->name('product.detail');
+// Product detail page - product cards use Botble slug URLs such as /products/ruby-shop-rb899.
+Route::get('/products/{slug}', [AllProductsController::class, 'show'])->name('product.detail.slug');
 
 // Product detail page - use your existing controller/route
 

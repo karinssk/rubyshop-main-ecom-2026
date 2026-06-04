@@ -14,7 +14,7 @@
                     <div class="col-lg-3 col-md-6 mb-md-3 mb-lg-0">
                         <div class="banner-left-icon d-flex align-items-center wow fadeIn animated h-100 {{ $headerStyle == 'header-style-2' ? 'style-2' : '' }}">
                             <div class="banner-icon">
-                                <img src="{{ RvMedia::getImageUrl($shortcode->{'icon' . $i}, null, false, RvMedia::getDefaultImage()) }}" alt="icon">
+                                <img src="{{ RvMedia::getImageUrl($shortcode->{'icon' . $i}, null, false, RvMedia::getDefaultImage()) }}" alt="icon" width="64" height="64" loading="lazy" decoding="async">
                             </div>
                             <div class="banner-text">
                                 <p class="icon-box-title">{!! BaseHelper::clean($shortcode->{'title' . $i}) !!}</p>

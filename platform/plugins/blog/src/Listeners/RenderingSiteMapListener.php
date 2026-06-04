@@ -36,6 +36,10 @@ class RenderingSiteMapListener
                         ->get();
 
                     foreach ($tags as $tag) {
+                        if (! $tag->slugable || ! $tag->slugable->key) {
+                            continue;
+                        }
+
                         SiteMapManager::add($tag->url, $tag->updated_at, '0.3', 'weekly');
                     }
 

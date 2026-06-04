@@ -10,7 +10,11 @@ $(() => {
 
         const $cookieDialog = $('.js-cookie-consent')
 
-        $cookieDialog.addClass('cookie-consent--visible')
+        if (!cookieExists(COOKIE_NAME)) {
+            $cookieDialog.addClass('cookie-consent--visible')
+        } else {
+            hideCookieDialog()
+        }
 
         function consentWithCookies() {
             setCookie(COOKIE_NAME, COOKIE_VALUE, COOKIE_LIFETIME)
@@ -18,7 +22,10 @@ $(() => {
         }
 
         function cookieExists(name) {
-            return document.cookie.split('; ').indexOf(name + '=' + COOKIE_VALUE) !== -1
+            return document.cookie
+                .split(';')
+                .map(cookie => cookie.trim())
+                .some(cookie => cookie === name + '=' + COOKIE_VALUE)
         }
 
         function hideCookieDialog() {
@@ -28,20 +35,28 @@ $(() => {
         function setCookie(name, value, expirationInDays) {
             const date = new Date()
             date.setTime(date.getTime() + expirationInDays * 24 * 60 * 60 * 1000)
-            document.cookie =
+
+            const secure = SESSION_SECURE || ''
+            const baseCookie =
                 name +
                 '=' +
                 value +
                 ';expires=' +
                 date.toUTCString() +
-                ';domain=' +
-                COOKIE_DOMAIN +
-                ';path=/' +
-                SESSION_SECURE
-        }
+                ';path=/;SameSite=Lax' +
+                secure
 
-        if (cookieExists(COOKIE_NAME)) {
-            hideCookieDialog()
+            if (COOKIE_DOMAIN) {
+                document.cookie = baseCookie + ';domain=' + COOKIE_DOMAIN
+            }
+
+            if (!cookieExists(name)) {
+                document.cookie = baseCookie
+            }
+
+            if (!cookieExists(name) && secure) {
+                document.cookie = baseCookie.replace(secure, '')
+            }
         }
 
         $(document).on('click', '.js-cookie-consent-agree', function () {

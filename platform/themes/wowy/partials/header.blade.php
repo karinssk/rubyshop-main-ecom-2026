@@ -6,6 +6,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         @php
             $path = trim(request()->path(), '/');
+            $normalizedPath = $path;
+
+            foreach (['th', 'en'] as $locale) {
+                if ($normalizedPath === $locale) {
+                    $normalizedPath = '';
+                    break;
+                }
+
+                if (str_starts_with($normalizedPath, $locale . '/')) {
+                    $normalizedPath = substr($normalizedPath, strlen($locale) + 1);
+                    break;
+                }
+            }
+
             $isUtilityNoindexPage = request()->is('cart')
                 || request()->is('compare')
                 || request()->is('wishlist')
@@ -15,19 +29,36 @@
                 || request()->is('customer*')
                 || request()->is('orders/tracking*')
                 || request()->is('currency/switch/*');
-            $isListingQueryNoindexPage = request()->query()
+            $hasQueryString = request()->getQueryString() !== null && request()->getQueryString() !== '';
+            $isListingQueryNoindexPage = $hasQueryString
                 && (
-                    $path === 'products'
-                    || $path === 'product-categories'
-                    || $path === 'allproducts'
-                    || str_starts_with($path, 'allproducts/category/')
-                    || str_starts_with($path, 'sub/')
-                    || $path === 'search'
-                    || $path === 'blog'
+                    $normalizedPath === 'products'
+                    || $normalizedPath === 'product-categories'
+                    || $normalizedPath === 'allproducts'
+                    || str_starts_with($normalizedPath, 'allproducts/category/')
+                    || str_starts_with($normalizedPath, 'product-categories/')
+                    || str_starts_with($normalizedPath, 'sub/')
+                    || $normalizedPath === 'search'
+                    || $normalizedPath === 'blog'
                 );
+            $isListingBaseIndexPage = ! $hasQueryString
+                && ($normalizedPath === 'products' || $normalizedPath === 'product-categories');
+            $isContactPage = request()->is('contact*');
+            $robotsContent = null;
+
+            if ($isUtilityNoindexPage || $isListingQueryNoindexPage) {
+                $robotsContent = 'noindex,follow';
+            } elseif ($isListingBaseIndexPage) {
+                $robotsContent = 'index,follow';
+            }
+
+            $isCategoryPage = $normalizedPath === 'product-categories'
+                || str_starts_with($normalizedPath, 'product-categories/')
+                || str_contains($normalizedPath, '/product-categories/');
+            $canonicalContent = ($isListingQueryNoindexPage || $isListingBaseIndexPage) ? url()->current() : null;
         @endphp
-        @if ($isUtilityNoindexPage || $isListingQueryNoindexPage)
-            <meta name="robots" content="noindex,follow">
+        @if ($robotsContent)
+            <meta name="robots" content="{{ $robotsContent }}">
         @endif
         
         <!-- Resource Hints for Performance -->
@@ -38,64 +69,20 @@
         
         @php
             $isHomePage = request()->path() === '/' || request()->routeIs('public.index');
-            $isBlogPage = request()->is('blog') || request()->is('blog/*');
-            $isCategoryPage = request()->is('product-categories*')
-                || request()->is('categories')
-                || request()->is('allproducts/category/*')
-                || request()->is('sub/*');
-            $isContactPage = request()->is('contact*');
-            $isAuthPage = request()->is('login')
-                || request()->is('register')
-                || request()->is('password/reset*')
-                || request()->is('customer/login*')
-                || request()->is('customer/register*')
-                || request()->is('th/login*')
-                || request()->is('th/register*');
-            $useTailwindCss = $isBlogPage || $isAuthPage;
-            $useTailwindCdn = $isHomePage || $isCategoryPage || $isContactPage;
-            $cssVersion = '20260424-3';
+            $useTailwindCss = true;
+            $cssVersion = '20260604-1';
+            $useTailwindCdn = false;
         @endphp
         @if ($isHomePage)
-            <link rel="preload" as="image" href="{{ asset('storage/ads01/30l/m30l-hero.jpg') }}" fetchpriority="high" media="(max-width: 767px)">
-            <link rel="preload" as="image" href="{{ asset('storage/ads01/30l/m30l-hero.jpg') }}" fetchpriority="high" media="(min-width: 768px)">
+            <link rel="preload" as="image" href="{{ asset('storage/logo/coverpage.webp') }}" fetchpriority="high" media="(max-width: 767px)" type="image/webp">
+            <link rel="preload" as="image" href="{{ asset('storage/home/hero-medium-first-frame.webp') }}" fetchpriority="high" media="(min-width: 768px)" type="image/webp">
         @endif
         @if ($useTailwindCss)
-            <link rel="preload" href="{{ asset('css/tailwind.css') }}?v=20260424-3" as="style">
-            <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}?v=20260424-3">
+            <link rel="preload" href="{{ asset('css/tailwind.css') }}?v={{ $cssVersion }}" as="style">
+            <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}?v={{ $cssVersion }}">
         @endif
         @if ($useTailwindCdn)
-            <script>
-                window.tailwind = window.tailwind || {};
-                window.tailwind.config = window.tailwind.config || {};
-                window.tailwind.config.corePlugins = Object.assign(
-                    {},
-                    window.tailwind.config.corePlugins || {},
-                    { preflight: false }
-                );
-            </script>
             <script src="https://cdn.tailwindcss.com"></script>
-        @endif
-        @if (BaseHelper::isRtlEnabled())
-            <link rel="stylesheet" href="{{ Theme::asset()->url('plugins/bootstrap/css/bootstrap.rtl.min.css') }}?v={{ $cssVersion }}">
-        @else
-            <link rel="stylesheet" href="{{ Theme::asset()->url('plugins/bootstrap/css/bootstrap.min.css') }}?v={{ $cssVersion }}">
-        @endif
-        <link rel="stylesheet" href="{{ Theme::asset()->url('css/vendors/normalize.css') }}?v={{ $cssVersion }}">
-        <link rel="stylesheet" href="{{ Theme::asset()->url('css/vendors/fontawesome-all.min.css') }}?v={{ $cssVersion }}">
-        <link rel="stylesheet" href="{{ Theme::asset()->url('css/vendors/wowy-font.css') }}?v={{ $cssVersion }}">
-        <link rel="preload" href="{{ Theme::asset()->url('css/plugins/animate.css') }}?v={{ $cssVersion }}" as="style">
-        <link rel="stylesheet" href="{{ Theme::asset()->url('css/plugins/animate.css') }}?v={{ $cssVersion }}" media="print" onload="this.media='all'">
-        <noscript>
-            <link rel="stylesheet" href="{{ Theme::asset()->url('css/plugins/animate.css') }}?v={{ $cssVersion }}">
-        </noscript>
-        <link rel="preload" href="{{ Theme::asset()->url('css/plugins/slick.css') }}?v={{ $cssVersion }}" as="style">
-        <link rel="stylesheet" href="{{ Theme::asset()->url('css/plugins/slick.css') }}?v={{ $cssVersion }}" media="print" onload="this.media='all'">
-        <noscript>
-            <link rel="stylesheet" href="{{ Theme::asset()->url('css/plugins/slick.css') }}?v={{ $cssVersion }}">
-        </noscript>
-        <link rel="stylesheet" href="{{ Theme::asset()->url('css/style.css') }}?v={{ $cssVersion }}">
-        @if (is_plugin_active('ecommerce'))
-            <link rel="stylesheet" href="{{ asset('vendor/core/plugins/ecommerce/css/front-ecommerce.css') }}?v={{ $cssVersion }}">
         @endif
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -112,72 +99,7 @@
         <noscript><img height="1" width="1" style="display:none"
         src="https://www.facebook.com/tr?id=1559144322039457&ev=PageView&noscript=1"/></noscript>
         <!-- End Meta Pixel Base Code -->
-        @php
-            $fallbackSeoTitle = trim(strip_tags(SeoHelper::getTitle() ?: theme_option('seo_title', theme_option('site_title', 'RUBYSHOP'))));
-            $fallbackSeoDescription = trim(strip_tags(SeoHelper::getDescription() ?: theme_option('seo_description', '')));
-            $fallbackSeoImage = trim(SeoHelper::openGraph()->getProperty('image') ?: theme_option('seo_og_image', asset('storage/ads/rubyshop-catalog2.jpg')));
-            $fallbackSeoUrl = url()->current();
-            $fallbackOgTitle = mb_strlen($fallbackSeoTitle) > 60 ? rtrim(mb_substr($fallbackSeoTitle, 0, 57)) . '...' : $fallbackSeoTitle;
-            $fallbackTwitterTitle = mb_strlen($fallbackSeoTitle) > 70 ? rtrim(mb_substr($fallbackSeoTitle, 0, 67)) . '...' : $fallbackSeoTitle;
-        @endphp
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{ $fallbackTwitterTitle }}">
-        <meta name="twitter:description" content="{{ $fallbackSeoDescription }}">
-        <meta name="twitter:image" content="{{ $fallbackSeoImage }}">
-        <meta name="twitter:url" content="{{ $fallbackSeoUrl }}">
-        <meta name="twitter:site" content="@RUBYSHOP168">
-        <meta property="og:title" content="{{ $fallbackOgTitle }}">
-
         <!-- Non-critical CSS loaded in footer to keep initial render path lean -->
-            
-                <!-- Force LocalBusiness Schema on Homepage -->
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            "name": "RUBYSHOP",
-            "alternateName": "รูบี้ช๊อป",
-            "description": "ศูนย์รวมเครื่องมือช่าง อุปกรณ์ก่อสร้าง และเทคโนโลยีงานช่างครบวงจร - พ่นปูน, พ่นสีแรงดันสูง, กรีดผนังเซาะร่อง, ฉีดโพม, กันซึม",
-            "image": "https://www.rubyshop.co.th/logo.png",
-            "@id": "https://www.rubyshop.co.th/",
-            "url": "https://www.rubyshop.co.th/",
-            "telephone": "+66-89-666-7802",
-            "email": "info@rubyshop.co.th",
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "9 ถนนประชาอุทิศ แขวงสีกัน เขตดอนเมือง",
-                "addressLocality": "เขตดอนเมือง",
-                "addressRegion": "กรุงเทพมหานคร",
-                "postalCode": "10210",
-                "addressCountry": "TH"
-            },
-            "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 14.0273154,
-                "longitude": 100.1725207
-            },
-            "openingHoursSpecification": [{
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                "opens": "08:30",
-                "closes": "17:30"
-            }],
-            "sameAs": [
-                "https://www.facebook.com/photo/?fbid=707251024751513&set=a.432474452229173",
-                "https://maps.app.goo.gl/8QtWpT29vT1Rspgq8",
-                "https://www.instagram.com/rubyshop_thailand",
-                "https://www.youtube.com/@rubyshop-thailand",
-                "https://x.com/RUBYSHOP168",
-                "https://www.linkedin.com/company/rubyshop-thailand"
-            ],
-            "priceRange": "฿฿",
-            "paymentAccepted": ["Cash", "Credit Card", "Bank Transfer"],
-            "currenciesAccepted": "THB"
-        }
-        </script>
-
-
-
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 
@@ -238,11 +160,13 @@
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s ease;
+                pointer-events: none;
             }
 
             body.mobile-menu-active .body-overlay-1 {
                 opacity: 1;
                 visibility: visible;
+                pointer-events: auto;
             }
 
             /* Hamburger Menu */
@@ -379,8 +303,70 @@
 
             /* Force mobile menu to work properly */
             @media (max-width: 991px) {
-                .mobile-header-active {
-                    display: block;
+                .mobile-header-active:not(.sidebar-visible) {
+                    display: none !important;
+                }
+
+                .header-bottom .header-wrap {
+                    gap: 8px !important;
+                    justify-content: space-between;
+                    width: 100%;
+                    min-width: 0;
+                }
+
+                .header-bottom .logo.logo-width-1 {
+                    flex: 0 1 118px;
+                    max-width: 118px;
+                    min-width: 0;
+                }
+
+                .header-bottom .logo.logo-width-1 img {
+                    width: 110px;
+                    max-width: 100%;
+                    height: auto;
+                }
+
+                .header-bottom .header-action-right {
+                    flex: 0 0 auto;
+                    width: auto !important;
+                    max-width: calc(100vw - 138px);
+                    min-width: 0;
+                    overflow: visible;
+                }
+
+                .header-bottom .header-action-2 {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 4px;
+                    width: auto !important;
+                    max-width: 100%;
+                }
+
+                .header-bottom .header-action-icon-2 {
+                    flex: 0 0 24px;
+                    width: 24px !important;
+                    min-width: 24px;
+                    margin: 0 !important;
+                }
+
+                .header-bottom .header-action-icon-2:has(> a.compare-count),
+                .header-bottom .header-action-icon-2:has(> a.wishlist-count) {
+                    display: none !important;
+                }
+
+                .header-bottom .cart-dropdown-wrap {
+                    display: none !important;
+                }
+
+                .header-bottom .header-action-icon-2.d-block.d-lg-none {
+                    transform: translateX(-6px);
+                }
+
+                .header-bottom .header-action-icon-2 a,
+                .header-bottom .header-action-icon-2 .burger-icon {
+                    width: 24px !important;
+                    min-width: 24px;
                 }
                 
                 .burger-icon {
@@ -390,15 +376,14 @@
                     align-items: center;
                 }
                 
-                /* Hide Browse Categories in mobile */
-                .mobile-header-active .main-categories-wrap {
-                    display: none !important;
+                .mobile-header-active .mobile-categories-wrap {
+                    display: block;
                 }
             }
             .header-bottom p,
             .header-top p,
             .header-middle p {
-                margin-bottom: -24px !important;
+                margin-bottom: 0 !important;
             }
 
             @media (max-width: 991px) {
@@ -415,19 +400,20 @@
                 min-width: 0;
             }
 
-            .header-bottom .main-categories-wrap,
-            .header-bottom .hotline {
+            .header-bottom .header-nav-categories,
+            .header-bottom .header-nav-hotline {
                 flex-shrink: 0;
             }
 
             .header-bottom .main-menu > nav > ul {
                 display: flex;
                 align-items: center;
-                gap: 28px;
+                gap: clamp(14px, 2vw, 28px);
                 justify-content: center;
                 margin: 0;
                 padding: 0;
                 list-style: none;
+                min-width: 0;
             }
 
             .header-bottom .main-menu > nav > ul > li > a {
@@ -440,7 +426,7 @@
                 }
 
                 .header-bottom .main-menu > nav > ul {
-                    gap: 16px;
+                    gap: 10px 16px;
                 }
 
                 .header-bottom .main-menu > nav > ul > li > a {
@@ -448,27 +434,36 @@
                     padding: 6px 0;
                 }
 
-                .header-bottom .hotline p span {
+                .header-bottom .header-nav-hotline .hotline-label {
                     display: none;
                 }
 
-                .header-bottom .hotline p {
+                .header-bottom .header-nav-hotline {
                     font-size: 0.95rem;
                 }
             }
 
-            .header-bottom .hotline {
-                display: flex;
+            .header-bottom .header-nav-hotline {
+                display: flex !important;
                 align-items: center;
                 height: 100%;
             }
 
-            .header-bottom .hotline p {
+            .header-bottom .header-nav-hotline a {
                 display: inline-flex;
                 align-items: center;
                 gap: 10px;
                 margin: 0;
+                color: #fff !important;
+                text-decoration: none;
                 line-height: 1.4;
+                white-space: nowrap;
+            }
+
+            .header-bottom .header-nav-hotline a i,
+            .header-bottom .header-nav-hotline a span,
+            .header-bottom .header-nav-hotline a strong {
+                color: #fff !important;
             }
 
             /* ======================================================
@@ -717,14 +712,152 @@
             }
         </style>
 
-        {!! Theme::header() !!}
+        @php
+            if ($isHomePage) {
+                Theme::asset()->remove([
+                    'ckeditor-content-styles',
+                    'custom-scrollbar-css',
+                    'animate-css',
+                ]);
+            }
+
+            $themeHeader = Theme::header();
+
+            if ($robotsContent) {
+                $themeHeader = preg_replace(
+                    '/<meta\b(?=[^>]*\bname=(["\'])robots\1)[^>]*>\s*/i',
+                    '',
+                    $themeHeader
+                ) ?? $themeHeader;
+            }
+
+            if (isset($seoDescription)) {
+                $themeHeader = preg_replace(
+                    '/<meta\b(?=[^>]*\bname=(["\'])description\1)[^>]*>\s*/i',
+                    '',
+                    $themeHeader
+                ) ?? $themeHeader;
+            }
+
+            if ($isHomePage) {
+                $themeHeader = preg_replace(
+                    '/<link\b(?=[^>]*fonts\.googleapis\.com\/css2\?family=Inter\b)[^>]*>\s*/i',
+                    '',
+                    $themeHeader
+                ) ?? $themeHeader;
+            }
+
+            if ($canonicalContent) {
+                $themeHeader = preg_replace(
+                    '/<link\b(?=[^>]*\brel=(["\'])canonical\1)[^>]*>\s*/i',
+                    '',
+                    $themeHeader
+                ) ?? $themeHeader;
+
+                $themeHeader .= PHP_EOL . '<link rel="canonical" href="' . e($canonicalContent) . '">';
+            }
+
+            $normalizeSeoText = function (?string $text): string {
+                $text = strip_tags((string) $text);
+                $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                $text = str_replace("\xC2\xA0", ' ', $text);
+                $text = preg_replace('/\\s+/u', ' ', $text) ?: '';
+
+                return trim($text);
+            };
+
+            $seoTitle = $normalizeSeoText(SeoHelper::getTitle() ?: theme_option('seo_title', theme_option('site_title', 'RUBYSHOP')));
+            $seoDescription = $normalizeSeoText(SeoHelper::getDescription() ?: theme_option('seo_description', ''));
+            $defaultContactDescription = 'ติดต่อ Rubyshop เพื่อรับข้อมูลสินค้า เครื่องมือช่าง และการสนับสนุนสำหรับลูกค้าทุกระดับ ทั้งลูกค้ารายย่อยและโครงการ';
+
+            if (! $seoTitle) {
+                $seoTitle = $isContactPage ? 'Contact | RUBYSHOP' : theme_option('site_title', 'RUBYSHOP');
+            }
+
+            if (! $seoDescription) {
+                $seoDescription = $isContactPage ? $defaultContactDescription : theme_option('seo_description', '');
+            }
+
+            if (mb_strlen($seoDescription) > 155) {
+                $seoDescription = rtrim(mb_substr($seoDescription, 0, 152)) . '...';
+            }
+            $seoImage = trim(SeoHelper::openGraph()->getProperty('image') ?: theme_option('seo_og_image', asset('storage/ads/rubyshop-catalog2.jpg')));
+            $seoUrl = url()->current();
+            $isSocialCategoryPage = $isCategoryPage
+                || request()->is('categories')
+                || request()->is('allproducts/category/*')
+                || request()->is('sub/*');
+
+            if ($seoImage && ! preg_match('/^https?:\/\//i', $seoImage)) {
+                $seoImage = url($seoImage);
+            }
+
+            $ogType = SeoHelper::openGraph()->getProperty('type') ?: 'website';
+
+            if ($isHomePage) {
+                $ogType = 'website';
+            } elseif ($isSocialCategoryPage) {
+                $ogType = 'product.group';
+            } elseif (str_contains($themeHeader, 'name="twitter:card" content="product"')) {
+                $ogType = 'product';
+            }
+
+            $socialMeta = [
+                ['name', 'description', $seoDescription],
+                ['property', 'og:type', $ogType],
+                ['property', 'og:title', mb_strlen($seoTitle) > 60 ? rtrim(mb_substr($seoTitle, 0, 57)) . '...' : $seoTitle],
+                ['property', 'og:description', $seoDescription],
+                ['property', 'og:image', $seoImage],
+                ['property', 'og:url', $seoUrl],
+                ['name', 'twitter:card', 'summary_large_image'],
+                ['name', 'twitter:title', mb_strlen($seoTitle) > 70 ? rtrim(mb_substr($seoTitle, 0, 67)) . '...' : $seoTitle],
+                ['name', 'twitter:description', $seoDescription],
+                ['name', 'twitter:image', $seoImage],
+                ['name', 'twitter:url', $seoUrl],
+                ['name', 'twitter:site', '@RUBYSHOP168'],
+            ];
+
+            foreach ($socialMeta as [$attribute, $key]) {
+                $themeHeader = preg_replace(
+                    '/<meta\b(?=[^>]*\b' . $attribute . '=(["\'])' . preg_quote($key, '/') . '\1)[^>]*>\s*/i',
+                    '',
+                    $themeHeader
+                ) ?? $themeHeader;
+            }
+
+            $themeHeader .= PHP_EOL . implode(PHP_EOL, array_map(
+                fn (array $meta): string => '<meta ' . $meta[0] . '="' . e($meta[1]) . '" content="' . e($meta[2]) . '">',
+                $socialMeta
+            ));
+
+            if ($isCategoryPage) {
+                $themeHeader = preg_replace_callback(
+                    '/<script\b[^>]*type=(["\'])application\/ld\+json\1[^>]*>[\s\S]*?<\/script>\s*/i',
+                    function (array $matches): string {
+                        $script = $matches[0];
+
+                        if (
+                            str_contains($script, 'BreadcrumbList')
+                            && ! str_contains($script, 'CollectionPage')
+                            && ! str_contains($script, 'ItemList')
+                        ) {
+                            return '';
+                        }
+
+                        return $script;
+                    },
+                    $themeHeader
+                ) ?? $themeHeader;
+            }
+        @endphp
+        {!! $themeHeader !!}
 
         {{-- This style block MUST come after Theme::header() so it loads after Bootstrap CSS.
              Bootstrap's d-lg-block uses display:block !important — loading after ensures ours wins. --}}
         <style>
             @media (min-width: 992px) {
-                body:not(.ruby-homepage) .header-bottom .main-categories-wrap,
-                body:not(.ruby-homepage) .header-bottom .hotline {
+                body:not(.ruby-homepage) .header-bottom .header-nav-categories,
+                body:not(.ruby-homepage) .header-bottom .header-nav-hotline {
                     display: none !important;
                 }
             }
@@ -838,7 +971,7 @@
                     <div class="header-wrap header-space-between">
                         <div class="logo logo-width-1">
                             @if (theme_option('logo'))
-                                <a href="{{ BaseHelper::getHomepageUrl() }}"><img src="{{ RvMedia::getImageUrl(theme_option('logo')) }}" alt="{{ theme_option('site_title') }}" width="150" height="45"></a>
+                                <a href="{{ BaseHelper::getHomepageUrl() }}"><img src="{{ RvMedia::getImageUrl(theme_option('logo')) }}" alt="{{ theme_option('site_title') }}" width="150" height="45" decoding="async"></a>
                             @endif
                         </div>
                         @if (is_plugin_active('ecommerce'))
@@ -861,7 +994,7 @@
                                     @if (EcommerceHelper::isCompareEnabled())
                                         <div class="header-action-icon-2">
                                             <a href="{{ route('public.compare') }}" class="compare-count">
-                                                <img class="svgInject" alt="{{ __('Compare') }}" src="{{ Theme::asset()->url('images/icons/icon-compare.svg') }}">
+                                                <img class="svgInject" alt="{{ __('Compare') }}" src="{{ Theme::asset()->url('images/icons/icon-compare.svg') }}" width="24" height="24" loading="lazy" decoding="async">
                                                 <span class="visually-hidden">{{ __('Compare products') }}</span>
                                                 <span class="pro-count blue"><span>{{ Cart::instance('compare')->count() }}</span></span>
                                             </a>
@@ -870,7 +1003,7 @@
                                     @if (EcommerceHelper::isWishlistEnabled())
                                         <div class="header-action-icon-2">
                                             <a href="{{ route('public.wishlist') }}" class="wishlist-count">
-                                                <img class="svgInject" alt="{{ __('Wishlist') }}" src="{{ Theme::asset()->url('images/icons/icon-heart.svg') }}">
+                                                <img class="svgInject" alt="{{ __('Wishlist') }}" src="{{ Theme::asset()->url('images/icons/icon-heart.svg') }}" width="24" height="24" loading="lazy" decoding="async">
                                                 <span class="visually-hidden">{{ __('Wishlist') }}</span>
                                                 <span class="pro-count blue">@if (auth('customer')->check())<span>{{ auth('customer')->user()->wishlist()->count() }}</span> @else <span>{{ Cart::instance('wishlist')->count() }}</span>@endif</span>
                                             </a>
@@ -878,7 +1011,7 @@
                                     @endif
                                     <div class="header-action-icon-2">
                                         <a class="mini-cart-icon" href="{{ route('public.cart') }}">
-                                            <img alt="{{ __('Cart') }}" src="{{ Theme::asset()->url('images/icons/icon-cart.svg') }}">
+                                            <img alt="{{ __('Cart') }}" src="{{ Theme::asset()->url('images/icons/icon-cart.svg') }}" width="24" height="24" loading="lazy" decoding="async">
                                             <span class="visually-hidden">{{ __('Shopping cart') }}</span>
                                             <span class="pro-count blue">{{ Cart::instance('cart')->count() }}</span>
                                         </a>
@@ -888,7 +1021,7 @@
                                     </div>
                                     <div class="header-action-icon-2">
                                         <a href="{{ route('customer.login') }}">
-                                            <img alt="{{ __('Sign In') }}" src="{{ Theme::asset()->url('images/icons/icon-user.svg') }}">
+                                            <img alt="{{ __('Sign In') }}" src="{{ Theme::asset()->url('images/icons/icon-user.svg') }}" width="24" height="24" loading="lazy" decoding="async">
                                             <span class="visually-hidden">{{ __('Sign in') }}</span>
                                         </a>
                                     </div>
@@ -903,7 +1036,7 @@
                     <div class="header-wrap header-space-between position-relative main-nav">
                         <div class="logo logo-width-1 d-block d-lg-none">
                             @if ($logo = theme_option('logo_light') ?: theme_option('logo'))
-                                <a href="{{ BaseHelper::getHomepageUrl() }}"><img src="{{ RvMedia::getImageUrl($logo) }}" alt="{{ theme_option('site_title') }}"></a>
+                                <a href="{{ BaseHelper::getHomepageUrl() }}"><img src="{{ RvMedia::getImageUrl($logo) }}" alt="{{ theme_option('site_title') }}" width="150" height="45" decoding="async"></a>
                             @endif
                         </div>
 
@@ -912,7 +1045,7 @@
                                 $openBrowse = $page && $page->template == 'homepage' && $page->getMetaData('expanding_product_categories_on_the_homepage', true) == 'yes';
                                 $cantCloseBrowse = $openBrowse && $headerStyle == 'header-style-2';
                             @endphp
-                            <div class="main-categories-wrap d-none d-lg-block">
+                            <div class="main-categories-wrap header-nav-categories d-none d-lg-block">
                             <a class="categories-button-active @if ($openBrowse) open @endif @if ($cantCloseBrowse) cant-close @endif" href="#">
                                 <span class="fa fa-list"></span> {{ __('Browse Categories') }} <i class="down far fa-chevron-down"></i> <i class="up far fa-chevron-up"></i>
                             </a>
@@ -948,8 +1081,15 @@
                         </div>
 
                         @if (theme_option('hotline'))
-                            <div class="hotline d-none d-lg-block">
-                                <p><i class="fa fa-phone-alt"></i><span>{{ __('Hotline') }}</span> {{ theme_option('hotline') }}</p>
+                            @php
+                                $hotlineDigits = preg_replace('/\D+/', '', theme_option('hotline'));
+                            @endphp
+                            <div class="hotline header-nav-hotline d-none d-lg-flex">
+                                <a href="tel:{{ $hotlineDigits ?: theme_option('hotline') }}">
+                                    <i class="fa fa-phone-alt"></i>
+                                    <span class="hotline-label">{{ __('Hotline') }}</span>
+                                    <strong>{{ theme_option('hotline') }}</strong>
+                                </a>
                             </div>
                         @endif
 
@@ -959,7 +1099,7 @@
                                     @if (EcommerceHelper::isCompareEnabled())
                                         <div class="header-action-icon-2">
                                             <a href="{{ route('public.compare') }}" class="compare-count">
-                                                <img class="svgInject" alt="{{ __('Compare') }}" src="{{ Theme::asset()->url('images/icons/icon-compare-white.svg') }}">
+                                                <img class="svgInject" alt="{{ __('Compare') }}" src="{{ Theme::asset()->url('images/icons/icon-compare-white.svg') }}" width="24" height="24" loading="lazy" decoding="async">
                                                 <span class="visually-hidden">{{ __('Compare products') }}</span>
                                                 <span class="pro-count white"><span>{{ Cart::instance('compare')->count() }}</span></span>
                                             </a>
@@ -968,7 +1108,7 @@
                                     @if (EcommerceHelper::isWishlistEnabled())
                                         <div class="header-action-icon-2">
                                             <a href="{{ route('public.wishlist') }}" class="wishlist-count">
-                                                <img alt="wowy" src="{{ Theme::asset()->url('images/icons/icon-heart-white.svg') }}">
+                                                <img alt="wowy" src="{{ Theme::asset()->url('images/icons/icon-heart-white.svg') }}" width="24" height="24" loading="lazy" decoding="async">
                                                 <span class="visually-hidden">{{ __('Wishlist') }}</span>
                                                 <span class="pro-count white">@if (auth('customer')->check())<span>{{ auth('customer')->user()->wishlist()->count() }}</span> @else <span>{{ Cart::instance('wishlist')->count() }}</span>@endif</span>
                                             </a>
@@ -976,7 +1116,7 @@
                                     @endif
                                     <div class="header-action-icon-2">
                                         <a class="mini-cart-icon" href="{{ route('public.cart') }}">
-                                            <img alt="cart" src="{{ Theme::asset()->url('images/icons/icon-cart-white.svg') }}">
+                                            <img alt="cart" src="{{ Theme::asset()->url('images/icons/icon-cart-white.svg') }}" width="24" height="24" loading="lazy" decoding="async">
                                             <span class="visually-hidden">{{ __('Shopping cart') }}</span>
                                             <span class="pro-count white">{{ Cart::instance('cart')->count() }}</span>
                                         </a>
@@ -986,7 +1126,7 @@
                                     </div>
                                     <div class="header-action-icon-2">
                                         <a href="{{ route('customer.login') }}">
-                                            <img alt="wowy" src="{{ Theme::asset()->url('images/icons/icon-user-white.svg') }}">
+                                            <img alt="wowy" src="{{ Theme::asset()->url('images/icons/icon-user-white.svg') }}" width="24" height="24" loading="lazy" decoding="async">
                                             <span class="visually-hidden">{{ __('Sign in') }}</span>
                                         </a>
                                     </div>
@@ -1009,7 +1149,7 @@
                 <div class="mobile-header-top">
                     @if (theme_option('logo'))
                         <div class="mobile-header-logo">
-                            <a href="{{ BaseHelper::getHomepageUrl() }}"><img src="{{ RvMedia::getImageUrl(theme_option('logo')) }}" alt="{{ theme_option('site_title') }}" width="150" height="45"></a>
+                            <a href="{{ BaseHelper::getHomepageUrl() }}"><img src="{{ RvMedia::getImageUrl(theme_option('logo')) }}" alt="{{ theme_option('site_title') }}" width="150" height="45" decoding="async"></a>
                         </div>
                     @endif
                     <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
@@ -1029,7 +1169,7 @@
                         </form>
                     </div>
                     <div class="mobile-menu-wrap mobile-header-border">
-                        <div class="main-categories-wrap mobile-header-border">
+                        <div class="main-categories-wrap mobile-categories-wrap mobile-header-border">
                             <a class="categories-button-active-2" href="#">
                                 <span class="far fa-bars"></span> {{ __('Browse Categories') }} <i class="down far fa-chevron-down"></i>
                             </a>
@@ -1054,7 +1194,7 @@
                                             <li>
                                                 <a href="{{ route('public.single', $category->url) }}">
                                                     @if ($category->icon_image)
-                                                        <img src="{{ RvMedia::getImageUrl($category->icon_image) }}" alt="{{ $category->name }}" width="18" height="18">
+                                                        <img src="{{ RvMedia::getImageUrl($category->icon_image) }}" alt="{{ $category->name }}" width="18" height="18" loading="lazy" decoding="async">
                                                     @elseif ($icon = $category->icon)
                                                         {!! BaseHelper::renderIcon($icon) !!}
                                                     @endif {{ $category->name }}
@@ -1132,8 +1272,11 @@
                         @endif
 
                         @if ($hotline = theme_option('hotline'))
-                            <div class="single-mobile-header-info">
-                                <a href="tel:{{ $hotline }}">{{ $hotline }}</a>
+                            @php
+                                $mobileHotlineDigits = preg_replace('/\D+/', '', $hotline);
+                            @endphp
+                            <div class="single-mobile-header-info mobile-hotline">
+                                <a href="tel:{{ $mobileHotlineDigits ?: $hotline }}">{{ $hotline }}</a>
                             </div>
                         @endif
                     </div>

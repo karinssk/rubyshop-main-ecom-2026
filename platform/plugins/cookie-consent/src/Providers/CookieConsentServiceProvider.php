@@ -44,7 +44,7 @@ class CookieConsentServiceProvider extends ServiceProvider
                             asset('vendor/core/plugins/cookie-consent/css/cookie-consent.css'),
                             [],
                             [],
-                            '1.0.2'
+                            '1.0.3'
                         );
                     Theme::asset()
                         ->container('footer')
@@ -54,7 +54,7 @@ class CookieConsentServiceProvider extends ServiceProvider
                             asset('vendor/core/plugins/cookie-consent/js/cookie-consent.js'),
                             ['jquery'],
                             [],
-                            '1.0.2'
+                            '1.0.3'
                         );
                 }
 

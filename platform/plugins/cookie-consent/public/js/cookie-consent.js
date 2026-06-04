@@ -1,1 +1,71 @@
-(()=>{"use strict";$((function(){window.botbleCookieConsent=function(){var e,i=$("div[data-site-cookie-name]").data("site-cookie-name"),o=$("div[data-site-cookie-domain]").data("site-cookie-domain"),t=$("div[data-site-cookie-lifetime]").data("site-cookie-lifetime"),n=$("div[data-site-session-secure]").data("site-session-secure"),s=$(".js-cookie-consent");function a(){var e,s,a,d;e=i,s=1,a=t,(d=new Date).setTime(d.getTime()+24*a*60*60*1e3),document.cookie=e+"="+s+";expires="+d.toUTCString()+";domain="+o+";path=/"+n,c()}function c(){s.hide()}return s.addClass("cookie-consent--visible"),e=i,-1!==document.cookie.split("; ").indexOf(e+"=1")&&c(),$(document).on("click",".js-cookie-consent-agree",(function(){a()})),{consentWithCookies:a,hideCookieDialog:c}}()}))})();
+'use strict'
+
+$(() => {
+    window.botbleCookieConsent = (function () {
+        const COOKIE_VALUE = 1
+        const COOKIE_NAME = $('div[data-site-cookie-name]').data('site-cookie-name')
+        const COOKIE_DOMAIN = $('div[data-site-cookie-domain]').data('site-cookie-domain')
+        const COOKIE_LIFETIME = $('div[data-site-cookie-lifetime]').data('site-cookie-lifetime')
+        const SESSION_SECURE = $('div[data-site-session-secure]').data('site-session-secure')
+
+        const $cookieDialog = $('.js-cookie-consent')
+
+        if (!cookieExists(COOKIE_NAME)) {
+            $cookieDialog.addClass('cookie-consent--visible')
+        } else {
+            hideCookieDialog()
+        }
+
+        function consentWithCookies() {
+            setCookie(COOKIE_NAME, COOKIE_VALUE, COOKIE_LIFETIME)
+            hideCookieDialog()
+        }
+
+        function cookieExists(name) {
+            return document.cookie
+                .split(';')
+                .map(cookie => cookie.trim())
+                .some(cookie => cookie === name + '=' + COOKIE_VALUE)
+        }
+
+        function hideCookieDialog() {
+            $cookieDialog.hide()
+        }
+
+        function setCookie(name, value, expirationInDays) {
+            const date = new Date()
+            date.setTime(date.getTime() + expirationInDays * 24 * 60 * 60 * 1000)
+
+            const secure = SESSION_SECURE || ''
+            const baseCookie =
+                name +
+                '=' +
+                value +
+                ';expires=' +
+                date.toUTCString() +
+                ';path=/;SameSite=Lax' +
+                secure
+
+            if (COOKIE_DOMAIN) {
+                document.cookie = baseCookie + ';domain=' + COOKIE_DOMAIN
+            }
+
+            if (!cookieExists(name)) {
+                document.cookie = baseCookie
+            }
+
+            if (!cookieExists(name) && secure) {
+                document.cookie = baseCookie.replace(secure, '')
+            }
+        }
+
+        $(document).on('click', '.js-cookie-consent-agree', function () {
+            consentWithCookies()
+        })
+
+        return {
+            consentWithCookies: consentWithCookies,
+            hideCookieDialog: hideCookieDialog,
+        }
+    })()
+})

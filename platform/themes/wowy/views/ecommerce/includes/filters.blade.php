@@ -21,12 +21,24 @@
 
     <input type="hidden" name="layout" value="{{ $layout }}">
 
-    <div class="shop-product-filter-header my-3" style="display: none">
-        <div class="row">
+    <div class="shop-product-filter-header my-3 ruby-filter-panel">
+        <div class="ruby-filter-panel__head">
+            <div>
+                <span class="ruby-filter-panel__eyebrow">{{ __('Shop filters') }}</span>
+                <h2>{{ __('ตัวกรองสินค้า') }}</h2>
+            </div>
+            <button class="ruby-filter-close" type="button" aria-label="{{ __('Close filters') }}">
+                <i class="fal fa-times"></i>
+            </button>
+        </div>
+
+        <div class="row ruby-filter-panel__body">
             @if ($categories->isNotEmpty())
-                <div class="col-lg-3 col-md-4 mb-lg-0 mb-md-5 mb-sm-5 widget-filter-item product-categories-filter-widget">
-                    <h2 class="mb-20 widget__title" data-title="{{ __('Category') }}">{{ ucfirst(__('categories')) }}</h2>
-                    <div class="custome-checkbox ps-custom-scrollbar">
+                <div class="col-lg-3 col-md-4 mb-lg-0 mb-md-5 mb-sm-5 widget-filter-item product-categories-filter-widget ruby-filter-section">
+                    <h2 class="mb-20 widget__title" data-title="{{ __('Category') }}">
+                        <span>{{ ucfirst(__('categories')) }}</span>
+                    </h2>
+                    <div class="custome-checkbox ps-custom-scrollbar ruby-filter-options">
                         <ul class="ps-list--categories">
                             @include(Theme::getThemeNamespace('views.ecommerce.includes.categories'), [
                                 'categories' => $categories,
@@ -40,9 +52,11 @@
             @endif
 
             @if ($brands->isNotEmpty())
-                <div class="col-lg-3 col-md-4 mb-lg-0 mb-md-5 mb-sm-5 widget-filter-item">
-                    <h2 class="mb-20 widget__title" data-title="{{ __('Brand') }}">{{ ucfirst(__('Brands')) }}</h2>
-                    <div class="custome-checkbox ps-custom-scrollbar">
+                <div class="col-lg-3 col-md-4 mb-lg-0 mb-md-5 mb-sm-5 widget-filter-item ruby-filter-section">
+                    <h2 class="mb-20 widget__title" data-title="{{ __('Brand') }}">
+                        <span>{{ ucfirst(__('Brands')) }}</span>
+                    </h2>
+                    <div class="custome-checkbox ps-custom-scrollbar ruby-filter-options">
                         @foreach($brands as $brand)
                             <input class="form-check-input"
                                    name="brands[]"
@@ -58,9 +72,11 @@
             @endif
 
             @if ($tags->isNotEmpty())
-                <div class="col-lg-3 col-md-4 mb-lg-0 mb-md-5 mb-sm-5 widget-filter-item">
-                    <h2 class="mb-20 widget__title" data-title="{{ __('Tag') }}">{{ ucfirst(__('tags')) }}</h2>
-                    <div class="custome-checkbox ps-custom-scrollbar">
+                <div class="col-lg-3 col-md-4 mb-lg-0 mb-md-5 mb-sm-5 widget-filter-item ruby-filter-section">
+                    <h2 class="mb-20 widget__title" data-title="{{ __('Tag') }}">
+                        <span>{{ ucfirst(__('tags')) }}</span>
+                    </h2>
+                    <div class="custome-checkbox ps-custom-scrollbar ruby-filter-options">
                         @foreach($tags as $tag)
                             <input class="form-check-input"
                                    name="tags[]"
@@ -76,8 +92,10 @@
             @endif
 
             @if ($maxFilterPrice)
-                <div class="col-lg-3 col-md-4 mb-lg-0 mb-md-5 mb-sm-5 widget-filter-item" data-type="price">
-                    <h2 class="mb-20 widget__title" data-title="{{ __('Price') }}">{{ ucfirst(__('Price')) }}</h2>
+                <div class="col-lg-3 col-md-4 mb-lg-0 mb-md-5 mb-sm-5 widget-filter-item ruby-filter-section" data-type="price">
+                    <h2 class="mb-20 widget__title" data-title="{{ __('Price') }}">
+                        <span>{{ ucfirst(__('Price')) }}</span>
+                    </h2>
                     @include(Theme::getThemeNamespace('views.ecommerce.includes.filter-by-price'))
                 </div>
             @endif
@@ -97,10 +115,10 @@
             </div>
         </div>
 
-        <div class="widget">
-            <button type="submit" class="btn btn-sm btn-default"><i class="fal fa-filter mr-5 ml-0"></i> {{ __('Filter') }}</button>
+        <div class="widget ruby-filter-actions">
+            <button type="submit" class="btn btn-sm btn-default ruby-filter-apply"><i class="fal fa-filter mr-5 ml-0"></i> {{ __('Filter') }}</button>
 
-            <a class="clear_filter dib clear_all_filter mx-4 btn btn-danger btn-sm" href="{{ route('public.products') }}"><i class="fal fa-refresh mr-5 ml-0"></i> {{ __('Clear All Filters') }}</a>
+            <a class="clear_filter dib clear_all_filter mx-4 btn btn-danger btn-sm ruby-filter-clear" href="{{ URL::current() }}"><i class="fal fa-refresh mr-5 ml-0"></i> {{ __('Clear All Filters') }}</a>
         </div>
     </div>
 @else

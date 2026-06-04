@@ -478,26 +478,40 @@
     </section>
 </div>
 
+@php
+    $productLandingOfferSchema = [
+        '@type' => 'Offer',
+        'priceCurrency' => get_application_currency()->title ?: 'THB',
+        'price' => (string) $product->front_sale_price_with_taxes,
+        'availability' => $product->isOutOfStock() ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+        'url' => $productUrlWithQuery,
+    ];
+
+    if ($merchantReturnPolicyUrl = theme_option('merchant_return_policy_url')) {
+        $productLandingOfferSchema['hasMerchantReturnPolicy'] = [
+            '@type' => 'MerchantReturnPolicy',
+            'returnPolicyCategory' => $merchantReturnPolicyUrl,
+            'merchantReturnDays' => (int) theme_option('merchant_return_days', 30),
+        ];
+    }
+
+    $productLandingSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $product->name,
+        'image' => $gallery->map(fn ($image) => RvMedia::getImageUrl($image, 'origin'))->values()->all(),
+        'description' => strip_tags((string) $product->description),
+        'sku' => $product->sku,
+        'brand' => [
+            '@type' => 'Brand',
+            'name' => $product->brand?->name ?: 'Rubyshop',
+        ],
+        'offers' => $productLandingOfferSchema,
+    ];
+@endphp
+
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": @json($product->name),
-  "image": @json($gallery->map(fn ($image) => RvMedia::getImageUrl($image, 'origin'))->values()->all()),
-  "description": @json(strip_tags((string) $product->description)),
-  "sku": @json($product->sku),
-  "brand": {
-    "@type": "Brand",
-    "name": @json($product->brand?->name ?: 'Rubyshop')
-  },
-  "offers": {
-    "@type": "Offer",
-    "priceCurrency": @json(get_application_currency()->title ?: 'THB'),
-    "price": @json((string) $product->front_sale_price_with_taxes),
-    "availability": @json($product->isOutOfStock() ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock'),
-    "url": @json($productUrlWithQuery)
-  }
-}
+{!! json_encode($productLandingSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 
 <script>

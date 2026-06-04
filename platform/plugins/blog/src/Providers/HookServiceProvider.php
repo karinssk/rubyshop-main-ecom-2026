@@ -19,6 +19,7 @@ use Botble\Menu\Events\RenderingMenuOptions;
 use Botble\Menu\Facades\Menu;
 use Botble\Page\Models\Page;
 use Botble\Page\Tables\PageTable;
+use Botble\SeoHelper\Facades\SeoHelper;
 use Botble\Shortcode\Compilers\Shortcode;
 use Botble\Shortcode\Facades\Shortcode as ShortcodeFacade;
 use Botble\Shortcode\Forms\ShortcodeForm;
@@ -124,6 +125,22 @@ class HookServiceProvider extends ServiceProvider
                         $schemaType = 'NewsArticle';
                     }
 
+                    $postImageUrl = $post->image ? RvMedia::getImageUrl($post->image) : null;
+
+                    if (! $postImageUrl || str_contains($postImageUrl, 'placeholder')) {
+                        $postImageUrl = SeoHelper::openGraph()->getProperty('image')
+                            ?: theme_option('seo_og_image')
+                            ?: RvMedia::getImageUrl(Theme::getLogo());
+                    }
+
+                    if ($postImageUrl && ! preg_match('/^https?:\/\//i', $postImageUrl)) {
+                        $postImageUrl = url($postImageUrl);
+                    }
+
+                    if ($postImageUrl && str_contains($postImageUrl, 'placeholder')) {
+                        $postImageUrl = null;
+                    }
+
                     $schema = [
                         '@context' => 'https://schema.org',
                         '@type' => $schemaType,
@@ -133,13 +150,9 @@ class HookServiceProvider extends ServiceProvider
                         ],
                         'headline' => BaseHelper::clean($post->name),
                         'description' => BaseHelper::clean($post->description),
-                        'image' => [
-                            '@type' => 'ImageObject',
-                            'url' => RvMedia::getImageUrl($post->image, null, false, RvMedia::getDefaultImage()),
-                        ],
                         'author' => [
                             '@type' => 'Person',
-                            'url' => fn () => BaseHelper::getHomepageUrl(),
+                            'url' => BaseHelper::getHomepageUrl(),
                             'name' => class_exists($post->author_type) ? $post->author->name : '',
                         ],
                         'publisher' => [
@@ -153,6 +166,13 @@ class HookServiceProvider extends ServiceProvider
                         'datePublished' => $post->created_at->toIso8601String(),
                         'dateModified' => $post->updated_at->toIso8601String(),
                     ];
+
+                    if ($postImageUrl) {
+                        $schema['image'] = [
+                            '@type' => 'ImageObject',
+                            'url' => $postImageUrl,
+                        ];
+                    }
 
                     return $html . Html::tag('script', json_encode($schema, JSON_UNESCAPED_UNICODE), ['type' => 'application/ld+json'])
                         ->toHtml();

@@ -1,3 +1,7 @@
+@once
+    <link rel="stylesheet" href="{{ Theme::asset()->url('css/ruby-performance.css') }}?v=20260604-1">
+@endonce
+
 @php
     use Botble\Media\Facades\RvMedia;
     use Illuminate\Support\Arr;
@@ -14,44 +18,52 @@
             'buttonLink' => Arr::get($attributes, "column{$i}_button_link"),
         ];
     }
+
+    $visibleColumns = collect($columns)->filter(fn (array $column) => $column['image'] || $column['title'] || $column['description']);
 @endphp
 
-@if (collect($columns)->filter(fn ($column) => $column['image'] || $column['title'] || $column['description'])->isNotEmpty())
-    <section class="relative w-full py-0">
-        <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-0">
-            @foreach ($columns as $column)
+@if ($visibleColumns->isNotEmpty())
+    <section class="ruby-performance">
+        <div class="ruby-performance__grid">
+            @foreach ($visibleColumns as $column)
                 @php
-                    $imageUrl = $column['image'] ? RvMedia::getImageUrl($column['image'], 'medium') : null;
-                    $imageUrlSmall = $column['image'] ? RvMedia::getImageUrl($column['image'], 'product-thumb') : null;
+                    $imageUrl = $column['image'] ? RvMedia::getImageUrl($column['image'], null, false, RvMedia::getDefaultImage()) : RvMedia::getDefaultImage();
+                    $imageUrlSmall = $column['image'] ? RvMedia::getImageUrl($column['image'], 'product-thumb', false, RvMedia::getDefaultImage()) : $imageUrl;
                 @endphp
 
-                <div class="relative h-[450px] sm:h-[500px] md:h-[600px] overflow-hidden group">
-                    @if ($imageUrl)
-                        <img src="{{ $imageUrl }}" srcset="{{ $imageUrlSmall }} 400w, {{ $imageUrl }} 800w" sizes="(max-width: 768px) 100vw, 50vw" alt="{{ $column['title'] ?? __('Powerful image') }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
-                    @endif
+                <article class="ruby-performance__panel">
+                    <img
+                        class="ruby-performance__image"
+                        src="{{ $imageUrl }}"
+                        srcset="{{ $imageUrlSmall }} 400w, {{ $imageUrl }} 900w"
+                        sizes="(max-width: 991px) 100vw, 50vw"
+                        alt="{{ e($column['title'] ?: __('Powerful image')) }}"
+                        width="900"
+                        height="600"
+                        loading="lazy"
+                        decoding="async"
+                    >
 
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-4 sm:p-6 lg:p-8 space-y-4 transition-all duration-300 group-hover:from-black/90 group-hover:via-black/50">
-                        <div class="text-center max-w-xl mx-auto {{ $loop->first ? 'md:mr-0 md:ml-auto' : 'md:ml-0 md:mr-auto' }}">
+                    <div class="ruby-performance__overlay">
+                        <div class="ruby-performance__content">
                             @if ($column['title'])
-                                <h2 class="text-2xl sm:text-3xl font-bold text-white text-center transform transition-transform duration-300 group-hover:-translate-y-1">
-                                    {!! BaseHelper::clean($column['title']) !!}
-                                </h2>
+                                <h2 class="ruby-performance__title">{!! BaseHelper::clean($column['title']) !!}</h2>
                             @endif
+
                             @if ($column['description'])
-                                <p class="text-sm sm:text-base lg:text-lg text-white text-center opacity-90 transition-all duration-300 group-hover:opacity-100 group-hover:-translate-y-0.5">
-                                    {!! BaseHelper::clean($column['description']) !!}
-                                </p>
+                                <p class="ruby-performance__description">{!! BaseHelper::clean($column['description']) !!}</p>
                             @endif
+
                             @if ($column['buttonText'] && $column['buttonLink'])
-                                <div class="mt-4 flex justify-center">
-                                    <a href="{{ $column['buttonLink'] }}" class="inline-block bg-red-600 text-white font-semibold py-2 px-6 rounded-full transition-all duration-300 group-hover:bg-red-500 group-hover:shadow-lg group-hover:-translate-y-0.5">
+                                <div class="ruby-performance__action">
+                                    <a class="ruby-performance__button" href="{{ e($column['buttonLink']) }}">
                                         {!! BaseHelper::clean($column['buttonText']) !!}
                                     </a>
                                 </div>
                             @endif
                         </div>
                     </div>
-                </div>
+                </article>
             @endforeach
         </div>
     </section>

@@ -375,23 +375,37 @@
     </div>
 </div>
 
-<script type="application/ld+json">
-{!! json_encode([
-    '@context' => 'https://schema.org',
-    '@type' => 'Product',
-    'name' => $product->name,
-    'image' => $gallery->map(fn ($image) => RvMedia::getImageUrl($image, 'origin', false, RvMedia::getDefaultImage()))->values()->all(),
-    'description' => $safeDescription,
-    'brand' => $product->brand?->name ? ['@type' => 'Brand', 'name' => $product->brand->name] : null,
-    'sku' => $product->sku ?: null,
-    'offers' => [
+@php
+    $rb360OfferSchema = [
         '@type' => 'Offer',
         'priceCurrency' => 'THB',
         'price' => (float) ($salePrice ?: 0),
         'availability' => 'https://schema.org/InStock',
         'url' => $productUrl,
-    ],
-], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    ];
+
+    if ($merchantReturnPolicyUrl = theme_option('merchant_return_policy_url')) {
+        $rb360OfferSchema['hasMerchantReturnPolicy'] = [
+            '@type' => 'MerchantReturnPolicy',
+            'returnPolicyCategory' => $merchantReturnPolicyUrl,
+            'merchantReturnDays' => (int) theme_option('merchant_return_days', 30),
+        ];
+    }
+
+    $rb360ProductSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $product->name,
+        'image' => $gallery->map(fn ($image) => RvMedia::getImageUrl($image, 'origin', false, RvMedia::getDefaultImage()))->values()->all(),
+        'description' => $safeDescription,
+        'brand' => $product->brand?->name ? ['@type' => 'Brand', 'name' => $product->brand->name] : null,
+        'sku' => $product->sku ?: null,
+        'offers' => $rb360OfferSchema,
+    ];
+@endphp
+
+<script type="application/ld+json">
+{!! json_encode($rb360ProductSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 
 <script>

@@ -16,9 +16,8 @@
             <div class="modal-content">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <div class="modal-body">
-                    <div class="half-circle-spinner loading-spinner">
-                        <div class="circle circle-1"></div>
-                        <div class="circle circle-2"></div>
+                    <div class="loading-spinner">
+                        <div class="ruby-global-loader loader" role="status"></div>
                     </div>
                     <div class="quick-view-content"></div>
                 </div>
@@ -290,6 +289,8 @@
 </script>
 </footer>
       <h1 id="test101">test console.log header</h1>
+
+    {!! Theme::partial('plerdy') !!}
     
 </body>
 </html>

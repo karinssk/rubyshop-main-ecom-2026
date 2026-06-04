@@ -1,234 +1,7 @@
 {!! dynamic_sidebar('top_footer_sidebar') !!}
 
 <!-- Custom RubyShop Footer -->
-<style>
-    .ruby-footer {
-        background: #0b1635;
-        color: #fff;
-        line-height: 1.7;
-        padding: 64px 0 32px;
-    }
-
-    .ruby-footer .ruby-footer-container {
-        width: min(1200px, calc(100% - 32px));
-        margin: 0 auto;
-    }
-
-    .ruby-footer .ruby-footer-grid {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        gap: 2rem !important;
-        justify-content: space-between !important;
-        align-items: flex-start !important;
-        margin-bottom: 3rem;
-    }
-
-    .ruby-footer .ruby-footer-grid > div {
-        width: calc((100% - 10rem) / 6);
-        min-width: 0;
-    }
-
-    .ruby-footer .ruby-footer-bottom-links {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: .75rem;
-    }
-
-    .ruby-footer .ruby-footer-legal {
-        display: flex;
-        justify-content: center;
-        gap: .75rem;
-        flex-wrap: wrap;
-    }
-
-    .ruby-footer p {
-        margin-bottom: 0.75rem;
-        line-height: 1.6;
-    }
-
-    .ruby-footer h4,
-    .ruby-footer li,
-    .ruby-footer a,
-    .ruby-footer span {
-        line-height: 1.7;
-    }
-
-    .ruby-footer ul li {
-        margin-bottom: 0.35rem;
-    }
-
-    .ruby-footer .ruby-footer-link-grid a {
-        display: block;
-        line-height: 1.8;
-        padding: 0.1rem 0;
-    }
-
-    .ruby-footer .ruby-footer-about-text {
-        margin-bottom: 1rem !important;
-    }
-
-    .ruby-footer .ruby-social-links {
-        display: flex;
-        gap: 0.75rem;
-        margin-top: 1rem !important;
-        align-items: center;
-        line-height: 1;
-    }
-
-    .ruby-footer .ruby-social-links a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 1.25rem;
-        height: 1.25rem;
-    }
-
-    .ruby-footer .ruby-contact-list li {
-        display: flex !important;
-        align-items: flex-start !important;
-        gap: 0.65rem !important;
-    }
-
-    .ruby-footer .ruby-contact-list li i {
-        margin-top: 0.2rem !important;
-        margin-right: 0.55rem !important;
-        min-width: 1rem;
-        text-align: center;
-        flex: 0 0 1rem;
-    }
-
-    .ruby-footer .ruby-contact-list li a,
-    .ruby-footer .ruby-contact-list li span {
-        display: inline-block;
-        line-height: 1.7 !important;
-    }
-
-    .ruby-footer img {
-        display: block;
-        max-width: 100%;
-        height: auto;
-    }
-
-    .ruby-footer a {
-        color: #2f7cff;
-        text-decoration: none;
-    }
-
-    .ruby-footer .text-gray-400 {
-        color: #a7b3d1 !important;
-    }
-
-    .ruby-footer .text-gray-300 {
-        color: #c3cceb !important;
-    }
-
-    .ruby-footer .text-white {
-        color: #fff !important;
-    }
-
-    .ruby-footer .border-gray-800 {
-        border-color: #233259 !important;
-    }
-
-    @media (max-width: 1024px) {
-        .ruby-footer .ruby-footer-grid {
-            flex-wrap: wrap !important;
-            justify-content: flex-start !important;
-        }
-
-        .ruby-footer .ruby-footer-grid > div {
-            width: calc((100% - 2rem) / 2);
-        }
-
-        .ruby-footer .ruby-footer-bottom-links {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-    }
-
-    @media (max-width: 768px) {
-        .ruby-footer {
-            padding: 36px 16px 24px !important;
-        }
-
-        .ruby-footer .container.ruby-footer-container {
-            width: 100% !important;
-            max-width: 100% !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            box-sizing: border-box;
-        }
-
-        .ruby-footer .ruby-footer-grid {
-            display: grid !important;
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 1.1rem !important;
-            margin-bottom: 1.75rem;
-        }
-
-        .ruby-footer .ruby-footer-grid > div {
-            width: auto !important;
-        }
-
-        .ruby-footer .ruby-footer-grid > div:first-child {
-            grid-column: 1 / -1;
-        }
-
-        .ruby-footer h4 {
-            margin-bottom: 0.75rem !important;
-            font-size: 1.2rem;
-        }
-
-        .ruby-footer ul li {
-            margin-bottom: 0.45rem;
-        }
-
-        .ruby-footer .ruby-footer-legal {
-            gap: 0.5rem;
-            line-height: 1.5;
-        }
-
-        .ruby-footer .ruby-footer-bottom-links {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .ruby-footer a {
-        transition: color 0.2s ease;
-    }
-
-    #scrollUp {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        width: 3rem;
-        height: 3rem;
-        border-radius: 9999px;
-        background-color: #dc2626;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease, background-color 0.2s ease;
-    }
-
-    #scrollUp i {
-        font-size: 1.1rem;
-    }
-
-    #scrollUp:hover {
-        background-color: #b91c1c;
-    }
-
-    #scrollUp.active {
-        opacity: 1;
-        visibility: visible;
-    }
-</style>
+<link rel="stylesheet" href="{{ Theme::asset()->url('css/ruby-footer.css') }}?v=20260604-1">
 
 <footer class="ruby-footer bg-gray-900 text-white pt-16 pb-8">
     <div class="container mx-auto px-4 ruby-footer-container">
@@ -328,15 +101,22 @@
         <div class="modal-content">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-body">
-                <div class="half-circle-spinner loading-spinner">
-                    <div class="circle circle-1"></div>
-                    <div class="circle circle-2"></div>
+                <div class="loading-spinner">
+                    <div class="ruby-global-loader loader" role="status"></div>
                 </div>
                 <div class="quick-view-content"></div>
             </div>
         </div>
     </div>
 </div>
+
+@php
+    $isHomePageFooter = request()->path() === '/' || request()->routeIs('public.index') || request()->routeIs('home');
+
+    if ($isHomePageFooter) {
+        Theme::asset()->container('footer')->remove('custom-scrollbar-js');
+    }
+@endphp
 
 @if (is_plugin_active('ecommerce'))
     <script>
@@ -1186,61 +966,11 @@
 }());
 </script>
 
-<script>
-// Meta Pixel — AddToCart & InitiateCheckout events
-(function () {
-    if (typeof fbq !== 'function') return;
+<script src="{{ Theme::asset()->url('js/rubyshop-csrf.js') }}?v=20260604-1"></script>
 
-    // AddToCart: fires when any add-to-cart form is submitted
-    document.addEventListener('submit', function (e) {
-        var form = e.target.closest('form.cart-form, form[action*="cart/add"], form[action*="add-to-cart"]');
-        if (!form) return;
-        var productId = form.querySelector('[name="id"], .hidden-product-id');
-        var qty = form.querySelector('[name="qty"]');
-        fbq('track', 'AddToCart', {
-            content_ids: [productId ? productId.value : ''],
-            content_type: 'product',
-            quantity: qty ? parseInt(qty.value) || 1 : 1,
-            currency: 'THB'
-        });
-    }, true);
+<script src="{{ Theme::asset()->url('js/rubyshop-footer-events.js') }}?v=20260604-1"></script>
 
-    // InitiateCheckout: fires when user clicks checkout button on cart page
-    document.addEventListener('click', function (e) {
-        var btn = e.target.closest('a[href*="checkout"], .checkout-btn, [data-checkout]');
-        if (!btn) return;
-        fbq('track', 'InitiateCheckout', { currency: 'THB' });
-    }, true);
-}());
-
-// Hide category browse button + hotline in header-bottom at all desktop widths.
-// These are redundant with the main nav dropdowns and phone in header-top.
-// Runs immediately AND after load (with delay) to beat any late jQuery that re-shows them.
-(function () {
-    var isHomepage = document.body.classList.contains('ruby-homepage');
-    function enforceNavHide() {
-        var w = window.innerWidth;
-        var cats = document.querySelector('.header-bottom .main-categories-wrap');
-        var hot  = document.querySelector('.header-bottom .hotline');
-        var hide = (w >= 992) && !isHomepage;
-        [cats, hot].forEach(function (el) {
-            if (!el) return;
-            if (hide) {
-                el.style.setProperty('display', 'none', 'important');
-            } else {
-                el.style.removeProperty('display');
-            }
-        });
-    }
-    // Run immediately (inline scripts execute after DOM is parsed up to this point)
-    enforceNavHide();
-    // Run after all resources + deferred scripts finish
-    window.addEventListener('load', enforceNavHide);
-    // Belt-and-suspenders: catch any jQuery ready handlers that run late
-    window.addEventListener('load', function () { setTimeout(enforceNavHide, 300); });
-    window.addEventListener('resize', enforceNavHide);
-}());
-</script>
+{!! Theme::partial('plerdy') !!}
 
 </body>
 </html>

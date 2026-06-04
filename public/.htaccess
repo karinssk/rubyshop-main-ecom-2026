@@ -5,6 +5,14 @@
 
     RewriteEngine On
 
+    # Canonical SEO host: force www host, then HTTPS while respecting proxy headers.
+    RewriteCond %{HTTP_HOST} !^www\.rubyshop\.co\.th$ [NC]
+    RewriteRule ^ https://www.rubyshop.co.th%{REQUEST_URI} [L,R=301]
+
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+    RewriteRule ^ https://www.rubyshop.co.th%{REQUEST_URI} [L,R=301]
+
     # PHP Configuration
     php_value max_execution_time 600
     php_value memory_limit 512M

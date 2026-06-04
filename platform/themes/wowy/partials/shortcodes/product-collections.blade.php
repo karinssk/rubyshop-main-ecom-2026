@@ -8,9 +8,8 @@
             @endforeach
         </ul>
         <div class="tab-content wow fadeIn animated">
-            <div class="half-circle-spinner loading-spinner d-none">
-                <div class="circle circle-1"></div>
-                <div class="circle circle-2"></div>
+            <div class="loading-spinner d-none">
+                <div class="ruby-global-loader loader" role="status"></div>
             </div>
 
             <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="product-collections-tab">

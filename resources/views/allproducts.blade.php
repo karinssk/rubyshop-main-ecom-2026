@@ -752,9 +752,17 @@
     }
     
     // Set up touch navigation
-    function setupTouchNavigation() {
-        document.querySelectorAll('.product-slider').forEach(slider => {
+    function setupTouchNavigation(root = document) {
+        root.querySelectorAll('.product-slider').forEach(slider => {
+            if (slider.dataset.touchNavigationBound === 'true') {
+                return;
+            }
+
+            slider.dataset.touchNavigationBound = 'true';
+            slider.style.touchAction = 'pan-y';
+
             let touchStartX = 0;
+            let touchStartY = 0;
             let touchEndX = 0;
             let touchStartTime = 0;
             let isSwiping = false;
@@ -763,6 +771,7 @@
             
             slider.addEventListener('touchstart', function(e) {
                 touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
                 touchStartTime = Date.now();
                 isSwiping = true;
             }, { passive: true });
@@ -771,12 +780,14 @@
                 if (!isSwiping) return;
                 
                 const currentX = e.touches[0].clientX;
+                const currentY = e.touches[0].clientY;
                 const diffX = touchStartX - currentX;
-                
-                if (Math.abs(diffX) > 10) {
-                    e.preventDefault();
+                const diffY = touchStartY - currentY;
+
+                if (Math.abs(diffY) > Math.abs(diffX)) {
+                    isSwiping = false;
                 }
-            }, { passive: false });
+            }, { passive: true });
             
             slider.addEventListener('touchend', function(e) {
                 if (!isSwiping) return;
@@ -789,11 +800,10 @@
                 if (timeDiff < maxSwipeTime && Math.abs(distance) >= minSwipeDistance) {
                     const direction = distance > 0 ? 'next' : 'prev';
                     navigateSlider(slider.id, direction);
-                    e.preventDefault();
                 }
                 
                 isSwiping = false;
-            }, { passive: false });
+            }, { passive: true });
             
             slider.addEventListener('touchcancel', function() {
                 isSwiping = false;
@@ -879,7 +889,7 @@
         });
         
         // Set up touch navigation
-        setupTouchNavigation();
+        setupTouchNavigation(container);
     }
     
     // Initialize slider
@@ -1191,6 +1201,7 @@
                 overflow: hidden;
                 transition: height 0.3s ease;
                 z-index: 1000;
+                pointer-events: none;
                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             `;
             document.body.prepend(indicator);

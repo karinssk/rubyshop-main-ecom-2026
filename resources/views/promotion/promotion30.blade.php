@@ -57,9 +57,10 @@
       };
 
       (function () {
-        var consent = document.cookie.match(/(?:^| )rb_cookie_consent=([^;]+)/);
-        var status = consent ? consent[1] : null;
-        if (status === 'accepted') {
+        var legacyConsent = document.cookie.match(/(?:^| )rb_cookie_consent=([^;]+)/);
+        var botbleConsent = document.cookie.match(/(?:^| )cookie_for_consent=([^;]+)/);
+        var status = legacyConsent ? legacyConsent[1] : null;
+        if (status === 'accepted' || (botbleConsent && botbleConsent[1] === '1')) {
           window.loadRbAnalytics();
         } else if (status === 'declined') {
           window['ga-disable-G-0PWGSWH0P4'] = true;
@@ -1875,6 +1876,7 @@
         var acceptBtn = document.getElementById('cookieAccept');
         var declineBtn = document.getElementById('cookieDecline');
         var COOKIE_KEY = 'rb_cookie_consent';
+        var BOTBLE_COOKIE_KEY = 'cookie_for_consent';
 
         function setCookie(name, value, days) {
           var expires = new Date(Date.now() + days * 864e5).toUTCString();
@@ -1885,7 +1887,7 @@
           return match ? match[2] : null;
         }
 
-        if (!getCookie(COOKIE_KEY) && banner) {
+        if (!getCookie(COOKIE_KEY) && !getCookie(BOTBLE_COOKIE_KEY) && banner) {
           // แสดง banner หลัง 1 วินาที
           setTimeout(function () { banner.style.display = 'block'; }, 1000);
         }
@@ -1893,6 +1895,7 @@
         if (acceptBtn) {
           acceptBtn.addEventListener('click', function () {
             setCookie(COOKIE_KEY, 'accepted', 365);
+            setCookie(BOTBLE_COOKIE_KEY, '1', 365 * 20);
             if (banner) banner.style.display = 'none';
             if (typeof window.loadRbAnalytics === 'function') {
               window.loadRbAnalytics();

@@ -1,4 +1,9 @@
+@once
+    <link rel="stylesheet" href="{{ Theme::asset()->url('css/rubyshop-services.css') }}?v=20260604-1">
+@endonce
+
 @php
+    use Botble\Base\Facades\BaseHelper;
     use Illuminate\Support\Arr;
 
     $attributes = $attributes ?? [];
@@ -14,6 +19,7 @@
         ];
     }
 
+    $visibleCards = collect($cards)->filter(fn (array $card) => $card['title'] || $card['description']);
     $ctaIcon = Arr::get($attributes, 'cta_icon');
     $ctaTitle = Arr::get($attributes, 'cta_title');
     $ctaDescription = Arr::get($attributes, 'cta_description');
@@ -21,73 +27,68 @@
     $ctaButtonLink = Arr::get($attributes, 'cta_button_link');
 @endphp
 
-@if (collect($cards)->some(fn ($card) => $card['title'] || $card['description']))
-    <section>
-        <div class="container mx-auto p-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach ($cards as $card)
-                    @if ($card['title'] || $card['description'])
-                        <div class="bg-gray-200 p-6 flex flex-col justify-between h-[460px] mt-4">
-                            <div class="text-center">
+@if ($visibleCards->isNotEmpty() || $ctaTitle || $ctaDescription)
+    <section class="ruby-services">
+        @if ($visibleCards->isNotEmpty())
+            <div class="ruby-services__inner">
+                <div class="ruby-services__grid">
+                    @foreach ($visibleCards as $card)
+                        <article class="ruby-services__card">
+                            <div>
                                 @if ($card['icon'])
-                                    <i class="{{ $card['icon'] }} text-4xl mb-4"></i>
+                                    <span class="ruby-services__icon" aria-hidden="true">
+                                        <i class="{{ e($card['icon']) }}"></i>
+                                    </span>
                                 @endif
 
                                 @if ($card['title'])
-                                    <h2 class="text-xl font-bold mb-2">{!! BaseHelper::clean($card['title']) !!}</h2>
+                                    <h2 class="ruby-services__title">{!! BaseHelper::clean($card['title']) !!}</h2>
                                 @endif
 
                                 @if ($card['description'])
-                                    <p class="mb-4 text-base text-black">
-                                        {!! BaseHelper::clean($card['description']) !!}
-                                    </p>
+                                    <p class="ruby-services__description">{!! BaseHelper::clean($card['description']) !!}</p>
                                 @endif
                             </div>
 
                             @if ($card['buttonText'] && $card['buttonLink'])
-                                <div class="text-center mt-4">
-                                    <a href="{{ $card['buttonLink'] }}">
-                                        <button class="bg-red-500 text-white py-2 px-4 hover:bg-red-600 transition duration-300">
-                                            {!! BaseHelper::clean($card['buttonText']) !!}
-                                        </button>
+                                <div class="ruby-services__action">
+                                    <a class="ruby-services__button" href="{{ e($card['buttonLink']) }}">
+                                        {!! BaseHelper::clean($card['buttonText']) !!}
                                     </a>
                                 </div>
                             @endif
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        @if ($ctaTitle || $ctaDescription)
+            <div class="ruby-services__cta">
+                <div class="ruby-services__cta-inner">
+                    @if ($ctaIcon)
+                        <span class="ruby-services__cta-icon" aria-hidden="true">
+                            <i class="{{ e($ctaIcon) }}"></i>
+                        </span>
+                    @endif
+
+                    @if ($ctaTitle)
+                        <h2 class="ruby-services__cta-title">{!! BaseHelper::clean($ctaTitle) !!}</h2>
+                    @endif
+
+                    @if ($ctaDescription)
+                        <p class="ruby-services__cta-description">{!! BaseHelper::clean($ctaDescription) !!}</p>
+                    @endif
+
+                    @if ($ctaButtonText && $ctaButtonLink)
+                        <div class="ruby-services__cta-action">
+                            <a class="ruby-services__cta-button" href="{{ e($ctaButtonLink) }}">
+                                {!! BaseHelper::clean($ctaButtonText) !!}
+                            </a>
                         </div>
                     @endif
-                @endforeach
+                </div>
             </div>
-        </div>
-    </section>
-@endif
-
-@if ($ctaTitle || $ctaDescription)
-    <section class="">
-        <div class="bg-red-500 py-16 px-4">
-            <div class="text-center max-w-3xl mx-auto space-y-6">
-                @if ($ctaIcon)
-                    <i class="{{ $ctaIcon }} text-4xl mb-4 text-white"></i>
-                @endif
-
-                @if ($ctaTitle)
-                    <h1 class="text-3xl font-bold mb-4 text-white">{!! BaseHelper::clean($ctaTitle) !!}</h1>
-                @endif
-
-                @if ($ctaDescription)
-                    <p class="mb-6 text-white">{!! BaseHelper::clean($ctaDescription) !!}</p>
-                @endif
-
-                @if ($ctaButtonText && $ctaButtonLink)
-                    <div>
-                        <a href="{{ $ctaButtonLink }}" class="inline-flex items-center justify-center bg-black text-white py-2 px-6 rounded-full hover:bg-red-600 transition duration-300">
-                            {!! BaseHelper::clean($ctaButtonText) !!}
-                        </a>
-                    </div>
-                @endif
-            </div>
-        </div>
-        <div class="">
-            <p class="text-center text-sm"></p>
-        </div>
+        @endif
     </section>
 @endif

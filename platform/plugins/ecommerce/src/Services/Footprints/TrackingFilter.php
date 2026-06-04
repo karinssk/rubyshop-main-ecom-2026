@@ -37,6 +37,10 @@ class TrackingFilter implements TrackingFilterInterface
             return false;
         }
 
+        if (! $this->hasAttributionSignal()) {
+            return false;
+        }
+
         return true;
     }
 
@@ -93,5 +97,20 @@ class TrackingFilter implements TrackingFilterInterface
         }
 
         return false;
+    }
+
+    protected function hasAttributionSignal(): bool
+    {
+        if ($this->request->hasCookie('botble_footprints_cookie')) {
+            return true;
+        }
+
+        foreach (['utm_source', 'utm_campaign', 'utm_medium', 'utm_term', 'utm_content', 'gclid', 'fbclid'] as $parameter) {
+            if ($this->request->filled($parameter)) {
+                return true;
+            }
+        }
+
+        return (bool) $this->request->headers->get('referer');
     }
 }

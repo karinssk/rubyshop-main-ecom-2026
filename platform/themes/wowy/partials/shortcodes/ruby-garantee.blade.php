@@ -1,3 +1,41 @@
+@once
+    <style>
+        .ruby-guarantee {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 112px;
+            padding: 24px 16px;
+            text-align: center;
+        }
+
+        .ruby-guarantee__title {
+            margin: 0 0 8px;
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 900;
+            line-height: 1.15;
+            text-transform: uppercase;
+        }
+
+        .ruby-guarantee__subtitle {
+            margin: 0;
+            font-size: clamp(14px, 1.4vw, 17px);
+            font-weight: 800;
+            line-height: 1.45;
+            text-transform: uppercase;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 767px) {
+            .ruby-guarantee {
+                min-height: 96px;
+                padding: 18px 14px;
+            }
+        }
+    </style>
+@endonce
+
 @php
     use Illuminate\Support\Arr;
 
@@ -7,7 +45,6 @@
     $title = Arr::get($attributes, 'title');
     $subtitle = Arr::get($attributes, 'subtitle');
 
-    // Auto-upgrade old copy to the new brand copy.
     if (trim((string) $title) === 'Guaranteed Tough®') {
         $title = 'Built for Pros®';
     }
@@ -18,21 +55,13 @@
 @endphp
 
 @if ($title || $subtitle)
-    <section class="ruby-garantee-banner py-4 md:py-6 text-center flex flex-col justify-center" style="background-color: {{ $backgroundColor }}; color: {{ $textColor }};">
+    <section class="ruby-guarantee" style="background-color: {{ e($backgroundColor) }}; color: {{ e($textColor) }};">
         @if ($title)
-            <h4 class="text-2xl md:text-3xl font-bold uppercase mb-1 md:mb-2 leading-tight" style="color: {{ $textColor }};">{!! BaseHelper::clean($title) !!}</h4>
+            <h2 class="ruby-guarantee__title" style="color: {{ e($textColor) }};">{!! BaseHelper::clean($title) !!}</h2>
         @endif
+
         @if ($subtitle)
-            <p class="text-sm md:text-base uppercase leading-snug" style="color: {{ $textColor }};">{!! BaseHelper::clean($subtitle) !!}</p>
+            <p class="ruby-guarantee__subtitle" style="color: {{ e($textColor) }};">{!! BaseHelper::clean($subtitle) !!}</p>
         @endif
     </section>
-    <style>
-        @media (max-width: 767px) {
-            .ruby-garantee-banner {
-                min-height: 96px;
-                padding-top: 14px !important;
-                padding-bottom: 14px !important;
-            }
-        }
-    </style>
 @endif

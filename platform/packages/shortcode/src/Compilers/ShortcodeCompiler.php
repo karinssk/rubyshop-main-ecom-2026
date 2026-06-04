@@ -140,7 +140,12 @@ class ShortcodeCompiler
         // Keep above-the-fold sections server-rendered, lazy-load only non-critical shortcodes.
         $criticalAboveFoldShortcodes = [
             'hero-banner101-ruby',
+            'featured-product-categories',
+            'product-category-products',
             'ruby-feature-card',
+            'ruby-garantee',
+            'ruby-powerful-perfermance',
+            'rubyshop-services',
         ];
 
         $shouldLazyLoad = $compiled->enable_lazy_loading === 'yes'

@@ -20,6 +20,7 @@ class SecurityHeadersMiddleware
         'https://www.google-analytics.com',
         'https://analytics.google.com',
         'https://connect.facebook.net',
+        'https://a.plerdy.com',
         'https://embed.tawk.to',
         'https://tawk.to',
     ];
@@ -66,7 +67,7 @@ class SecurityHeadersMiddleware
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
         $response->headers->set(
             'Permissions-Policy',
-            'accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), geolocation=(), gyroscope=(), microphone=(), midi=(), payment=(), usb=(), interest-cohort=()'
+            'accelerometer=(), autoplay=(self), camera=(), display-capture=(), encrypted-media=(), geolocation=(), gyroscope=(), microphone=(), midi=(), payment=(), usb=(), interest-cohort=()'
         );
         $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
         $response->headers->set('Cross-Origin-Resource-Policy', 'same-site');
@@ -100,11 +101,12 @@ class SecurityHeadersMiddleware
             return null;
         }
 
-        // Force apex to canonical www host.
-        if ($host === 'rubyshop.co.th') {
-            $target = 'https://' . $canonicalHost . $request->getRequestUri();
+        $isRubyshopHost = $host === 'rubyshop.co.th'
+            || $host === $canonicalHost
+            || Str::endsWith($host, '.rubyshop.co.th');
 
-            return redirect()->to($target, 301);
+        if ($isRubyshopHost && $host !== $canonicalHost) {
+            return redirect()->to('https://' . $canonicalHost . $request->getRequestUri(), 301);
         }
 
         return null;
@@ -113,13 +115,16 @@ class SecurityHeadersMiddleware
     private function buildRobotsHeader(Request $request): string
     {
         $host = Str::lower($request->getHost());
-        $path = trim($request->path(), '/');
+        $path = $this->withoutLocalePrefix(trim($request->path(), '/'));
 
         if ($host === 'shopdee198.rubyshop.co.th') {
             return 'noindex, nofollow';
         }
 
-        // Prevent index bloat from faceted/sorted/paginated listing URLs.
+        if ($this->shouldNoindexUtilityPage($path)) {
+            return 'noindex, follow';
+        }
+
         if ($this->shouldNoindexListingPage($request, $path)) {
             return 'noindex, follow';
         }
@@ -127,29 +132,58 @@ class SecurityHeadersMiddleware
         return 'index, follow';
     }
 
+    private function shouldNoindexUtilityPage(string $path): bool
+    {
+        return Str::is([
+            'cart',
+            'compare',
+            'wishlist',
+            'login',
+            'register',
+            'password/reset*',
+            'checkout*',
+            'customer*',
+            'orders/tracking*',
+            'currency/switch/*',
+        ], $path);
+    }
+
     private function shouldNoindexListingPage(Request $request, string $path): bool
     {
-        if (! $request->query()) {
+        if ($request->getQueryString() === null || $request->getQueryString() === '') {
             return false;
         }
 
-        $listingPaths = [
+        $exactListingPaths = [
             'products',
             'product-categories',
             'allproducts',
-            'allproducts/category',
-            'sub',
             'search',
             'blog',
         ];
 
-        foreach ($listingPaths as $listingPath) {
-            if ($path === $listingPath || Str::startsWith($path, $listingPath . '/')) {
-                return true;
+        if (in_array($path, $exactListingPaths, true)) {
+            return true;
+        }
+
+        return Str::startsWith($path, 'allproducts/category/')
+            || Str::startsWith($path, 'product-categories/')
+            || Str::startsWith($path, 'sub/');
+    }
+
+    private function withoutLocalePrefix(string $path): string
+    {
+        foreach (['th', 'en'] as $locale) {
+            if ($path === $locale) {
+                return '';
+            }
+
+            if (Str::startsWith($path, $locale . '/')) {
+                return Str::after($path, $locale . '/');
             }
         }
 
-        return false;
+        return $path;
     }
 
     private function buildContentSecurityPolicy(): string

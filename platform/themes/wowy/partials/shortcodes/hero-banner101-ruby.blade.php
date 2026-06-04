@@ -172,7 +172,7 @@
 
     <!-- Main Hero Content -->
     <div class="hero-banner101-ruby__main" id="hero-main-{{ $heroSectionId = uniqid() }}">
-        <img src="{{ $heroImage }}" alt="Hero Image" class="hero-image" loading="eager" fetchpriority="high" decoding="async" id="hero-image-{{ $heroSectionId }}" onerror="this.onerror=null;this.src='{{ $defaultHeroImage }}';">
+        <img src="{{ $heroImage }}" alt="Hero Image" class="hero-image" width="1600" height="900" loading="eager" fetchpriority="high" decoding="async" id="hero-image-{{ $heroSectionId }}" onerror="this.onerror=null;this.src='{{ $defaultHeroImage }}';">
 
         <div class="hero-overlay">
             <div class="text-center px-4 max-w-4xl">
