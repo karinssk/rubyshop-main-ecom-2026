@@ -1,5 +1,7 @@
 @once
-    <link rel="stylesheet" href="{{ Theme::asset()->url('css/featured-product-categories.css') }}">
+    @unless (request()->path() === '/' || request()->routeIs('public.index') || request()->routeIs('home'))
+        <link rel="stylesheet" href="{{ Theme::asset()->url('css/featured-product-categories.css') }}">
+    @endunless
 @endonce
 
 @php
@@ -59,5 +61,5 @@
 @endif
 
 @once
-    <script src="{{ Theme::asset()->url('js/featured-product-categories.js') }}"></script>
+    <script src="{{ Theme::asset()->url('js/featured-product-categories.js') }}" defer></script>
 @endonce

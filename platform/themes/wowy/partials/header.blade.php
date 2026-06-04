@@ -86,19 +86,13 @@
         @endif
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Meta Pixel Base Code -->
-        <script>
-        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-        document,'script','https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1559144322039457');
-        fbq('track', 'PageView');
-        </script>
-        <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=1559144322039457&ev=PageView&noscript=1"/></noscript>
-        <!-- End Meta Pixel Base Code -->
+        @unless ($isHomePage)
+            <!-- Meta Pixel Base Code -->
+            <script src="{{ Theme::asset()->url('js/rubyshop-meta-pixel-tracking.js') }}?v=20260604-1"></script>
+            <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=1559144322039457&ev=PageView&noscript=1" alt="Meta Pixel tracking"></noscript>
+            <!-- End Meta Pixel Base Code -->
+        @endunless
         <!-- Non-critical CSS loaded in footer to keep initial render path lean -->
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
@@ -123,592 +117,6 @@
                 --color-grey-9: {{ theme_option('color_grey_9', '#f4f5f9') }};
                 --color-muted: {{ theme_option('color_muted', '#8e8e90') }};
                 --color-body: {{ theme_option('color_body', '#4f5d77') }};
-            }
-
-            /* Mobile Menu Styles */
-            .mobile-header-active {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: white;
-                z-index: 9999;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease-in-out;
-                overflow-y: auto;
-                visibility: hidden;
-                opacity: 0;
-                display: none;
-            }
-
-            .mobile-header-active.sidebar-visible {
-                transform: translateX(0);
-                visibility: visible;
-                opacity: 1;
-                display: block !important;
-            }
-
-            .body-overlay-1 {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 9998;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                pointer-events: none;
-            }
-
-            body.mobile-menu-active .body-overlay-1 {
-                opacity: 1;
-                visibility: visible;
-                pointer-events: auto;
-            }
-
-            /* Hamburger Menu */
-            .burger-icon {
-                cursor: pointer;
-                position: relative !important;
-                z-index: 10000;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: space-between !important;
-                align-items: center !important;
-                width: 38px !important;
-                height: 38px !important;
-                padding: 9px 7px !important;
-                box-sizing: border-box !important;
-                background: rgba(0,0,0,0.15);
-                border-radius: 4px;
-                transition: background 0.2s ease;
-            }
-
-            .burger-icon:hover {
-                background: rgba(0,0,0,0.25);
-            }
-
-            /* Force spans out of absolute positioning from theme CSS */
-            .burger-icon span,
-            .burger-icon .burger-icon-top,
-            .burger-icon .burger-icon-mid,
-            .burger-icon .burger-icon-bottom {
-                display: block !important;
-                position: relative !important;
-                top: auto !important;
-                bottom: auto !important;
-                left: auto !important;
-                width: 100% !important;
-                height: 2px !important;
-                background: #fff !important;
-                margin: 0 !important;
-                flex-shrink: 0;
-                transition: all 0.3s ease;
-                transform-origin: center;
-            }
-
-            /* Hide theme pseudo-elements — we use background directly */
-            .burger-icon span::before,
-            .burger-icon span::after {
-                display: none !important;
-            }
-
-            /* Additional Mobile Menu Styles */
-            .mobile-header-wrapper-inner {
-                padding: 20px;
-                height: 100%;
-                overflow-y: auto;
-            }
-
-            .mobile-menu-close {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                z-index: 10001;
-            }
-
-            /* Reverse menu order in mobile */
-            @media (max-width: 991px) {
-                .mobile-header-content-area {
-                    display: flex;
-                    flex-direction: column;
-                }
-                
-                .mobile-menu-wrap {
-                    order: 1;
-                }
-                
-                .mobile-search {
-                    order: 2;
-                }
-                
-                .mobile-social-icon {
-                    order: 3;
-                    margin: 20px 0;
-                }
-                
-                .mobile-header-info-wrap {
-                    order: 4 !important;
-                    margin-bottom: 20px;
-                }
-                
-                /* Make sure info section goes to bottom */
-                .mobile-header-wrapper-inner {
-                    display: flex;
-                    flex-direction: column;
-                    min-height: calc(100vh - 40px);
-                }
-                
-                .mobile-header-content-area {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                }
-                
-                /* Push user info to bottom with margin-top auto */
-                .mobile-header-info-wrap {
-                    margin-top: auto !important;
-                }
-                
-                /* Reverse the navigation menu items order */
-                .mobile-menu-wrap nav ul.mobile-menu {
-                    display: flex !important;
-                    flex-direction: column-reverse;
-                }
-                
-                .mobile-menu-wrap .mobile-menu li {
-                    order: initial;
-                }
-            }
-
-             .imgMixBlendMode {
-    mix-blend-mode: multiply;
-}
-
-
-
-
-            /* Ensure mobile menu is hidden on desktop */
-            @media (min-width: 992px) {
-                .mobile-header-active {
-                    display: none !important;
-                }
-                .body-overlay-1 {
-                    display: none !important;
-                }
-            }
-
-            /* Force mobile menu to work properly */
-            @media (max-width: 991px) {
-                .mobile-header-active:not(.sidebar-visible) {
-                    display: none !important;
-                }
-
-                .header-bottom .header-wrap {
-                    gap: 8px !important;
-                    justify-content: space-between;
-                    width: 100%;
-                    min-width: 0;
-                }
-
-                .header-bottom .logo.logo-width-1 {
-                    flex: 0 1 118px;
-                    max-width: 118px;
-                    min-width: 0;
-                }
-
-                .header-bottom .logo.logo-width-1 img {
-                    width: 110px;
-                    max-width: 100%;
-                    height: auto;
-                }
-
-                .header-bottom .header-action-right {
-                    flex: 0 0 auto;
-                    width: auto !important;
-                    max-width: calc(100vw - 138px);
-                    min-width: 0;
-                    overflow: visible;
-                }
-
-                .header-bottom .header-action-2 {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
-                    gap: 4px;
-                    width: auto !important;
-                    max-width: 100%;
-                }
-
-                .header-bottom .header-action-icon-2 {
-                    flex: 0 0 24px;
-                    width: 24px !important;
-                    min-width: 24px;
-                    margin: 0 !important;
-                }
-
-                .header-bottom .header-action-icon-2:has(> a.compare-count),
-                .header-bottom .header-action-icon-2:has(> a.wishlist-count) {
-                    display: none !important;
-                }
-
-                .header-bottom .cart-dropdown-wrap {
-                    display: none !important;
-                }
-
-                .header-bottom .header-action-icon-2.d-block.d-lg-none {
-                    transform: translateX(-6px);
-                }
-
-                .header-bottom .header-action-icon-2 a,
-                .header-bottom .header-action-icon-2 .burger-icon {
-                    width: 24px !important;
-                    min-width: 24px;
-                }
-                
-                .burger-icon {
-                    display: flex !important;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                }
-                
-                .mobile-header-active .mobile-categories-wrap {
-                    display: block;
-                }
-            }
-            .header-bottom p,
-            .header-top p,
-            .header-middle p {
-                margin-bottom: 0 !important;
-            }
-
-            @media (max-width: 991px) {
-                html { overflow-x: hidden; }
-            }
-            .header-bottom .header-wrap {
-                display: flex;
-                align-items: center;
-                gap: 24px;
-            }
-
-            .header-bottom .main-menu {
-                flex: 1 1 auto;
-                min-width: 0;
-            }
-
-            .header-bottom .header-nav-categories,
-            .header-bottom .header-nav-hotline {
-                flex-shrink: 0;
-            }
-
-            .header-bottom .main-menu > nav > ul {
-                display: flex;
-                align-items: center;
-                gap: clamp(14px, 2vw, 28px);
-                justify-content: center;
-                margin: 0;
-                padding: 0;
-                list-style: none;
-                min-width: 0;
-            }
-
-            .header-bottom .main-menu > nav > ul > li > a {
-                white-space: nowrap;
-            }
-
-            @media (min-width: 992px) and (max-width: 1250px) {
-                .header-bottom .header-wrap {
-                    gap: 12px;
-                }
-
-                .header-bottom .main-menu > nav > ul {
-                    gap: 10px 16px;
-                }
-
-                .header-bottom .main-menu > nav > ul > li > a {
-                    font-size: 14px;
-                    padding: 6px 0;
-                }
-
-                .header-bottom .header-nav-hotline .hotline-label {
-                    display: none;
-                }
-
-                .header-bottom .header-nav-hotline {
-                    font-size: 0.95rem;
-                }
-            }
-
-            .header-bottom .header-nav-hotline {
-                display: flex !important;
-                align-items: center;
-                height: 100%;
-            }
-
-            .header-bottom .header-nav-hotline a {
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-                margin: 0;
-                color: #fff !important;
-                text-decoration: none;
-                line-height: 1.4;
-                white-space: nowrap;
-            }
-
-            .header-bottom .header-nav-hotline a i,
-            .header-bottom .header-nav-hotline a span,
-            .header-bottom .header-nav-hotline a strong {
-                color: #fff !important;
-            }
-
-            /* ======================================================
-               MAIN NAV DROPDOWN — redesign
-               ====================================================== */
-
-            /* Dropdown container */
-            .main-menu > nav > ul > li ul.sub-menu {
-                border-radius: 14px !important;
-                box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06) !important;
-                border: 1px solid #f0f0f0 !important;
-                padding: 8px 0 !important;
-                margin-top: 12px !important;
-                width: 240px !important;
-            }
-
-            /* Each item */
-            .main-menu > nav > ul > li ul.sub-menu li {
-                margin-bottom: 0 !important;
-                border-bottom: 1px solid #f5f5f5 !important;
-            }
-            .main-menu > nav > ul > li ul.sub-menu li:last-child {
-                border-bottom: none !important;
-            }
-
-            /* Item link */
-            .main-menu > nav > ul > li ul.sub-menu li a {
-                display: flex !important;
-                align-items: center !important;
-                justify-content: space-between !important;
-                padding: 10px 18px !important;
-                font-size: 13.5px !important;
-                font-weight: 500 !important;
-                color: #1f2937 !important;
-                border-left: 3px solid transparent !important;
-                transition: background 0.15s, color 0.15s, border-color 0.15s, padding-left 0.15s !important;
-                line-height: 1.4 !important;
-            }
-
-            /* Hover */
-            .main-menu > nav > ul > li ul.sub-menu li:hover > a {
-                color: #dc2626 !important;
-                background: #fef2f2 !important;
-                border-left-color: #dc2626 !important;
-                padding-left: 22px !important;
-            }
-
-            /* Active link */
-            .main-menu > nav > ul > li ul.sub-menu li a.active {
-                color: #dc2626 !important;
-                font-weight: 600 !important;
-            }
-
-            /* Chevron icon */
-            .main-menu > nav > ul > li ul.sub-menu li a i {
-                font-size: 10px !important;
-                color: #9ca3af !important;
-                float: none !important;
-                top: 0 !important;
-                transition: color 0.15s !important;
-            }
-            .main-menu > nav > ul > li ul.sub-menu li:hover > a i {
-                color: #dc2626 !important;
-            }
-
-            /* Nested level-menu */
-            .main-menu > nav > ul > li ul.sub-menu li ul.level-menu {
-                border-radius: 14px !important;
-                box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06) !important;
-                border: 1px solid #f0f0f0 !important;
-                padding: 8px 0 !important;
-                width: 220px !important;
-            }
-
-            /* ======================================================
-               CATEGORY DROPDOWN — redesign
-               ====================================================== */
-
-            /* Trigger button */
-            .categories-button-active {
-                display: inline-flex !important;
-                align-items: center !important;
-                gap: 8px !important;
-                background: rgba(255,255,255,0.13) !important;
-                border-radius: 8px !important;
-                padding: 9px 15px !important;
-                font-size: 14px !important;
-                font-weight: 700 !important;
-                color: #fff !important;
-                letter-spacing: 0.01em !important;
-                transition: background 0.2s !important;
-                white-space: nowrap !important;
-            }
-            .categories-button-active:hover,
-            .categories-button-active.open {
-                background: rgba(255,255,255,0.24) !important;
-                color: #fff !important;
-            }
-
-            /* Dropdown container */
-            .categories-dropdown-wrap {
-                border-radius: 14px !important;
-                border: 1px solid #f0f0f0 !important;
-                box-shadow: 0 12px 48px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.06) !important;
-                overflow: visible !important;
-                margin-top: 10px !important;
-            }
-            .categories-dropdown-wrap > ul {
-                overflow-y: auto !important;
-                overflow-x: visible !important;
-                max-height: calc(100vh - 100px) !important;
-                border-radius: 14px !important;
-            }
-
-            /* Every list item row */
-            .categories-dropdown-wrap > ul > li > a,
-            .categories-dropdown-wrap ul li a {
-                display: flex !important;
-                align-items: center !important;
-                gap: 10px !important;
-                padding: 10px 18px !important;
-                font-size: 13.5px !important;
-                font-weight: 500 !important;
-                color: #1f2937 !important;
-                line-height: 1.4 !important;
-                border-left: 3px solid transparent !important;
-                transition: background 0.15s, color 0.15s, border-color 0.15s, padding-left 0.15s !important;
-            }
-
-            /* Hover state */
-            .categories-dropdown-wrap ul li a:hover {
-                background-color: #fef2f2 !important;
-                color: #dc2626 !important;
-                border-left-color: #dc2626 !important;
-                padding-left: 22px !important;
-            }
-
-            /* Active / current category */
-            .categories-dropdown-wrap ul li.active > a {
-                color: #dc2626 !important;
-                background-color: #fef2f2 !important;
-                border-left-color: #dc2626 !important;
-                font-weight: 700 !important;
-            }
-
-            /* Arrow for items with sub-menu */
-            .categories-dropdown-wrap ul li.has-children > a::after {
-                content: '›' !important;
-                margin-left: auto !important;
-                font-size: 18px !important;
-                line-height: 1 !important;
-                color: #9ca3af !important;
-                font-weight: 400 !important;
-            }
-            .categories-dropdown-wrap ul li.has-children > a:hover::after {
-                color: #dc2626 !important;
-            }
-
-            /* Thin divider between rows */
-            .categories-dropdown-wrap > ul > li + li {
-                border-top: 1px solid #f9fafb !important;
-            }
-
-            /* Category icon / image */
-            .categories-dropdown-wrap ul li a img {
-                width: 22px !important;
-                height: 22px !important;
-                object-fit: contain !important;
-                border-radius: 5px !important;
-                flex-shrink: 0 !important;
-                opacity: 0.8 !important;
-                transition: opacity 0.15s !important;
-            }
-            .categories-dropdown-wrap ul li a:hover img { opacity: 1 !important; }
-
-            /* ── Flyout panel (right side) ── */
-
-            /* Hidden by default — JS controls show/hide via .is-active class */
-            .categories-dropdown-wrap ul li.has-children > .dropdown-menu {
-                display: none;
-                position: fixed !important;
-                z-index: 99999 !important;
-                min-width: 220px !important;
-                max-width: 320px !important;
-                width: 260px !important;
-                max-height: calc(100vh - 80px) !important;
-                overflow-y: auto !important;
-            }
-            .categories-dropdown-wrap ul li.has-children.is-active > .dropdown-menu {
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                pointer-events: auto !important;
-            }
-
-            /* Panel styling */
-            .categories-dropdown-wrap .dropdown-menu {
-                border: 1px solid #f0f0f0 !important;
-                border-radius: 0 12px 12px 0 !important;
-                box-shadow: 4px 8px 24px rgba(0,0,0,0.10) !important;
-                padding: 6px 0 !important;
-                background: #fff !important;
-            }
-
-            /* Divider between sub-items */
-            .categories-dropdown-wrap .dropdown-menu ul li {
-                border-top: 1px solid #f9fafb !important;
-            }
-            .categories-dropdown-wrap .dropdown-menu ul li:first-child {
-                border-top: none !important;
-            }
-
-            /* Sub-item links */
-            .categories-dropdown-wrap .dropdown-menu ul li a {
-                display: flex !important;
-                align-items: center !important;
-                gap: 8px !important;
-                font-size: 13px !important;
-                font-weight: 500 !important;
-                color: #374151 !important;
-                padding: 10px 20px !important;
-                border-left: 3px solid transparent !important;
-                white-space: nowrap !important;
-                transition: background 0.15s, color 0.15s, border-color 0.15s, padding-left 0.15s !important;
-            }
-            .categories-dropdown-wrap .dropdown-menu ul li a:hover {
-                color: #dc2626 !important;
-                background: #fef2f2 !important;
-                border-left-color: #dc2626 !important;
-                padding-left: 24px !important;
-            }
-
-            /* "Show more" button */
-            .more_categories {
-                background: #f8fafc !important;
-                border-top: 1px solid #f0f0f0 !important;
-                color: #dc2626 !important;
-                font-weight: 600 !important;
-                font-size: 13px !important;
-                padding: 11px 20px !important;
-                transition: background 0.15s !important;
-                text-align: center !important;
-            }
-            .more_categories:hover {
-                background: #fef2f2 !important;
             }
         </style>
 
@@ -769,6 +177,7 @@
             $seoTitle = $normalizeSeoText(SeoHelper::getTitle() ?: theme_option('seo_title', theme_option('site_title', 'RUBYSHOP')));
             $seoDescription = $normalizeSeoText(SeoHelper::getDescription() ?: theme_option('seo_description', ''));
             $defaultContactDescription = 'ติดต่อ Rubyshop เพื่อรับข้อมูลสินค้า เครื่องมือช่าง และการสนับสนุนสำหรับลูกค้าทุกระดับ ทั้งลูกค้ารายย่อยและโครงการ';
+            $isProductsIndexPage = ! $hasQueryString && $normalizedPath === 'products';
 
             if (! $seoTitle) {
                 $seoTitle = $isContactPage ? 'Contact | RUBYSHOP' : theme_option('site_title', 'RUBYSHOP');
@@ -776,6 +185,11 @@
 
             if (! $seoDescription) {
                 $seoDescription = $isContactPage ? $defaultContactDescription : theme_option('seo_description', '');
+            }
+
+            if ($isProductsIndexPage) {
+                $seoTitle = 'สินค้าทั้งหมด เครื่องมือช่าง RUBYSHOP';
+                $seoDescription = 'เลือกซื้อเครื่องมือช่าง RUBYSHOP สำหรับงานพ่นสี พ่นปูน กรีดผนัง ขัดผนัง อุปกรณ์เสริม และอะไหล่ พร้อมบริการสำหรับช่างมืออาชีพ';
             }
 
             if (mb_strlen($seoDescription) > 155) {
@@ -830,6 +244,15 @@
                 $socialMeta
             ));
 
+            if ($isProductsIndexPage) {
+                $themeHeader = preg_replace(
+                    '/<title\b[^>]*>[\s\S]*?<\/title>\s*/i',
+                    '<title>' . e($seoTitle) . '</title>' . PHP_EOL,
+                    $themeHeader,
+                    1
+                ) ?? $themeHeader;
+            }
+
             if ($isCategoryPage) {
                 $themeHeader = preg_replace_callback(
                     '/<script\b[^>]*type=(["\'])application\/ld\+json\1[^>]*>[\s\S]*?<\/script>\s*/i',
@@ -852,16 +275,12 @@
         @endphp
         {!! $themeHeader !!}
 
-        {{-- This style block MUST come after Theme::header() so it loads after Bootstrap CSS.
-             Bootstrap's d-lg-block uses display:block !important — loading after ensures ours wins. --}}
-        <style>
-            @media (min-width: 992px) {
-                body:not(.ruby-homepage) .header-bottom .header-nav-categories,
-                body:not(.ruby-homepage) .header-bottom .header-nav-hotline {
-                    display: none !important;
-                }
-            }
-        </style>
+        {{-- This stylesheet MUST come after Theme::header() so it loads after Bootstrap CSS.
+             Bootstrap's d-lg-block uses display:block !important; this bundle also includes global loader/footer/mobile CSS. --}}
+        <link rel="stylesheet" href="{{ Theme::asset()->url('css/ruby-header.css') }}?v=20260604-10">
+        @if ($isHomePage)
+            <link rel="stylesheet" href="{{ Theme::asset()->url('css/ruby-home-shortcodes.css') }}?v=20260604-1">
+        @endif
 
         @php
             $headerStyle = theme_option('header_style') ?: '';
@@ -1153,7 +572,7 @@
                         </div>
                     @endif
                     <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
-                        <button class="close-style search-close">
+                        <button type="button" class="close-style search-close" aria-label="{{ __('Close menu') }}">
                             <i class="icon-top"></i>
                             <i class="icon-bottom"></i>
                         </button>
@@ -1271,14 +690,6 @@
                             </div>
                         @endif
 
-                        @if ($hotline = theme_option('hotline'))
-                            @php
-                                $mobileHotlineDigits = preg_replace('/\D+/', '', $hotline);
-                            @endphp
-                            <div class="single-mobile-header-info mobile-hotline">
-                                <a href="tel:{{ $mobileHotlineDigits ?: $hotline }}">{{ $hotline }}</a>
-                            </div>
-                        @endif
                     </div>
 
                     @if (($socialLinks = theme_option('social_links')) && $socialLinks = json_decode($socialLinks, true))

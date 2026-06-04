@@ -144,8 +144,8 @@ window.addEventListener('load', function () {
 })();
 
 (function () {
-    const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
-    const isBlogPage = path === 'blog' || path.indexOf('blog/') === 0;
+    const currentScript = document.currentScript;
+    const isBlogPage = currentScript && currentScript.dataset.isBlogPage === '1';
     const nonCriticalStyles = [
         'https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css',
         'https://unpkg.com/aos@2.3.1/dist/aos.css',

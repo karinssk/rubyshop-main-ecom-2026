@@ -1,5 +1,7 @@
 @once
-    <link rel="stylesheet" href="{{ Theme::asset()->url('css/hero-video-mobile-image-ruby.css') }}">
+    @unless (request()->path() === '/' || request()->routeIs('public.index') || request()->routeIs('home'))
+        <link rel="stylesheet" href="{{ Theme::asset()->url('css/hero-video-mobile-image-ruby.css') }}">
+    @endunless
 @endonce
 
 @php

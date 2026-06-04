@@ -301,26 +301,38 @@
 
         #main-category-grid,
         .subcategory-panel .grid {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 12px;
         }
 
         .subcategory-tree-grid {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 12px;
         }
 
         #main-category-grid img,
         .subcategory-panel img {
-            height: 104px;
+            height: 92px;
         }
 
         #main-category-grid article,
         .subcategory-panel article {
-            min-height: 172px;
-            padding: 10px;
+            min-height: 152px;
+            padding: 8px;
             border-radius: 12px;
             border: 1px solid #eef1f5;
+        }
+
+        #main-category-grid .category-card-link {
+            min-height: 126px;
+        }
+
+        #main-category-grid p,
+        .subcategory-panel p {
+            min-height: 32px;
+            max-height: 32px;
+            font-size: 11px;
+            line-height: 1.35;
         }
     }
 

@@ -340,11 +340,7 @@ a.ruby-tab:hover:not(.is-active) {
         max-width: 100%;
     }
     .ruby-brand-panel {
-        width: 100%;
-        padding: 16px 20px;
-        flex-direction: row;
-        align-items: center;
-        min-height: auto;
+        display: none !important;
     }
     .ruby-brand-panel::before,
     .ruby-brand-panel::after { display: none; }

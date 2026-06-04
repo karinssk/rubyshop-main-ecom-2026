@@ -1,39 +1,7 @@
 @once
-    <style>
-        .ruby-guarantee {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 112px;
-            padding: 24px 16px;
-            text-align: center;
-        }
-
-        .ruby-guarantee__title {
-            margin: 0 0 8px;
-            font-size: clamp(24px, 3vw, 36px);
-            font-weight: 900;
-            line-height: 1.15;
-            text-transform: uppercase;
-        }
-
-        .ruby-guarantee__subtitle {
-            margin: 0;
-            font-size: clamp(14px, 1.4vw, 17px);
-            font-weight: 800;
-            line-height: 1.45;
-            text-transform: uppercase;
-            overflow-wrap: anywhere;
-        }
-
-        @media (max-width: 767px) {
-            .ruby-guarantee {
-                min-height: 96px;
-                padding: 18px 14px;
-            }
-        }
-    </style>
+    @unless (request()->path() === '/' || request()->routeIs('public.index') || request()->routeIs('home'))
+        <link rel="stylesheet" href="{{ Theme::asset()->url('css/ruby-guarantee.css') }}?v=20260604-1">
+    @endunless
 @endonce
 
 @php

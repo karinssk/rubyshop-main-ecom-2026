@@ -616,7 +616,7 @@
                 <h2 class="section-title style-1 mb-30">{{ __('Related products') }}</h2>
             </div>
             @foreach($relatedProducts as $relatedProduct)
-                <div class="col-lg-{{ 12 / ($layout == 'product-full-width' ? 4 : 3) }} col-md-4 col-12 col-sm-6">
+                <div class="col-lg-{{ 12 / ($layout == 'product-full-width' ? 4 : 3) }} col-md-4 col-sm-6 col-6">
                     @include(Theme::getThemeNamespace() . '::views.ecommerce.includes.product-item', ['product' => $relatedProduct])
                 </div>
             @endforeach

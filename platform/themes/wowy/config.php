@@ -55,7 +55,9 @@ return [
 
             /*import plugins*/
             $theme->asset()->usePath()->add('animate-css', 'css/plugins/animate.css');
-            $theme->asset()->usePath()->add('slick-css', 'css/plugins/slick.css');
+            if (! $isHomePage) {
+                $theme->asset()->usePath()->add('slick-css', 'css/plugins/slick.css');
+            }
 
             $theme->asset()->usePath()->add('style-css', 'css/style.css', [], [], $version);
 
@@ -64,13 +66,13 @@ return [
             }
 
             $theme->asset()->container('footer')->usePath()->add('jquery', 'js/vendor/jquery.min.js');
-            $theme->asset()->container('footer')->usePath()->add('jquery-migrate', 'js/vendor/jquery-migrate.min.js');
             $theme->asset()->container('footer')->usePath()->add('bootstrap-js', 'plugins/bootstrap/js/bootstrap.bundle.min.js');
-            $theme->asset()->container('footer')->usePath()->add('slick-js', 'js/plugins/slick.js');
             if ($isHomePage) {
-                $theme->asset()->container('footer')->usePath()->add('home-lite-guards', 'js/home-lite-guards.js', ['jquery', 'jquery-migrate'], [], '20260604-2');
-                $theme->asset()->container('footer')->usePath()->add('main', 'js/main.js', ['jquery', 'jquery-migrate', 'home-lite-guards'], [], $version);
+                $theme->asset()->container('footer')->usePath()->add('home-lite-guards', 'js/home-lite-guards.js', ['jquery'], [], '20260604-5');
+                $theme->asset()->container('footer')->usePath()->add('main', 'js/main.js', ['jquery', 'home-lite-guards'], [], $version);
             } else {
+                $theme->asset()->container('footer')->usePath()->add('jquery-migrate', 'js/vendor/jquery-migrate.min.js');
+                $theme->asset()->container('footer')->usePath()->add('slick-js', 'js/plugins/slick.js');
                 $theme->asset()->container('footer')->usePath()->add('modernizr', 'js/vendor/modernizr-3.6.0.min.js');
                 $theme->asset()->container('footer')->usePath()->add('jquery.syotimer-js', 'js/plugins/jquery.syotimer.min.js');
                 $theme->asset()->container('footer')->usePath()->add('wow-js', 'js/plugins/wow.js');
@@ -82,7 +84,9 @@ return [
                 $theme->asset()->container('footer')->usePath()->add('imagesloaded-js', 'js/plugins/imagesloaded.pkgd.min.js', ['jquery']);
                 $theme->asset()->container('footer')->usePath()->add('main', 'js/main.js', ['jquery', 'jquery-migrate', 'imagesloaded-js', 'jquery.theia.sticky-js', 'jquery.elevatezoom-js'], [], $version);
             }
-            $theme->asset()->container('footer')->usePath()->add('backend', 'js/backend.js', [], [], $version);
+            if (! $isHomePage) {
+                $theme->asset()->container('footer')->usePath()->add('backend', 'js/backend.js', [], [], $version);
+            }
 
             if (function_exists('shortcode')) {
                 $theme->composer(['page', 'post', 'ecommerce.product'], function (View $view): void {

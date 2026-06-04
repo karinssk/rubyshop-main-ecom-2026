@@ -173,6 +173,8 @@
 @endif
 
 @once
-    <link rel="stylesheet" href="{{ Theme::asset()->url('css/shortcodes-shop-by-category-cards.css') }}">
-    <script src="{{ Theme::asset()->url('js/shortcodes-shop-by-category-cards.js') }}"></script>
+    @unless (request()->path() === '/' || request()->routeIs('public.index') || request()->routeIs('home'))
+        <link rel="stylesheet" href="{{ Theme::asset()->url('css/shortcodes-shop-by-category-cards.css') }}">
+    @endunless
+    <script src="{{ Theme::asset()->url('js/shortcodes-shop-by-category-cards.js') }}" defer></script>
 @endonce

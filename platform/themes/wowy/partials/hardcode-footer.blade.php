@@ -290,7 +290,5 @@
 </footer>
       <h1 id="test101">test console.log header</h1>
 
-    {!! Theme::partial('plerdy') !!}
-    
 </body>
 </html>
