@@ -383,14 +383,14 @@
                     @foreach ($productImages as $img)
                         <figure class="border-radius-10">
                             <a href="{{ RvMedia::getImageUrl($img) }}">
-                                <img src="{{ RvMedia::getImageUrl($img, 'medium') }}" alt="{{ $product->name }}" width="800" height="800" @if ($loop->first) loading="eager" fetchpriority="high" @else loading="lazy" @endif decoding="async">
+                                <img src="{{ RvMedia::getImageUrl($img, 'medium') }}" alt="{{ $product->name }}{{ $product->sku ? ' - ' . $product->sku : '' }}" width="800" height="800" @if ($loop->first) loading="eager" fetchpriority="high" @else loading="lazy" @endif decoding="async">
                             </a>
                         </figure>
                     @endforeach
                 </div>
                 <div class="slider-nav-thumbnails pl-15 pr-15">
                     @foreach ($productImages as $img)
-                        <div><img src="{{ RvMedia::getImageUrl($img, 'thumb') }}" alt="{{ $product->name }}" width="150" height="150" loading="lazy" decoding="async"></div>
+                        <div><img src="{{ RvMedia::getImageUrl($img, 'thumb') }}" alt="{{ $product->name }}{{ $product->sku ? ' - ' . $product->sku : '' }}" width="150" height="150" loading="lazy" decoding="async"></div>
                     @endforeach
                 </div>
             </div>
