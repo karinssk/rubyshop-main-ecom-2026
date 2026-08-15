@@ -183,9 +183,9 @@ button, input, select { font: inherit; letter-spacing: 0; }
 
 .machine-section { background: #eef0ec; overflow: hidden; }
 .machine-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.machine-visual { position: relative; min-height: 560px; display: grid; place-items: center; }
-.machine-visual::before { content: ""; position: absolute; width: 460px; height: 460px; border: 1px solid #cbd0ca; border-radius: 50%; }
-.machine-visual img { position: relative; width: min(540px, 100%); mix-blend-mode: multiply; }
+.machine-visual { position: relative; min-height: 600px; display: grid; place-items: center; }
+.machine-visual::before { content: ""; position: absolute; width: min(510px, 92%); aspect-ratio: 1; border: 1px solid #cbd0ca; border-radius: 50%; }
+.machine-visual img { position: relative; width: min(590px, 108%); height: auto; object-fit: contain; transform: translateX(-10px); }
 .machine-copy h2 { margin-bottom: 30px; }
 .feature-lines { border-top: 1px solid #ccd0cc; }
 .feature-lines > div { display: grid; grid-template-columns: 175px 1fr; gap: 25px; padding: 20px 0; border-bottom: 1px solid #ccd0cc; }
@@ -282,7 +282,8 @@ button, input, select { font: inherit; letter-spacing: 0; }
     .video-tile { min-height: 290px; }
     .fit-column { padding: 30px; }
     .machine-layout { gap: 10px; }
-    .machine-visual { min-height: 460px; }
+    .machine-visual { min-height: 480px; }
+    .machine-visual img { width: min(520px, 100%); transform: none; }
     .process-list { grid-template-columns: 1fr 1fr; }
     .process-list li:nth-child(3) { border-top: 1px solid #3b3f42; }
     .process-list li:nth-child(4) { border-top: 1px solid #3b3f42; }
@@ -336,8 +337,8 @@ button, input, select { font: inherit; letter-spacing: 0; }
     .fit-column + .fit-column { border-left: 0; border-top: 1px solid var(--line); }
     .fit-column { padding: 25px 20px; }
     .fit-cta { align-items: flex-start; flex-direction: column; }
-    .machine-visual { min-height: 360px; }
-    .machine-visual::before { width: 320px; height: 320px; }
+    .machine-visual { min-height: 380px; }
+    .machine-visual::before { width: min(340px, 92%); }
     .feature-lines > div { grid-template-columns: 1fr; gap: 4px; }
     .process-list { grid-template-columns: 1fr; }
     .process-list li { min-height: 0; border-right: 1px solid #3b3f42; border-top: 1px solid #3b3f42; }

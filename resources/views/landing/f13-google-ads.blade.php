@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="image" href="{{ asset('storage/f13.png') }}" fetchpriority="high">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/rb-mt-f13-landing.css') }}?v=20260815-2">
+    <link rel="stylesheet" href="{{ asset('css/rb-mt-f13-landing.css') }}?v=20260815-3">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHBT4DYH7D"></script>
@@ -188,7 +188,7 @@
         <section class="section machine-section">
             <div class="shell machine-layout">
                 <div class="machine-visual">
-                    <img src="{{ asset('storage/products/seo/376/rubyshop-rb-mt-f13-01.webp') }}" width="1200" height="1200" alt="รายละเอียดตัวเครื่อง RB-MT-F13" loading="lazy">
+                    <img src="{{ asset('storage/f13-800x800.png') }}" width="800" height="800" alt="รายละเอียดตัวเครื่อง RB-MT-F13 พร้อมสายพ่น" loading="lazy">
                 </div>
                 <div class="machine-copy">
                     <p class="eyebrow">ตัวเครื่องและการดูแล</p>
