@@ -237,8 +237,8 @@
 
                 <form class="lead-form contact-form" id="f13-lead-form" action="{{ route('public.send.contact') }}" method="post" novalidate>
                     @csrf
-                    <input type="hidden" name="display_fields" value="phone,address,subject">
-                    <input type="hidden" name="required_fields" value="phone">
+                    <input type="hidden" name="display_fields" value="phone,subject">
+                    <input type="hidden" name="required_fields" value="phone,subject">
                     <input type="hidden" name="content" id="lead-content" value="สนใจ RB-MT-F13 จาก Landing Page Google Ads">
                     <input type="hidden" name="agree_terms_and_policy" value="1">
                     <h3>ให้ทีมงานติดต่อกลับ</h3>
@@ -251,24 +251,15 @@
                         <span>เบอร์โทรศัพท์</span>
                         <input type="tel" name="phone" inputmode="tel" autocomplete="tel" required placeholder="เช่น 0896667802">
                     </label>
-                    <div class="form-row">
-                        <label>
-                            <span>จังหวัด</span>
-                            <input type="text" name="address" maxlength="120" autocomplete="address-level1" placeholder="จังหวัดที่ใช้งาน">
-                        </label>
-                        <label>
-                            <span>ประเภทงาน</span>
-                            <select name="subject">
-                                <option value="สนใจ RB-MT-F13 - ขอรายละเอียด">ขอรายละเอียดสินค้า</option>
-                                <option value="สนใจ RB-MT-F13 - ขอใบเสนอราคา">ขอใบเสนอราคา</option>
-                                <option value="สนใจ RB-MT-F13 - งานซ่อม/รีโนเวท">งานซ่อม / รีโนเวท</option>
-                                <option value="สนใจ RB-MT-F13 - งานรับเหมา">งานรับเหมา</option>
-                            </select>
-                        </label>
-                    </div>
-                    {!! apply_filters('pre_contact_form', null) !!}
-                    {!! apply_filters('after_contact_form', null) !!}
-                    {!! apply_filters('form_extra_fields_render', null, \Botble\Contact\Forms\Fronts\ContactForm::class) !!}
+                    <label>
+                        <span>ประเภทงาน</span>
+                        <select name="subject" required>
+                            <option value="สนใจ RB-MT-F13 - ขอรายละเอียด">ขอรายละเอียดสินค้า</option>
+                            <option value="สนใจ RB-MT-F13 - ขอใบเสนอราคา">ขอใบเสนอราคา</option>
+                            <option value="สนใจ RB-MT-F13 - งานซ่อม/รีโนเวท">งานซ่อม / รีโนเวท</option>
+                            <option value="สนใจ RB-MT-F13 - งานรับเหมา">งานรับเหมา</option>
+                        </select>
+                    </label>
                     <button class="button button-primary form-submit" type="submit">ส่งข้อมูลให้ทีมงานติดต่อกลับ</button>
                     <div class="form-status contact-success-message" role="status" hidden></div>
                     <div class="form-status contact-error-message" role="alert" hidden></div>
@@ -321,6 +312,6 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/rb-mt-f13-landing.js') }}?v=20260815-1" defer></script>
+    <script src="{{ asset('js/rb-mt-f13-landing.js') }}?v=20260815-2" defer></script>
 </body>
 </html>

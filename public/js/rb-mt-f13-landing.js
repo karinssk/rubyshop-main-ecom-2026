@@ -88,18 +88,6 @@
             return;
         }
 
-        const query = new URLSearchParams(window.location.search);
-        const campaignData = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid']
-            .map(function (key) {
-                return query.get(key) ? key + ': ' + query.get(key) : null;
-            })
-            .filter(Boolean);
-
-        form.querySelector('#lead-content').value = [
-            'สนใจ RB-MT-F13 จาก Landing Page Google Ads',
-            campaignData.length ? campaignData.join(' | ') : 'ไม่พบข้อมูลแคมเปญ'
-        ].join('\n');
-
         submitButton.classList.add('loading');
         submitButton.disabled = true;
         submitButton.textContent = 'กำลังส่งข้อมูล...';

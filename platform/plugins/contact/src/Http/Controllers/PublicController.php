@@ -177,8 +177,18 @@ class PublicController extends BaseController
     {
         $name = $contact->name ?: '-';
         $phone = $contact->phone ?: '-';
-        $email = $contact->email ?: '-';
         $subject = $contact->subject ?: '-';
+
+        if (Str::startsWith($subject, 'สนใจ RB-MT-F13 - ')) {
+            return implode("\n", [
+                'ลูกค้าใหม่ RB-MT-F13',
+                'ชื่อ: ' . $name,
+                'เบอร์โทร: ' . $phone,
+                'ประเภทงาน: ' . Str::after($subject, 'สนใจ RB-MT-F13 - '),
+            ]);
+        }
+
+        $email = $contact->email ?: '-';
         $content = trim($contact->content ?: '-');
 
         return Str::limit(implode("\n", [
