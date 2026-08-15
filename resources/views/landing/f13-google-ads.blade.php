@@ -150,7 +150,7 @@
             </div>
         </section>
 
-        <section class="section fit-section">
+        <section class="section fit-section" id="suitability">
             <div class="shell">
                 <div class="section-heading centered">
                     <p class="eyebrow">เลือกให้ตรงกับลักษณะงาน</p>
@@ -185,7 +185,7 @@
             </div>
         </section>
 
-        <section class="section machine-section">
+        <section class="section machine-section" id="machine-details">
             <div class="shell machine-layout">
                 <div class="machine-visual">
                     <img src="{{ asset('storage/f13-800x800.png') }}" width="800" height="800" alt="รายละเอียดตัวเครื่อง RB-MT-F13 พร้อมสายพ่น" loading="lazy">
@@ -203,7 +203,7 @@
             </div>
         </section>
 
-        <section class="section process-section">
+        <section class="section process-section" id="usage-steps">
             <div class="shell">
                 <div class="section-heading centered light">
                     <p class="eyebrow">จากความสนใจถึงเริ่มใช้งาน</p>
@@ -268,7 +268,7 @@
             </div>
         </section>
 
-        <section class="section faq-section">
+        <section class="section faq-section" id="faq">
             <div class="shell faq-layout">
                 <div class="section-heading">
                     <p class="eyebrow">คำถามก่อนซื้อ</p>
