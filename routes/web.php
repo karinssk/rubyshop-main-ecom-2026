@@ -14,6 +14,7 @@ use App\Http\Controllers\Rb360LandingController;
 use App\Http\Controllers\AirlessHubController;
 use App\Http\Controllers\Auth\LineAuthController;
 use App\Http\Controllers\HealthController;
+use App\Http\Controllers\F13LandingController;
 use Illuminate\Http\Request;
 
 // Health check route
@@ -74,6 +75,7 @@ Route::get('/lp/drywall-sander', [App\Http\Controllers\ToolHubController::class,
 Route::get('/lp/wall-chaser', [App\Http\Controllers\ToolHubController::class, 'wallChaser'])->name('lp.wall-chaser');
 Route::get('/lp/airless-spray-gun', [App\Http\Controllers\ToolHubController::class, 'sprayGun'])->name('lp.spray-gun');
 Route::get('/lp/airless-hose', [App\Http\Controllers\ToolHubController::class, 'airlessHose'])->name('lp.airless-hose');
+Route::get('/lp/rb-mt-f13', [F13LandingController::class, 'show'])->name('lp.rb-mt-f13');
 
 // Catalog pages
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
