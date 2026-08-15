@@ -29,20 +29,7 @@
     <meta name="twitter:site" content="@RUBYSHOP168">
     
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0PWGSWH0P4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0PWGSWH0P4');
-</script>
-
-
-
-
-    <!-- Favicon -->
+<!-- Favicon -->
   <link rel="icon" type="image/png" href="https://www.rubyshop.co.th/storage/logo/icon-rubyshop-ico.png">
 </head>
     
@@ -1599,16 +1586,6 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
   </div>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WSR5H4YBF2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-WSR5H4YBF2');
-</script>
-
   <script src="{{ asset('js/deferred.js') }}" defer></script>
   <script src="{{ asset('js/pro3.js') }}" defer></script>
 </footer>

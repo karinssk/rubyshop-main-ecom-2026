@@ -416,7 +416,7 @@
 
 <script>
     (function () {
-        var GA_MEASUREMENT_ID = 'G-WSR5H4YBF2';
+        var GA_MEASUREMENT_ID = 'G-NHBT4DYH7D';
         var ADS_CONVERSION_ID = 'AW-1065750118';
         var ADS_CONVERSION_LABEL = 'I36kCOmd4pQcEOacmPwD';
 

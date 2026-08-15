@@ -187,7 +187,7 @@ window.addEventListener('load', function () {
         window.addEventListener('load', scheduleNonCriticalStyles, { once: true });
     }
 
-    const gtagIds = ['G-WSR5H4YBF2', 'G-0PWGSWH0P4', 'G-VMWVKYGZ6X', 'G-NHBT4DYH7D', 'AW-1065750118'];
+    const gtagIds = ['G-NHBT4DYH7D', 'AW-1065750118'];
 
     const loadAnalytics = function () {
         if (window.__rubyshopAnalyticsLoaded) {

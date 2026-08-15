@@ -2615,7 +2615,7 @@ if (loadMoreGalleryBtn && hiddenGalleryItems.length) {
   gtag('js', new Date());
 
   gtag('config', 'AW-1065750118');
-  gtag('config', 'G-NL00XKZ4SY');
+  gtag('config', 'G-NHBT4DYH7D');
 </script>
 
 <!-- Event snippet for Phone Call conversion -->

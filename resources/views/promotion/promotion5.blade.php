@@ -36,27 +36,7 @@
   gtag('config', 'G-NHBT4DYH7D');
 </script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0PWGSWH0P4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0PWGSWH0P4');
-</script>
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Canonical URL -->
+<!-- Canonical URL -->
     <meta rel="canonical" href="https://www.rubyshop.co.th/promotion/rb-1009b-rubyshop">
     
      <!-- Favicon -->
@@ -108,14 +88,6 @@
         fbq('track', 'PageView');
     </script>
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX'); // ใส่ ID ของคุณที่นี่
-    </script>
     <style>
         /* Custom Styles */
 .btn-primary {
@@ -2462,16 +2434,7 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
   </div>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WSR5H4YBF2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-WSR5H4YBF2');
-</script>
-</footer>
+  </footer>
 
 
 

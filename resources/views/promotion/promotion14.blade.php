@@ -32,18 +32,7 @@
   <meta rel="canonical" href="https://www.rubyshop.co.th/promotion/rb-we-780-rubyshop">
   
   <!-- Favicon -->
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0PWGSWH0P4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0PWGSWH0P4');
-</script>
-
-
-     <!-- Favicon -->
+<!-- Favicon -->
   <link rel="icon" type="image/png" href="https://www.rubyshop.co.th/storage/logo/icon-rubyshop-ico.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">

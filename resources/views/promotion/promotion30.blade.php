@@ -47,11 +47,9 @@
 
         var script = document.createElement('script');
         script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-0PWGSWH0P4';
         document.head.appendChild(script);
 
         gtag('js', new Date());
-        gtag('config', 'G-0PWGSWH0P4');
         gtag('config', 'G-NHBT4DYH7D');
         gtag('config', 'AW-1065750118');
       };
@@ -63,7 +61,6 @@
         if (status === 'accepted' || (botbleConsent && botbleConsent[1] === '1')) {
           window.loadRbAnalytics();
         } else if (status === 'declined') {
-          window['ga-disable-G-0PWGSWH0P4'] = true;
           window['ga-disable-G-NHBT4DYH7D'] = true;
         }
       })();
@@ -1907,7 +1904,6 @@
             setCookie(COOKIE_KEY, 'declined', 90);
             if (banner) banner.style.display = 'none';
             // ปิด analytics เมื่อปฏิเสธ
-            window['ga-disable-G-0PWGSWH0P4'] = true;
             window['ga-disable-G-NHBT4DYH7D'] = true;
           });
         }

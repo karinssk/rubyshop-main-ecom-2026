@@ -58,21 +58,7 @@ src="https://www.facebook.com/tr?id=1559144322039457&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 
-   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0PWGSWH0P4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0PWGSWH0P4');
-</script>
-
-
-
-
-    
-    <!-- Favicon -->
+   <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://www.rubyshop.co.th/storage/logo/favicon.png">
     <link rel="apple-touch-icon" href="https://www.rubyshop.co.th/storage/logo/apple-touch-icon.png">
     
@@ -1252,17 +1238,7 @@ function generatePromotionCards() {
 
 
 
-     <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WSR5H4YBF2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-WSR5H4YBF2');
-</script>
-
-<!-- Messenger Float Button -->
+     <!-- Messenger Float Button -->
 <a href="https://m.me/816184855086392" target="_blank" rel="noopener noreferrer" id="messenger-float-btn" title="Chat with us on Messenger" style="position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0695FF,#A334FA,#FF6968);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.25);z-index:9998;text-decoration:none;transition:transform 0.3s,box-shadow 0.3s;">
     <svg width="32" height="32" viewBox="0 0 36 36" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M18 3C9.716 3 3 9.146 3 16.5c0 4.243 2.117 8.025 5.42 10.504V33l5.783-3.175c1.217.338 2.508.525 3.797.525 8.284 0 15-6.146 15-13.5S26.284 3 18 3zm1.488 18.182l-3.822-4.08-7.46 4.08 8.2-8.707 3.915 4.08 7.367-4.08-8.2 8.707z"/></svg>
 </a>

@@ -215,7 +215,7 @@
 </nav>
 
 
-<script src="{{ Theme::asset()->url('js/rubyshop-footer-inline-assets.js') }}?v=20260604-1" data-is-blog-page="{{ request()->is('blog') || request()->is('blog/*') ? '1' : '0' }}"></script>
+<script src="{{ Theme::asset()->url('js/rubyshop-footer-inline-assets.js') }}?v=20260815-1" data-is-blog-page="{{ request()->is('blog') || request()->is('blog/*') ? '1' : '0' }}"></script>
 
 <script src="{{ Theme::asset()->url('js/rubyshop-csrf.js') }}?v=20260604-1"></script>
 

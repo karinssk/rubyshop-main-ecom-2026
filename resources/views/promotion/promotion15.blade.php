@@ -49,26 +49,7 @@
 
 
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0PWGSWH0P4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0PWGSWH0P4');
-</script>
-
-
-
-
-
-
-
-
-
-    
-    <!-- Favicon -->
+<!-- Favicon -->
     <link rel="icon" href="https://www.rubyshop.co.th/storage/logo/icon-rubyshop-ico.png" type="image/x-icon">
     
 
