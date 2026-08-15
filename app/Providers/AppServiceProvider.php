@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Botble\Base\Facades\DashboardMenu;
+use Botble\Theme\Events\ThemeRoutingBeforeEvent;
+use Botble\Theme\Facades\SiteMapManager;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 
@@ -25,6 +27,11 @@ class AppServiceProvider extends ServiceProvider
         URL::forceScheme('https');
 
         add_filter('core_seo_canonical', fn (string $url): string => $this->canonicalUrl($url), 20);
+
+        // Register 'landings' as a valid sitemap key before routes are compiled
+        $this->app['events']->listen(ThemeRoutingBeforeEvent::class, function (): void {
+            SiteMapManager::registerKey(['landings']);
+        });
 
         DashboardMenu::default()->beforeRetrieving(function (): void {
             DashboardMenu::make()->registerItem([

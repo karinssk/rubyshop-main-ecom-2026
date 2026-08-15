@@ -448,7 +448,7 @@ class Product extends BaseModel
             return true;
         }
 
-        return $this->alloDw_checkout_when_out_of_stock;
+        return $this->allow_checkout_when_out_of_stock;
     }
 
     public function promotions(): BelongsToMany

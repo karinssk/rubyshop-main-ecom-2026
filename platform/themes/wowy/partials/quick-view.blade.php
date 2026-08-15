@@ -130,7 +130,7 @@
                     </li>
                 @endif
 
-                <li><span class="d-inline-block">{{ __('Availability') }}:</span> <span class="in-stock text-success ml-5">{!! BaseHelper::clean($product->stock_status_html) !!}</span></li>
+                <li><span class="d-inline-block">{{ __('Availability') }}:</span> <span class="ml-5">{!! BaseHelper::clean($product->stock_status_html) !!}</span></li>
             </ul>
         </div>
         <!-- Detail Info -->

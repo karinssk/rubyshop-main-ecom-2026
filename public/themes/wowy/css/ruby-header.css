@@ -747,17 +747,28 @@ body.mobile-menu-active .ruby-mobile-bottom-nav {
     line-height: 1.2;
     color: #d71920;
     padding-bottom: 8px;
-    background: linear-gradient(currentColor 0 0) 0 100% / 0% 3px no-repeat;
-    animation: l2 2s linear infinite;
 }
 
 .ruby-global-loader.loader::before {
     content: "Loading...";
 }
 
+.ruby-global-loader.loader::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: l2 2s linear infinite;
+}
+
 @keyframes l2 {
     to {
-        background-size: 100% 3px;
+        transform: scaleX(1);
     }
 }
 
@@ -1075,13 +1086,13 @@ body.mobile-menu-active .ruby-mobile-bottom-nav {
     gap: 4px;
     padding: 6px 4px 8px;
     text-decoration: none !important;
-    color: #9ca3af;
+    color: #4b5563;
     cursor: pointer;
     background: none;
     border: none;
     font-family: inherit;
     -webkit-tap-highlight-color: transparent;
-    transition: color 0.2s ease;
+    transition: none;
 }
 
 .ruby-mobile-bottom-nav-icon {
@@ -1092,12 +1103,12 @@ body.mobile-menu-active .ruby-mobile-bottom-nav {
     justify-content: center;
     border-radius: 999px;
     font-size: 17px;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: none;
 }
 
 .ruby-mobile-bottom-nav-label {
     font-size: 10px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1;
     color: inherit;
 }

@@ -1,7 +1,12 @@
 <style>
     #contact {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
         background: linear-gradient(180deg, #fff 0%, #f9fafb 100%);
         padding: 40px 0 64px;
+        max-width: 100vw;
+        overflow-x: hidden;
     }
 
     #contact p {
@@ -9,22 +14,31 @@
         line-height: 1.6;
     }
 
+    #contact h2,
+    #contact h3,
+    #contact a,
+    #contact p {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
     #contact > div {
         width: 100%;
         max-width: 1440px;
         margin: 0 auto;
         padding: 0 16px;
+        box-sizing: border-box;
     }
 
     #contact .mt-12 {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        gap: 40px;
+        gap: 48px;
         margin-top: 48px;
     }
 
     #contact .space-y-6 > * + * {
-        margin-top: 24px;
+        margin-top: 32px;
     }
 
     #contact .bg-white {
@@ -105,11 +119,39 @@
     }
 
     #contact .gap-6 {
-        gap: 24px;
+        gap: 32px;
     }
 
     #contact .gap-4 {
-        gap: 16px;
+        gap: 20px;
+    }
+
+    #contact .mt-16.grid {
+        gap: 36px;
+    }
+
+    #contact .contact-map-image {
+        display: block;
+        width: 100%;
+        height: 320px;
+        min-height: 320px;
+        object-fit: cover;
+        background: #f3f4f6;
+    }
+
+    #contact .contact-map-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 14px 18px 18px;
+        color: #dc2626;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    #contact .contact-map-link:hover {
+        color: #991b1b;
+        text-decoration: underline;
     }
 
     #contact input,
@@ -179,6 +221,14 @@
         display: none !important;
     }
 
+    #contact .contact-form-card {
+        align-self: start;
+    }
+
+    #contact .contact-support-grid {
+        margin-top: 52px;
+    }
+
     @media (max-width: 1199px) {
         #contact .mt-12 {
             grid-template-columns: 1fr;
@@ -194,12 +244,41 @@
             padding: 22px;
         }
 
+        #contact h2 {
+            max-width: 280px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.35rem;
+            line-height: 1.3;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        #contact .text-center p {
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 0.95rem;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        #contact .mt-12,
+        #contact .contact-support-grid {
+            width: 100%;
+            max-width: 100%;
+        }
+
         #contact .md\:grid-cols-2,
         #contact .md\:grid-cols-3 {
             grid-template-columns: 1fr;
         }
 
         #contact .mt-16 {
+            margin-top: 40px;
+        }
+
+        #contact .contact-support-grid {
             margin-top: 40px;
         }
     }
@@ -296,18 +375,22 @@
                 </div>
 
                 <div class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3872.8052475266736!2d100.5745573!3d13.9105861!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2838a1d8ed6f5%3A0x71b9b36c507a601e!2zUlVCWVNIT1AgV0FSRUhPVVNFICjguKvguIjguIEu4Lij4Li54Lia4Li14LmJ4LiK4LmK4Lit4LibKQ!5e0!3m2!1sen!2sth!4v1756979537888!5m2!1sen!2sth"
-                        width="100%"
-                        height="280"
-                        style="border:0;"
-                        allowfullscreen=""
+                    <img
+                        class="contact-map-image"
+                        src="{{ asset('storage/contact-map/rubyshop-office-map.webp') }}"
+                        alt="{{ __('แผนที่สำนักงานใหญ่ RUBYSHOP ดอนเมือง กรุงเทพมหานคร') }}"
+                        width="1024"
+                        height="512"
                         loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        decoding="async">
+                    <a class="contact-map-link" href="https://maps.app.goo.gl/j61AcMSir21ZsMMD8" target="_blank" rel="noopener">
+                        <i class="fas fa-map-marked-alt"></i>
+                        {{ __('เปิดแผนที่ / นำทาง') }}
+                    </a>
                 </div>
             </div>
 
-            <div class="bg-white border border-gray-100 rounded-3xl shadow-2xl p-8">
+            <div class="bg-white border border-gray-100 rounded-3xl shadow-2xl p-8 contact-form-card">
                 <h3 class="text-2xl font-semibold text-gray-900 mb-2">{{ __('กรอกข้อมูลเพื่อให้เราติดต่อกลับ') }}</h3>
                 <p class="text-gray-500 mb-6">{{ __('กรุณากรอกข้อมูลให้ครบถ้วน ทีมงานจะติดต่อกลับภายใน 1 วันทำการ') }}</p>
 
@@ -365,7 +448,7 @@
             </div>
         </div>
 
-        <div class="mt-16 grid gap-6 md:grid-cols-3">
+        <div class="mt-16 grid gap-6 md:grid-cols-3 contact-support-grid">
             <div class="rounded-2xl bg-white border border-gray-100 shadow p-6">
                 <h4 class="text-lg font-semibold text-gray-900 mb-2">{{ __('ขอใบเสนอราคา/สาธิตสินค้า') }}</h4>
                 <p class="text-sm text-gray-600 mb-4">{{ __('กรอกความต้องการของคุณ เราจะจัดสเปกและนัดทีมช่างให้โดยด่วนที่สุด') }}</p>

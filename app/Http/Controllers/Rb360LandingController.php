@@ -46,7 +46,7 @@ class Rb360LandingController extends Controller
             ],
         ];
 
-        $lineUrl = 'https://line.me/R/ti/p/@rubyshop';
+        $lineUrl = 'https://page.line.me/rubyshop168?openQrModal=true';
         $contactPhoneDisplay = '089-666-7802';
         $contactPhone = '0896667802';
         $price = $product->front_sale_price_with_taxes;
@@ -54,6 +54,10 @@ class Rb360LandingController extends Controller
 
         $description = BaseHelper::clean(strip_tags((string) ($product->description ?: $product->content)));
         $description = trim($description) !== '' ? $description : 'เครื่องพ่นสีแรงดันสูง RUBYSHOP รุ่น RB-360 น้ำหนักเบา ประสิทธิภาพสูง ใช้งานหน้างานได้คล่องตัว';
+
+        // Determine canonical product URL based on resolved product slug
+        $canonicalSlug = $product->slug ?: 'rubyshop-rb-360';
+        $canonicalUrl = 'https://www.rubyshop.co.th/products/' . $canonicalSlug;
 
         Theme::layout('full-width');
         Theme::set('pageTitle', 'RB-360 เครื่องพ่นสีแรงดันสูง | หน้าโปรโมชันพิเศษ');
@@ -66,6 +70,7 @@ class Rb360LandingController extends Controller
             ->setTitle('RB-360 เครื่องพ่นสีแรงดันสูง | RUBYSHOP')
             ->setDescription($description)
             ->setImage($gallery->first() ?: $product->image);
+        SeoHelper::meta()->setUrl($canonicalUrl);
 
         return Theme::scope('custom.landing-rb360', [
             'product' => $product,

@@ -69,9 +69,7 @@ class AllProductsController extends Controller
 
         Theme::layout('full-width');
         Theme::set('pageTitle', __('หมวดหมู่สินค้า'));
-        Theme::breadcrumb()
-            ->add(__('หน้าหลัก'), route('public.index'))
-            ->add(__('หมวดหมู่สินค้า'), url('product-categories'));
+        Theme::set('hasBreadcrumb', false);
 
         return Theme::scope('custom.product-categories', compact('categories'))->render();
     }
@@ -156,10 +154,24 @@ public function mainCategory($slug)
         
             // Debug the found category
             \Log::info('Found category: ' . $category->name . ' (ID: ' . $category->id . ')');
-        
+
+            // Collect parent + all descendant category IDs so subcategory products appear on the parent page
+            $allCategoryIds = collect([$category->getKey()]);
+            $toProcess = collect([$category->getKey()]);
+            while ($toProcess->isNotEmpty()) {
+                $children = ProductCategory::whereIn('parent_id', $toProcess->toArray())
+                    ->wherePublished()
+                    ->pluck('id');
+                $allCategoryIds = $allCategoryIds->merge($children);
+                $toProcess = $children;
+            }
+
             $request = request();
             $request->merge([
-                'categories' => array_unique(array_merge((array) $request->input('categories', []), [$category->getKey()])),
+                'categories' => array_unique(array_merge(
+                    (array) $request->input('categories', []),
+                    $allCategoryIds->toArray()
+                )),
             ]);
 
             $products = app(GetProductService::class)->getProduct(
@@ -247,8 +259,18 @@ public function mainCategory($slug)
 
         [$productImages, , $selectedAttrs] = EcommerceHelper::getProductVariationInfo($product);
 
+        // fallback: ถ้า images array ว่าง ให้ใช้ image field แทน
+        if (empty($productImages) && $product->image) {
+            $productImages = [$product->image];
+        }
+
         $productSlug = $this->getProductSlug($product, $slug);
         $productCanonicalUrl = route('product.detail.slug', ['slug' => $productSlug]);
+
+        if (request()->path() !== 'products/' . $productSlug) {
+            return redirect()->to($productCanonicalUrl, 301);
+        }
+
         $seoDescription = $this->getProductSeoDescription($product);
         $seoImage = RvMedia::getImageUrl($product->image, 'medium', false, RvMedia::getDefaultImage());
 
@@ -325,9 +347,7 @@ public function mainCategory($slug)
         
         Theme::layout('full-width');
         Theme::set('pageTitle', __('หมวดหมู่สินค้า'));
-        Theme::breadcrumb()
-            ->add(__('หน้าหลัก'), route('public.index'))
-            ->add(__('หมวดหมู่สินค้า'), url('product-categories'));
+        Theme::set('hasBreadcrumb', false);
 
         return Theme::scope('custom.product-categories', compact('categories'))->render();
     }

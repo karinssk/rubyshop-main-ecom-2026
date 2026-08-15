@@ -62,8 +62,6 @@
         @endif
         
         <!-- Resource Hints for Performance -->
-        <link rel="preconnect" href="https://cdn.jsdelivr.net">
-        <link rel="preconnect" href="https://cdnjs.cloudflare.com">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         
@@ -78,7 +76,6 @@
             <link rel="preload" as="image" href="{{ asset('storage/home/hero-medium-first-frame.webp') }}" fetchpriority="high" media="(min-width: 768px)" type="image/webp">
         @endif
         @if ($useTailwindCss)
-            <link rel="preload" href="{{ asset('css/tailwind.css') }}?v={{ $cssVersion }}" as="style">
             <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}?v={{ $cssVersion }}">
         @endif
         @if ($useTailwindCdn)
@@ -86,16 +83,15 @@
         @endif
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @unless ($isHomePage)
-            <!-- Meta Pixel Base Code -->
-            <script src="{{ Theme::asset()->url('js/rubyshop-meta-pixel-tracking.js') }}?v=20260604-1"></script>
-            <noscript><img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=1559144322039457&ev=PageView&noscript=1" alt="Meta Pixel tracking"></noscript>
-            <!-- End Meta Pixel Base Code -->
-        @endunless
+        <!-- Meta Pixel Base Code -->
+        <script src="{{ Theme::asset()->url('js/rubyshop-meta-pixel-tracking.js') }}?v=20260604-1" defer></script>
+        <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=1559144322039457&ev=PageView&noscript=1" alt="Meta Pixel tracking"></noscript>
+        <!-- End Meta Pixel Base Code -->
         <!-- Non-critical CSS loaded in footer to keep initial render path lean -->
 
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"></noscript>
 
         <style>
             :root {
@@ -118,18 +114,250 @@
                 --color-muted: {{ theme_option('color_muted', '#8e8e90') }};
                 --color-body: {{ theme_option('color_body', '#4f5d77') }};
             }
+        .mobile-categories-wrap { display: none !important; }
+
+        /* ── RS Drawer (mobile sidebar) ── */
+        /* Override theme's red brand background on the inner wrapper */
+        .mobile-header-wrapper-inner.rs-drw {
+            background-color: #fff !important;
+            padding: 0 !important;
+        }
+        .rs-drw { display:flex; flex-direction:column; height:100%; font-family:inherit; }
+
+        /* Head */
+        .rs-drw-head {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:14px 18px 12px;
+            background:var(--color-brand);
+            flex-shrink:0;
+        }
+        .rs-drw-logo img { height:32px; width:auto; display:block; }
+        .mobile-menu-close { display:flex; align-items:center; }
+        .rs-drw-close {
+            display:grid; place-items:center;
+            width:36px; height:36px;
+            background:rgba(255,255,255,.1);
+            border:none; border-radius:8px;
+            color:#fff; cursor:pointer;
+            transition:background .2s;
+        }
+        .rs-drw-close:hover { background:rgba(255,255,255,.22); }
+
+        /* Body */
+        .rs-drw-body { flex:1; overflow-y:auto; padding:14px 14px 0; }
+        .rs-drw-body::-webkit-scrollbar { width:3px; }
+        .rs-drw-body::-webkit-scrollbar-thumb { background:#d1d5db; border-radius:2px; }
+
+
+        /* Nav — override theme's white-on-red menu styles */
+        .rs-drw-menu li {
+            border-bottom: 1px solid #f0f2f5 !important;
+            padding: 0 !important;
+        }
+        .rs-drw-menu li:last-child { border-bottom: none !important; }
+        .rs-drw-menu li a,
+        .rs-drw-menu li > a {
+            color: #16233F !important;
+            display: flex !important;
+            align-items: center !important;
+            padding: 13px 4px !important;
+            font-size: 14.5px !important;
+            font-weight: 600 !important;
+            line-height: 1.3 !important;
+            text-transform: none !important;
+        }
+        .rs-drw-menu li a:hover,
+        .rs-drw-menu li > a:hover { color: #D8251D !important; }
+        /* sub-items */
+        .rs-drw-menu li ul {
+            border-top: 1px solid #f0f2f5 !important;
+            margin-top: 0 !important;
+            padding: 4px 0 8px 14px !important;
+        }
+        .rs-drw-menu li ul li {
+            border-bottom: none !important;
+            padding: 0 !important;
+        }
+        .rs-drw-menu li ul li a {
+            color: #4b5563 !important;
+            font-size: 13.5px !important;
+            font-weight: 400 !important;
+            padding: 8px 4px !important;
+        }
+        .rs-drw-menu li ul li a:hover { color: #D8251D !important; }
+        .rs-drw-menu li:hover > a { color: #D8251D !important; }
+        /* expand button */
+        .rs-drw-menu .menu-expand {
+            color: #9ca3af !important;
+            background: transparent !important;
+            border-radius: 6px !important;
+            width: 32px !important; height: 32px !important;
+            line-height: 32px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            font-size: 12px !important;
+        }
+        .rs-drw-menu .menu-item-has-children.active > .menu-expand {
+            background: #f3f4f6 !important;
+            color: #16233F !important;
+        }
+
+        /* Nav */
+        .rs-drw-nav { margin-bottom:4px; }
+        .rs-drw-menu { list-style:none; margin:0; padding:0; }
+        .rs-drw-menu > li {
+            border-bottom:1px solid #f3f4f6;
+        }
+        .rs-drw-menu > li:last-child { border-bottom:none; }
+        .rs-drw-menu > li > a {
+            display:flex; align-items:center; gap:10px;
+            padding:12px 4px;
+            font-size:15px; font-weight:600; color:#16233F;
+            text-decoration:none; line-height:1.3;
+        }
+        .rs-drw-menu > li > a:hover { color:#D8251D; }
+        /* Nested menus */
+        .rs-drw-menu .dropdown { list-style:none; padding:0 0 4px 16px; margin:0; }
+        .rs-drw-menu .dropdown li a {
+            display:block; padding:7px 4px;
+            font-size:13.5px; color:#4b5563; text-decoration:none;
+        }
+        .rs-drw-menu .dropdown li a:hover { color:#D8251D; }
+        .rs-drw-menu .menu-expand {
+            margin-left:auto; background:none; border:none; padding:4px;
+            color:#6b7280; cursor:pointer; line-height:1;
+            transition:transform .25s;
+        }
+        .rs-drw-menu .menu-item-has-children.active .menu-expand { transform:rotate(180deg); }
+
+        /* All-categories CTA */
+        .rs-drw-allcats {
+            display:flex; align-items:center; gap:10px;
+            padding:11px 14px;
+            background:#f8f9fa; border:1px solid #e9ecef;
+            border-radius:10px; margin-bottom:14px;
+            font-size:14px; font-weight:600; color:#16233F;
+            text-decoration:none;
+            transition:background .2s;
+        }
+        .rs-drw-allcats:hover { background:#e9ecef; color:#D8251D; }
+
+        /* Footer */
+        .rs-drw-foot { padding:14px; border-top:1px solid #f0f0f0; flex-shrink:0; }
+
+        /* Login CTA */
+        .rs-drw-login {
+            display:flex; align-items:center; justify-content:center; gap:8px;
+            width:100%; padding:12px 14px;
+            background:#D8251D; color:#fff;
+            border-radius:10px; text-decoration:none;
+            font-size:14.5px; font-weight:700;
+            margin-bottom:12px;
+            transition:background .2s;
+        }
+        .rs-drw-login:hover { background:#b81e17; color:#fff; }
+
+        /* Bottom row */
+        .rs-drw-bottom { display:flex; align-items:center; gap:12px; justify-content:space-between; }
+
+        /* Social */
+        .rs-drw-social { display:flex; gap:8px; }
+        .rs-drw-soc-btn {
+            display:grid; place-items:center;
+            width:34px; height:34px;
+            border-radius:50%; background:#f3f4f6;
+            color:#374151; text-decoration:none;
+            transition:background .2s, color .2s;
+        }
+        .rs-drw-soc-btn:hover { background:#16233F; color:#fff; }
+
+        /* Language toggle */
+        .rs-drw-meta { position:relative; }
+        .rs-drw-meta-toggle {
+            display:flex; align-items:center; gap:6px;
+            font-size:13px; color:#6b7280; text-decoration:none;
+            padding:6px 10px; border-radius:8px; background:#f3f4f6;
+            white-space:nowrap;
+        }
+        .rs-drw-meta-toggle:hover { background:#e9ecef; color:#16233F; }
+        .rs-drw-meta-drop {
+            position:absolute; bottom:calc(100% + 6px); right:0;
+            background:#fff; border:1px solid #e5e7eb; border-radius:10px;
+            box-shadow:0 8px 24px rgba(0,0,0,.12); z-index:99;
+            min-width:140px; display:none;
+        }
+        .rs-drw-meta-drop.show,
+        .rs-drw-meta-drop.active { display:block; }
+        .rs-drw-meta-drop ul { list-style:none; margin:0; padding:6px 0; }
+        .rs-drw-meta-drop ul li a {
+            display:flex; align-items:center; gap:8px;
+            padding:9px 14px; font-size:13.5px; color:#374151;
+            text-decoration:none;
+        }
+        .rs-drw-meta-drop ul li a:hover { background:#f9fafb; color:#D8251D; }
+
         </style>
 
         @php
             if ($isHomePage) {
                 Theme::asset()->remove([
                     'ckeditor-content-styles',
+                    'animate-css',
+                ]);
+            }
+
+            $isLeanAssetPage = $isHomePage
+                || $normalizedPath === 'blog'
+                || str_starts_with($normalizedPath, 'blog/')
+                || $normalizedPath === 'products'
+                || str_starts_with($normalizedPath, 'products/')
+                || $normalizedPath === 'product-categories'
+                || str_starts_with($normalizedPath, 'product-categories/');
+
+            if ($isLeanAssetPage) {
+                Theme::asset()->remove([
                     'custom-scrollbar-css',
                     'animate-css',
                 ]);
             }
 
             $themeHeader = Theme::header();
+
+            $themeHeader = preg_replace(
+                '/<link\b(?=[^>]*fonts\.googleapis\.com\/css2\?family=Inter)[^>]*>\s*/i',
+                '',
+                $themeHeader
+            ) ?? $themeHeader;
+
+            if ($isHomePage) {
+                $deferredHomeCss = [
+                    'vendor/core/plugins/language/css/language-public.css',
+                    'vendor/core/plugins/cookie-consent/css/cookie-consent.css',
+                    'themes/wowy/css/vendors/normalize.css',
+                    'themes/wowy/css/vendors/fontawesome-all.min.css',
+                    'themes/wowy/css/vendors/wowy-font.css',
+                    'vendor/core/plugins/ecommerce/css/front-ecommerce.css',
+                    'themes/wowy/css/style.integration.css',
+                ];
+
+                foreach ($deferredHomeCss as $cssPath) {
+                    $themeHeader = preg_replace_callback(
+                        '/<link\b(?=[^>]*\brel=(["\'])stylesheet\1)(?=[^>]*' . preg_quote($cssPath, '/') . ')[^>]*>/i',
+                        function (array $matches): string {
+                            $link = $matches[0];
+
+                            if (str_contains($link, 'onload=')) {
+                                return $link;
+                            }
+
+                            $link = preg_replace('/\smedia=(["\'])(?:all|screen)\1/i', '', $link) ?: $link;
+
+                            return rtrim($link, '>') . ' media="print" onload="this.media=\'all\'">';
+                        },
+                        $themeHeader
+                    ) ?? $themeHeader;
+                }
+            }
 
             if ($robotsContent) {
                 $themeHeader = preg_replace(
@@ -202,6 +430,23 @@
                 || request()->is('allproducts/category/*')
                 || request()->is('sub/*');
 
+            if (str_starts_with($normalizedPath, 'product-categories/')) {
+                $categoryKey = trim(substr($normalizedPath, strlen('product-categories/')), '/');
+
+                if ($categoryKey && ! str_contains($categoryKey, '/')) {
+                    $categorySlug = \Botble\Slug\Facades\SlugHelper::getSlug(
+                        $categoryKey,
+                        \Botble\Slug\Facades\SlugHelper::getPrefix(\Botble\Ecommerce\Models\ProductCategory::class),
+                        \Botble\Ecommerce\Models\ProductCategory::class
+                    );
+                    $categoryImage = $categorySlug?->reference?->image;
+
+                    if ($categoryImage) {
+                        $seoImage = \Botble\Media\Facades\RvMedia::getImageUrl($categoryImage, 'origin', false, $seoImage);
+                    }
+                }
+            }
+
             if ($seoImage && ! preg_match('/^https?:\/\//i', $seoImage)) {
                 $seoImage = url($seoImage);
             }
@@ -223,6 +468,7 @@
                 ['property', 'og:description', $seoDescription],
                 ['property', 'og:image', $seoImage],
                 ['property', 'og:url', $seoUrl],
+                ['property', 'og:locale', 'th_TH'],
                 ['name', 'twitter:card', 'summary_large_image'],
                 ['name', 'twitter:title', mb_strlen($seoTitle) > 70 ? rtrim(mb_substr($seoTitle, 0, 67)) . '...' : $seoTitle],
                 ['name', 'twitter:description', $seoDescription],
@@ -279,7 +525,7 @@
              Bootstrap's d-lg-block uses display:block !important; this bundle also includes global loader/footer/mobile CSS. --}}
         <link rel="stylesheet" href="{{ Theme::asset()->url('css/ruby-header.css') }}?v=20260604-10">
         @if ($isHomePage)
-            <link rel="stylesheet" href="{{ Theme::asset()->url('css/ruby-home-shortcodes.css') }}?v=20260604-1">
+            <link rel="stylesheet" href="{{ Theme::asset()->url('css/ruby-home-shortcodes.css') }}?v=20260606-cls2">
         @endif
 
         @php
@@ -397,8 +643,9 @@
                             <div class="search-style-2">
                                 <form action="{{ route('public.products') }}" class="form--quick-search" data-ajax-url="{{ route('public.ajax.search-products') }}" method="get">
                                     <div class="form-group--icon">
-                                        <div class="product-cat-label">{{ __('All Categories') }}</div>
-                                        <select class="product-category-select" id="product-category-select" name="categories[]">
+                                        <label class="visually-hidden" for="product-category-select">{{ __('Product category') }}</label>
+                                        <div class="product-cat-label" aria-hidden="true">{{ __('All Categories') }}</div>
+                                        <select class="product-category-select" id="product-category-select" name="categories[]" aria-label="{{ __('Product category') }}">
                                             <option value="">{{ __('All Categories') }}</option>
                                             {!! ProductCategoryHelper::renderProductCategoriesSelect() !!}
                                         </select>
@@ -564,176 +811,110 @@
             </div>
         </header>
         <div class="mobile-header-active mobile-header-wrapper-style">
-            <div class="mobile-header-wrapper-inner">
-                <div class="mobile-header-top">
-                    @if (theme_option('logo'))
-                        <div class="mobile-header-logo">
-                            <a href="{{ BaseHelper::getHomepageUrl() }}"><img src="{{ RvMedia::getImageUrl(theme_option('logo')) }}" alt="{{ theme_option('site_title') }}" width="150" height="45" decoding="async"></a>
-                        </div>
+            <div class="mobile-header-wrapper-inner rs-drw">
+
+                {{-- TOP BAR --}}
+                <div class="rs-drw-head">
+                    @if ($drwLogo = theme_option('logo_light') ?: theme_option('logo'))
+                        <a href="{{ BaseHelper::getHomepageUrl() }}" class="rs-drw-logo">
+                            <img src="{{ RvMedia::getImageUrl($drwLogo) }}" alt="{{ theme_option('site_title') }}" height="34" decoding="async">
+                        </a>
                     @endif
-                    <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
-                        <button type="button" class="close-style search-close" aria-label="{{ __('Close menu') }}">
-                            <i class="icon-top"></i>
-                            <i class="icon-bottom"></i>
+                    <div class="mobile-menu-close">
+                        <button type="button" class="rs-drw-close" aria-label="{{ __('Close menu') }}">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
                         </button>
                     </div>
                 </div>
-                @if (is_plugin_active('ecommerce'))
-                    <div class="mobile-header-content-area">
-                    <div class="mobile-search search-style-3 mobile-header-border">
-                        <form action="{{ route('public.products') }}" class="form--quick-search" data-ajax-url="{{ route('public.ajax.search-products') }}" method="get">
-                            <input type="text" name="q" class="input-search-product" placeholder="{{ __('Search...') }}">
-                            <button type="submit" title="search"> <i class="far fa-search"></i> </button>
-                            <div class="panel--search-result"></div>
-                        </form>
-                    </div>
-                    <div class="mobile-menu-wrap mobile-header-border">
-                        <div class="main-categories-wrap mobile-categories-wrap mobile-header-border">
-                            <a class="categories-button-active-2" href="#">
-                                <span class="far fa-bars"></span> {{ __('Browse Categories') }} <i class="down far fa-chevron-down"></i>
-                            </a>
-                            <div class="categories-dropdown-wrap categories-dropdown-active-small">
-                                <ul>
-                                    @php
-                                        if (! isset($categories)) {
-                                            $categories = ProductCategoryHelper::getProductCategoriesWithUrl();
-                                        }
 
-                                        $groupedCategories = $categories->groupBy('parent_id');
+                {{-- BODY (scrollable) --}}
+                <div class="rs-drw-body">
 
-                                        $currentCategories = $groupedCategories->get(0);
-                                    @endphp
+                    {{-- CATEGORIES LINK --}}
+                    <a href="{{ url('/product-categories') }}" class="rs-drw-allcats">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg>
+                        หมวดหมู่สินค้าทั้งหมด
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="margin-left:auto"><path d="m9 6 6 6-6 6"/></svg>
+                    </a>
 
-                                    @if($currentCategories)
-                                        @foreach ($currentCategories as $category)
-                                            @php
-                                                $hasChildren = $groupedCategories->has($category->id);
-                                            @endphp
+                    {{-- NAV --}}
+                    <nav class="rs-drw-nav">
+                        {!!
+                            Menu::renderMenuLocation('main-menu', [
+                                'options' => ['class' => 'mobile-menu rs-drw-menu'],
+                                'view'    => 'mobile-menu',
+                            ])
+                        !!}
+                    </nav>
 
-                                            <li>
-                                                <a href="{{ route('public.single', $category->url) }}">
-                                                    @if ($category->icon_image)
-                                                        <img src="{{ RvMedia::getImageUrl($category->icon_image) }}" alt="{{ $category->name }}" width="18" height="18" loading="lazy" decoding="async">
-                                                    @elseif ($icon = $category->icon)
-                                                        {!! BaseHelper::renderIcon($icon) !!}
-                                                    @endif {{ $category->name }}
+                </div>{{-- /rs-drw-body --}}
 
-                                                    @if ($hasChildren)
-                                                        <span class="menu-expand"><i class="down far fa-chevron-down"></i></span>
-                                                    @endif
-                                                </a>
-                                                @if ($hasChildren)
-                                                    <ul class="dropdown" style="display: none">
-                                                        @php
-                                                            $currentCategories = $groupedCategories->get($category->id);
-                                                        @endphp
-                                                        @if($currentCategories)
-                                                            @foreach ($currentCategories as $childCategory)
-                                                                <li><a href="{{ route('public.single', $childCategory->url ) }}">{{ $childCategory->name }}</a></li>
-                                                            @endforeach
-                                                        @endif
-                                                    </ul>
-                                                @endif
-                                            </li>
-                                        @endforeach
-                                    @endif
-                                </ul>
-                            </div>
-                        </div>
-                        <nav>
-                            {!!
-                                Menu::renderMenuLocation('main-menu', [
-                                    'options' => ['class' => 'mobile-menu'],
-                                    'view'    => 'mobile-menu',
-                                ])
-                            !!}
-                        </nav>
-                    </div>
-                    <div class="mobile-header-info-wrap mobile-header-border">
-                        @if (is_plugin_active('language'))
-                            <div class="single-mobile-header-info">
-                                <a class="mobile-language-active" href="#">{{ __('Language') }} <span><i class="far fa-angle-down"></i></span></a>
-                                <div class="lang-curr-dropdown lang-dropdown-active">
-                                    <ul>
-                                        @php
-                                            $showRelated = setting('language_show_default_item_if_current_version_not_existed', true);
-                                        @endphp
+                {{-- FOOTER --}}
+                <div class="rs-drw-foot">
 
-                                        @foreach (Language::getSupportedLocales() as $localeCode => $properties)
-                                            <li><a rel="alternate" hreflang="{{ $localeCode }}" href="{{ $showRelated ? Language::getLocalizedURL($localeCode) : url($localeCode) }}">{!! language_flag($properties['lang_flag'], $properties['lang_name']) !!} {{ $properties['lang_name'] }}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if (count($currencies) > 1)
-                            <div class="single-mobile-header-info">
-                                <a class="mobile-language-active" href="#">{{ __('Currency') }} <span><i class="far fa-angle-down"></i></span></a>
-                                <div class="lang-curr-dropdown lang-dropdown-active">
-                                    <ul>
-                                        @foreach ($currencies as $currency)
-                                            <li><a href="{{ route('public.change-currency', $currency->title) }}" rel="nofollow">{{ $currency->title }}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if (is_plugin_active('ecommerce'))
-                            <div class="single-mobile-header-info">
-                                @if (auth('customer')->check())
-                                    <a href="{{ route('customer.overview') }}">{{ auth('customer')->user()->name }}</a>
-                                @else
-                                    <a href="{{ route('customer.login') }}">{{ __('Log In / Sign Up') }}</a>
-                                @endif
-                            </div>
-                        @endif
-
-                    </div>
-
-                    @if (($socialLinks = theme_option('social_links')) && $socialLinks = json_decode($socialLinks, true))
-                        <div class="mobile-social-icon">
-                            @foreach($socialLinks as $socialLink)
-                                @if (count($socialLink) == 4 && isset($socialLink[0]['value']) && isset($socialLink[1]['value']) && isset($socialLink[2]['value']) && isset($socialLink[3]['value']))
-                                    @php
-                                        $socialUrl = (string) $socialLink[2]['value'];
-                                        $socialUrlLower = Str::lower($socialUrl);
-                                        if (Str::contains($socialUrl, 'x.com/i/flow/login')) {
-                                            $socialUrl = 'https://x.com/RUBYSHOP168';
-                                        }
-                                        $skipSocialLink = Str::contains($socialUrl, 'x.com/');
-                                    @endphp
-                                    @if (! $skipSocialLink)
-                                    <a href="{{ $socialUrl }}"
-                                       title="{{ $socialLink[0]['value'] }}">
-                                        @if (Str::contains($socialUrlLower, 'facebook.com'))
-                                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                                <path fill="currentColor" d="M13.5 9H16V6h-2.5C11.6 6 10 7.6 10 9.5V12H8v3h2v6h3v-6h2.3l.7-3H13v-2.5c0-.3.2-.5.5-.5z"/>
-                                            </svg>
-                                        @elseif (Str::contains($socialUrlLower, 'instagram.com'))
-                                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                                <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11.5 1.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
-                                            </svg>
-                                        @elseif (Str::contains($socialUrlLower, 'line.me'))
-                                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                                <path fill="currentColor" d="M12 2C6.5 2 2 5.9 2 10.8c0 4.4 3.6 8 8.3 8.6l-.6 2.8c-.1.4.4.8.8.5l3.2-2.4h.3c5.5 0 10-3.9 10-8.8S17.5 2 12 2zm-4 6.2h1.6v5H8V8.2zm4.9 5.1H10.7V8.2h1.6v3.7h1.3v1.4zm3.8-3.7h-1.8v.7h1.8v1.4h-1.8v.7h1.8v1.4h-3.4V8.2h3.4v1.4zm3.3 3.7h-1.4l-1.7-2.3v2.3h-1.6V8.2h1.4l1.7 2.3V8.2H20v5.1z"/>
-                                            </svg>
-                                        @elseif (Str::contains($socialUrlLower, 'youtube.com'))
-                                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                                <path fill="currentColor" d="M23 12s0-3.2-.4-4.7c-.2-.8-.8-1.4-1.6-1.6C19.5 5.3 12 5.3 12 5.3s-7.5 0-9 .4c-.8.2-1.4.8-1.6 1.6C1 8.8 1 12 1 12s0 3.2.4 4.7c.2.8.8 1.4 1.6 1.6 1.5.4 9 .4 9 .4s7.5 0 9-.4c.8-.2 1.4-.8 1.6-1.6.4-1.5.4-4.7.4-4.7zM10 15.5v-7l6 3.5-6 3.5z"/>
-                                            </svg>
-                                        @else
-                                            {!! BaseHelper::renderIcon($socialLink[1]['value']) !!}
-                                        @endif
-                                        <span class="visually-hidden">{{ $socialLink[0]['value'] }}</span>
-                                    </a>
-                                    @endif
-                                @endif
-                            @endforeach
-                        </div>
+                    {{-- LOGIN --}}
+                    @if (is_plugin_active('ecommerce'))
+                        <a href="{{ auth('customer')->check() ? route('customer.overview') : route('customer.login') }}" class="rs-drw-login">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                            {{ auth('customer')->check() ? auth('customer')->user()->name : __('Log In / Sign Up') }}
+                        </a>
                     @endif
-                </div>
-                @endif
+
+                    {{-- SOCIAL + LANG/CURR in a row --}}
+                    <div class="rs-drw-bottom">
+                        @if (($socialLinks = theme_option('social_links')) && $socialLinks = json_decode($socialLinks, true))
+                            <div class="rs-drw-social">
+                                @foreach($socialLinks as $socialLink)
+                                    @if (count($socialLink) == 4 && isset($socialLink[2]['value']))
+                                        @php
+                                            $socialUrl = (string) $socialLink[2]['value'];
+                                            $socialUrlLower = Str::lower($socialUrl);
+                                            if (Str::contains($socialUrl, 'x.com/i/flow/login')) { $socialUrl = 'https://x.com/RUBYSHOP168'; }
+                                            if (Str::contains($socialUrl, 'x.com/')) { continue; }
+                                        @endphp
+                                        <a href="{{ $socialUrl }}" title="{{ $socialLink[0]['value'] }}" class="rs-drw-soc-btn">
+                                            @if (Str::contains($socialUrlLower, 'facebook'))
+                                                <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 9H16V6h-2.5C11.6 6 10 7.6 10 9.5V12H8v3h2v6h3v-6h2.3l.7-3H13v-2.5c0-.3.2-.5.5-.5z"/></svg>
+                                            @elseif (Str::contains($socialUrlLower, 'instagram'))
+                                                <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11.5 1.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+                                            @elseif (Str::contains($socialUrlLower, 'line.me'))
+                                                <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.5 2 2 5.9 2 10.8c0 4.4 3.6 8 8.3 8.6l-.6 2.8c-.1.4.4.8.8.5l3.2-2.4h.3c5.5 0 10-3.9 10-8.8S17.5 2 12 2zm-4 6.2h1.6v5H8V8.2zm4.9 5.1H10.7V8.2h1.6v3.7h1.3v1.4zm3.8-3.7h-1.8v.7h1.8v1.4h-1.8v.7h1.8v1.4h-3.4V8.2h3.4v1.4zm3.3 3.7h-1.4l-1.7-2.3v2.3h-1.6V8.2h1.4l1.7 2.3V8.2H20v5.1z"/></svg>
+                                            @else
+                                                {!! BaseHelper::renderIcon($socialLink[1]['value']) !!}
+                                            @endif
+                                            <span class="visually-hidden">{{ $socialLink[0]['value'] }}</span>
+                                        </a>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @endif
+
+                        <div class="rs-drw-meta">
+                            @if (is_plugin_active('language'))
+                                <div class="rs-drw-meta-item">
+                                    <a class="mobile-language-active rs-drw-meta-toggle" href="#">
+                                        🌐 {{ __('Language') }}
+                                        <i class="far fa-angle-down"></i>
+                                    </a>
+                                    <div class="lang-curr-dropdown lang-dropdown-active rs-drw-meta-drop">
+                                        <ul>
+                                            @php
+                                                $showRelated = setting('language_show_default_item_if_current_version_not_existed', true);
+                                                $normalizeLanguageUrl = fn (?string $url): ?string => $url
+                                                    ? preg_replace('/((?:categories|brands|tags|attributes)%5B)\d+(%5D=)/i', '$1$2', $url)
+                                                    : $url;
+                                            @endphp
+                                            @foreach (Language::getSupportedLocales() as $localeCode => $properties)
+                                                <li><a rel="alternate" hreflang="{{ $localeCode }}" href="{{ $normalizeLanguageUrl($showRelated ? Language::getLocalizedURL($localeCode) : url($localeCode)) }}">{!! language_flag($properties['lang_flag'], $properties['lang_name']) !!} {{ $properties['lang_name'] }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                    </div>
+                </div>{{-- /rs-drw-foot --}}
+
             </div>
         </div>

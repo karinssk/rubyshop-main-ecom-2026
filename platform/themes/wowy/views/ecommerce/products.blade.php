@@ -10,17 +10,36 @@
 
     Theme::layout('full-width');
 
-    Theme::asset()->usePath()->add('jquery-ui-css', 'css/plugins/jquery-ui.css');
-    Theme::asset()->container('footer')->usePath()->add('jquery-ui-js', 'js/plugins/jquery-ui.js');
-    Theme::asset()->container('footer')->usePath()->add('jquery-ui-touch-punch-js', 'js/plugins/jquery.ui.touch-punch.min.js');
-
     $products->loadMissing(['categories', 'categories.slugable']);
 
     $categoryBreadcrumbStructuredData = null;
+    $categoryDescriptionText = '';
+    $currentListingUrl = url()->current();
+    $listingPageTitle = __('Products');
+    $listingPageDescription = trim(strip_tags((string) SeoHelper::getDescription()));
 
     if (isset($category) && $category) {
+        $listingPageTitle = $category->name;
+        $categoryDescriptionText = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags((string) $category->description), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+        $currentSeoDescription = trim(strip_tags((string) SeoHelper::getDescription()));
+        $genericSeoDescription = $currentSeoDescription === ''
+            || mb_strlen($currentSeoDescription) < 70
+            || \Illuminate\Support\Str::contains($currentSeoDescription, [
+                'ศูนย์รวมเครื่องมือช่าง',
+                'อุปกรณ์ก่อสร้าง และเทคโนโลยีงานช่างครบวงจร',
+                'ผู้นำเข้าจัดหาเครื่องมือสำหรับช่างมืออาชีพ',
+                'เครื่องพ่นสีกันไฟ',
+                'เครื่องตีเส้นถนน',
+            ]);
+
+        if ($genericSeoDescription) {
+            $categoryFallbackDesc = $categoryDescriptionText
+                ? \Illuminate\Support\Str::limit($categoryDescriptionText, 160, '')
+                : 'เลือกซื้อ ' . $category->name . ' จาก RUBYSHOP พร้อมสินค้าและอะไหล่สำหรับช่างมืออาชีพ จัดส่งทั่วไทย ให้คำแนะนำก่อนซื้อและบริการหลังการขาย';
+            SeoHelper::setDescription($categoryFallbackDesc);
+        }
+
         $categoryBreadcrumbStructuredData = [
-            '@context' => 'https://schema.org',
             '@type' => 'BreadcrumbList',
             '@id' => $category->url . '#breadcrumb',
             'itemListElement' => [
@@ -44,14 +63,112 @@
                 ],
             ],
         ];
+    } else {
+        $categoryBreadcrumbStructuredData = [
+            '@type' => 'BreadcrumbList',
+            '@id' => $currentListingUrl . '#breadcrumb',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => __('Home'),
+                    'item' => route('public.index'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => __('Products'),
+                    'item' => $currentListingUrl,
+                ],
+            ],
+        ];
     }
+
+    $listingPageDescription = trim(strip_tags((string) SeoHelper::getDescription()));
+    $listingProducts = collect(method_exists($products, 'items') ? $products->items() : $products)->filter();
+    $listingFirstPosition = method_exists($products, 'firstItem') && $products->firstItem() ? (int) $products->firstItem() : 1;
+    $merchantReturnPolicySchema = [
+        '@type' => 'MerchantReturnPolicy',
+        'applicableCountry' => 'TH',
+        'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        'merchantReturnDays' => (int) theme_option('merchant_return_days', 7),
+        'returnMethod' => 'https://schema.org/ReturnByMail',
+        'returnFees' => 'https://schema.org/ReturnShippingFees',
+    ];
+
+    if ($merchantReturnPolicyUrl = theme_option('merchant_return_policy_url')) {
+        $merchantReturnPolicySchema['merchantReturnLink'] = url($merchantReturnPolicyUrl);
+    }
+
+    $listingItemElements = $listingProducts
+        ->values()
+        ->map(function ($productItem, $index) use ($listingFirstPosition, $merchantReturnPolicySchema) {
+            $itemData = [
+                '@type' => 'Product',
+                'name' => $productItem->name,
+                'url' => $productItem->url,
+            ];
+
+            if ($productItem->image) {
+                $itemData['image'] = RvMedia::getImageUrl($productItem->image, 'medium', false, RvMedia::getDefaultImage());
+            }
+
+            if ($productItem->sku) {
+                $itemData['sku'] = $productItem->sku;
+            } else {
+                $itemData['sku'] = (string) $productItem->getKey();
+            }
+
+            $itemData['offers'] = [
+                '@type' => 'Offer',
+                'url' => $productItem->url,
+                'priceCurrency' => get_application_currency()->title ?: 'THB',
+                'price' => (string) $productItem->front_sale_price_with_taxes,
+                'availability' => $productItem->isOutOfStock() ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+                'itemCondition' => 'https://schema.org/NewCondition',
+                'hasMerchantReturnPolicy' => $merchantReturnPolicySchema,
+            ];
+
+            return [
+                '@type' => 'ListItem',
+                'position' => $listingFirstPosition + $index,
+                'item' => $itemData,
+            ];
+        })
+        ->values()
+        ->all();
+
+    $listingStructuredDataGraph = [
+        [
+            '@type' => 'CollectionPage',
+            '@id' => $currentListingUrl . '#collection',
+            'name' => $listingPageTitle,
+            'url' => $currentListingUrl,
+            'description' => $listingPageDescription,
+        ],
+        [
+            '@type' => 'ItemList',
+            '@id' => $currentListingUrl . '#item-list',
+            'name' => $listingPageTitle,
+            'url' => $currentListingUrl,
+            'numberOfItems' => count($listingItemElements),
+            'itemListElement' => $listingItemElements,
+        ],
+    ];
+
+    if ($categoryBreadcrumbStructuredData) {
+        array_unshift($listingStructuredDataGraph, $categoryBreadcrumbStructuredData);
+    }
+
+    $listingStructuredData = [
+        '@context' => 'https://schema.org',
+        '@graph' => $listingStructuredDataGraph,
+    ];
 @endphp
 
-@if ($categoryBreadcrumbStructuredData)
-    <script type="application/ld+json">
-        {!! json_encode($categoryBreadcrumbStructuredData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
-    </script>
-@endif
+<script type="application/ld+json">
+    {!! json_encode($listingStructuredData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
 
 <style>
     .products-listing .product-cart-wrap .product-content-wrap .product-category a {
@@ -76,7 +193,7 @@
                     <i class="fal fa-angle-small-up angle-up"></i>
                     <i class="fal fa-angle-small-down angle-down"></i>
                 </a>
-                <form action="{{ URL::current() }}" method="GET" id="products-filter-ajax" class="collapse">
+                <form action="{{ URL::current() }}" method="GET" id="products-filter-ajax">
                     @include(Theme::getThemeNamespace('views.ecommerce.includes.filters'))
                 </form>
             </div>
@@ -140,6 +257,16 @@
             </div>
         @endif
     </div>
+
+    @if (isset($category) && $category && trim((string) $category->description))
+        <section class="category-seo-after-pagination" aria-label="{{ __('Category details') }}">
+            <div class="category-seo-inner">
+                <div class="category-seo-copy" itemscope itemtype="https://schema.org/WebContent">
+                    {!! BaseHelper::clean($category->description) !!}
+                </div>
+            </div>
+        </section>
+    @endif
 </div>
 
 <!-- Mobile optimizations -->
@@ -250,6 +377,106 @@
         display: none !important;
     }
 
+    .category-seo-after-pagination {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        margin: 34px 0 0;
+        padding: 32px 0 22px;
+        border-top: 4px solid #d6001c;
+        background: #fff;
+        color: #374151;
+        line-height: 1.75;
+    }
+
+    .category-seo-inner {
+        width: 100%;
+        max-width: none;
+        margin: 0 auto;
+    }
+
+    .category-seo-copy {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        columns: auto !important;
+        column-count: auto !important;
+    }
+
+    .category-seo-copy h2,
+    .category-seo-copy h3 {
+        margin: 0;
+        color: #111827;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .category-seo-copy h2 {
+        margin-bottom: 12px;
+        font-size: 22px;
+    }
+
+    .category-seo-copy h3 {
+        margin-top: 18px;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .category-seo-copy p,
+    .category-seo-copy li {
+        color: #555;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .category-seo-copy p {
+        max-width: 1180px;
+        margin: 0 0 12px;
+    }
+
+    .category-seo-copy ul {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px 34px;
+        margin: 0 0 14px;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .category-seo-copy li {
+        position: relative;
+        padding-left: 18px;
+    }
+
+    .category-seo-copy li::before {
+        content: '';
+        position: absolute;
+        top: 0.68em;
+        left: 0;
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #d6001c;
+        transform: translateY(-50%);
+    }
+
+    @media (max-width: 767px) {
+        .category-seo-after-pagination {
+            width: 100%;
+            max-width: 100%;
+            margin: 26px 0 0;
+            padding: 24px 0 12px;
+        }
+
+        .category-seo-copy h2 {
+            font-size: 18px;
+        }
+
+        .category-seo-copy ul {
+            display: block;
+        }
+    }
+
     .products-listing .product-item-wrapper .product-content-wrap {
         position: static !important;
         display: flex !important;
@@ -333,13 +560,17 @@
 
     #products-filter-ajax,
     #sidebar-filter-mobile {
+        box-sizing: border-box;
         display: block !important;
         position: fixed;
         top: 0;
         left: 0;
         z-index: 10060;
         width: min(390px, calc(100vw - 28px));
+        max-width: 100dvw;
+        height: 100vh;
         height: 100dvh;
+        max-height: 100dvh;
         margin: 0 !important;
         padding: 0 !important;
         background: #fff;
@@ -374,11 +605,19 @@
     }
 
     .ruby-filter-panel {
+        position: relative;
         display: flex !important;
+        width: 100%;
         height: 100%;
+        min-height: 0;
         flex-direction: column;
         margin: 0 !important;
         background: #fff;
+    }
+
+    .ruby-filter-panel,
+    .ruby-filter-panel * {
+        box-sizing: border-box;
     }
 
     .ruby-filter-panel__head {
@@ -388,6 +627,10 @@
         gap: 16px;
         padding: 18px 20px;
         border-bottom: 1px solid #e5e7eb;
+    }
+
+    .ruby-filter-panel__head > div {
+        min-width: 0;
     }
 
     .ruby-filter-panel__eyebrow {
@@ -406,10 +649,14 @@
         font-size: 20px;
         font-weight: 800;
         line-height: 1.25;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .ruby-filter-close {
         display: inline-flex;
+        flex: 0 0 40px;
         width: 40px;
         height: 40px;
         align-items: center;
@@ -423,9 +670,11 @@
     .ruby-filter-panel__body {
         display: block !important;
         flex: 1 1 auto;
+        min-height: 0;
         margin: 0 !important;
-        padding: 16px 20px 112px;
+        padding: 16px 20px;
         overflow-y: auto;
+        overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
     }
 
@@ -460,25 +709,49 @@
 
     .ruby-filter-options,
     .ruby-filter-section .price-filter {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
         max-height: 280px;
         padding: 12px 16px 16px;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
     }
 
+    .ruby-filter-options .mCustomScrollBox,
+    .ruby-filter-options .mCSB_container {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: visible !important;
+    }
+
+    .ruby-filter-section .price-filter,
+    .ruby-filter-section .price-filter-inner,
+    .ruby-filter-section .price_slider_amount,
+    .ruby-filter-section .label-input {
+        min-width: 0;
+        max-width: 100%;
+    }
+
     .ruby-filter-options ul {
         padding: 0;
         margin: 0;
         list-style: none;
+        width: 100%;
+        min-width: 0;
     }
 
     .ruby-filter-options .form-check,
     .ruby-filter-options > .form-check {
         position: relative;
-        display: flex;
+        display: flex !important;
+        flex-wrap: wrap;
         align-items: flex-start;
-        gap: 10px;
+        gap: 0 10px;
         min-height: 42px;
+        width: 100%;
+        min-width: 0;
         margin: 0 !important;
         padding: 9px 0 !important;
         border-bottom: 1px solid #f1f5f9;
@@ -488,8 +761,20 @@
         border-bottom: 0;
     }
 
+    .ruby-filter-options .ruby-filter-subcategories {
+        flex: 0 0 100%;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 8px 0 0 0;
+        padding: 0 0 0 18px;
+        border-left: 2px solid #eef2f7;
+        list-style: none;
+    }
+
     .ruby-filter-options .form-check-input {
         flex: 0 0 18px;
+        float: none !important;
         width: 18px;
         height: 18px;
         margin: 2px 0 0 !important;
@@ -497,29 +782,51 @@
     }
 
     .ruby-filter-options .form-check-label {
-        flex: 1 1 auto;
+        display: block;
+        flex: 1 1 calc(100% - 28px);
+        min-width: 0;
+        max-width: calc(100% - 28px);
         margin: 0 !important;
         color: #334155;
         font-size: 14px;
         line-height: 1.35;
-        overflow-wrap: anywhere;
+        overflow: visible;
+        overflow-wrap: break-word;
+        word-break: normal;
+        white-space: normal;
+    }
+
+    .ruby-filter-options > input.form-check-input {
+        float: none;
+        display: inline-block;
+        margin: 2px 8px 10px 0 !important;
+        vertical-align: top;
+    }
+
+    .ruby-filter-options > input.form-check-input + label.form-check-label {
+        display: inline;
+        vertical-align: top;
     }
 
     .ruby-filter-options .form-check .form-check {
-        margin-left: 12px !important;
-        padding-left: 12px !important;
-        border-left: 2px solid #f1f5f9;
+        width: 100%;
+        min-width: 0;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
     }
 
     .ruby-filter-actions {
-        position: absolute;
-        right: 0;
+        box-sizing: border-box;
+        position: sticky;
         bottom: 0;
-        left: 0;
+        z-index: 2;
+        flex: 0 0 auto;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
-        padding: 14px 20px 18px;
+        padding: 14px 20px max(18px, env(safe-area-inset-bottom));
         border-top: 1px solid #e5e7eb;
         background: #fff;
         box-shadow: 0 -10px 26px rgba(15, 23, 42, 0.08);
@@ -527,12 +834,27 @@
 
     .ruby-filter-actions .btn {
         display: inline-flex;
+        width: 100%;
         min-height: 44px;
+        min-width: 0;
         align-items: center;
         justify-content: center;
+        gap: 6px;
         margin: 0 !important;
+        padding-right: 10px !important;
+        padding-left: 10px !important;
         border-radius: 8px;
         font-weight: 700;
+        line-height: 1.2;
+        white-space: normal;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    .ruby-filter-actions .btn i {
+        flex: 0 0 auto;
+        margin-right: 0 !important;
+        margin-left: 0 !important;
     }
 
     .ruby-filter-apply {
@@ -549,7 +871,30 @@
 
     .show-advanced-filters,
     .advanced-search-widgets {
-        margin: 0 20px;
+        margin: 0;
+    }
+
+    .ruby-filter-advanced-block {
+        width: 100%;
+        min-width: 0;
+        margin-top: 4px;
+        padding-bottom: 10px;
+    }
+
+    .show-advanced-filters {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        gap: 8px;
+        max-width: calc(100% - 40px);
+        overflow: hidden;
+    }
+
+    .show-advanced-filters .title {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     @media (max-width: 991px) {
@@ -616,7 +961,106 @@
 
         .products-listing .shop-product-filter .sort-by-product-area {
             flex: 0 1 auto;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, auto));
+            gap: 8px;
             min-width: 0;
+        }
+
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by-cover {
+            min-width: 0;
+            margin-right: 0 !important;
+            position: relative;
+        }
+
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by-product-wrap {
+            display: flex;
+            min-height: 40px;
+            min-width: 0;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            padding: 8px 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by,
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by-dropdown-wrap {
+            min-width: 0;
+        }
+
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by span,
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by-dropdown-wrap > span {
+            display: inline-flex;
+            max-width: 100%;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            font-size: 12px;
+            line-height: 1.2;
+        }
+
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by i {
+            margin-right: 4px;
+        }
+
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by-current-value {
+            display: inline-block;
+            max-width: 76px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: bottom;
+            white-space: nowrap;
+        }
+
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by-dropdown {
+            right: 0;
+            left: auto;
+            min-width: 190px;
+            max-width: calc(100vw - 24px);
+            z-index: 60;
+        }
+
+        .products-listing .shop-product-filter .sort-by-product-area .sort-by-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        @media (max-width: 575px) {
+            .products-listing .shop-product-filter {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                align-items: stretch;
+            }
+
+            .products-listing .shop-product-filter .total-product {
+                width: 100%;
+            }
+
+            .products-listing .shop-product-filter .sort-by-product-area {
+                width: 100%;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .products-listing .shop-product-filter .sort-by-product-area .sort-by-current-value {
+                max-width: 58px;
+            }
+        }
+
+        @media (max-width: 374px) {
+            .products-listing .shop-product-filter .sort-by-product-area {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .products-listing .shop-product-filter .sort-by-product-area .sort-by-current-value {
+                max-width: 120px;
+            }
         }
 
         .products-listing .product-item-wrapper.product-cart-wrap {
@@ -668,30 +1112,6 @@
             margin-bottom: 5px;
         }
         
-        #scroll-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: #3BB77E;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        #scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
         .price-range-slider {
             margin-top: 15px;
         }
@@ -704,6 +1124,73 @@
             width: 16px !important;
             height: 16px !important;
             top: -6px !important;
+        }
+    }
+
+    @media (max-width: 575px) {
+        #products-filter-ajax,
+        #sidebar-filter-mobile {
+            width: 100dvw;
+            max-width: 100dvw;
+            transform: translateX(calc(-100% - 1px));
+            box-shadow: none;
+        }
+
+        .ruby-filter-panel__head {
+            padding: 14px 14px;
+        }
+
+        .ruby-filter-panel__body {
+            padding: 12px 14px;
+        }
+
+        .ruby-filter-options,
+        .ruby-filter-section .price-filter {
+            max-height: none;
+            padding: 10px 12px 12px;
+            overflow: visible;
+        }
+
+        .ruby-filter-options .ruby-filter-subcategories {
+            padding-left: 8px;
+        }
+
+        .ruby-filter-section .widget__title {
+            min-height: 44px;
+            padding: 12px !important;
+        }
+
+        .ruby-filter-actions {
+            gap: 8px;
+            padding: 12px 14px max(14px, env(safe-area-inset-bottom));
+        }
+
+        .ruby-filter-actions .btn {
+            min-height: 42px;
+            padding: 8px 10px !important;
+            font-size: 12px;
+        }
+
+        .show-advanced-filters,
+        .advanced-search-widgets {
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
+
+    @media (max-width: 359px) {
+        #products-filter-ajax,
+        #sidebar-filter-mobile {
+            width: 100dvw;
+            max-width: 100dvw;
+        }
+
+        .ruby-filter-actions {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .ruby-filter-panel__body {
+            padding-bottom: 12px;
         }
     }
 
@@ -801,19 +1288,101 @@
             button.addEventListener('click', closeFilters);
         });
 
-        const scrollTopBtn = document.createElement('button');
-        scrollTopBtn.id = 'scroll-top';
-        scrollTopBtn.type = 'button';
-        scrollTopBtn.innerHTML = '<i class="fi-rs-arrow-up"></i>';
-        document.body.appendChild(scrollTopBtn);
+        document.querySelectorAll('.products-listing .sort-by-product-area .sort-by-product-wrap').forEach(trigger => {
+            trigger.setAttribute('role', 'button');
+            trigger.setAttribute('tabindex', '0');
+            trigger.setAttribute('aria-haspopup', 'listbox');
+            trigger.setAttribute('aria-expanded', trigger.parentElement && trigger.parentElement.classList.contains('show') ? 'true' : 'false');
 
-        window.addEventListener('scroll', function () {
-            scrollTopBtn.classList.toggle('visible', window.pageYOffset > 300);
-        }, { passive: true });
+            const toggleSortDropdown = event => {
+                event.preventDefault();
+                event.stopPropagation();
 
-        scrollTopBtn.addEventListener('click', function () {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+                const cover = trigger.closest('.sort-by-cover');
+                const area = trigger.closest('.sort-by-product-area');
+                const dropdown = cover ? cover.querySelector('.sort-by-dropdown') : null;
+                const willOpen = cover ? !cover.classList.contains('show') : false;
+
+                document.querySelectorAll('.products-listing .sort-by-cover.show').forEach(openCover => {
+                    openCover.classList.remove('show');
+                    const openDropdown = openCover.querySelector('.sort-by-dropdown');
+                    const openTrigger = openCover.querySelector('.sort-by-product-wrap');
+
+                    if (openDropdown) {
+                        openDropdown.classList.remove('show');
+                    }
+
+                    if (openTrigger) {
+                        openTrigger.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                if (!cover || !dropdown) {
+                    return;
+                }
+
+                cover.classList.toggle('show', willOpen);
+                dropdown.classList.toggle('show', willOpen);
+                trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+
+                if (area) {
+                    area.classList.toggle('show', willOpen);
+                }
+
+                if (window.console) {
+                    console.debug('[RUBY Sort Debug] toggle', {
+                        opened: willOpen,
+                        name: dropdown.dataset.name || null,
+                        options: dropdown.querySelectorAll('a').length,
+                    });
+                }
+            };
+
+            trigger.addEventListener('click', toggleSortDropdown, true);
+            trigger.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    toggleSortDropdown(event);
+                }
+            });
         });
+
+        document.querySelectorAll('.products-listing .sort-by-dropdown a').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+
+                if (window.console) {
+                    console.debug('[RUBY Sort Debug] option click', {
+                        label: this.textContent.trim(),
+                        href: this.href,
+                    });
+                }
+
+                window.location.href = this.href;
+            }, true);
+        });
+
+        document.addEventListener('click', event => {
+            if (event.target.closest('.products-listing .sort-by-product-area')) {
+                return;
+            }
+
+            document.querySelectorAll('.products-listing .sort-by-cover.show').forEach(openCover => {
+                openCover.classList.remove('show');
+
+                const openDropdown = openCover.querySelector('.sort-by-dropdown');
+                const openTrigger = openCover.querySelector('.sort-by-product-wrap');
+
+                if (openDropdown) {
+                    openDropdown.classList.remove('show');
+                }
+
+                if (openTrigger) {
+                    openTrigger.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }, true);
 
         if (window.innerWidth <= 768) {
             document.querySelectorAll('.product-img img').forEach(img => {
@@ -859,6 +1428,116 @@
 
         const filterForm = document.getElementById('products-filter-ajax');
         if (filterForm) {
+            const rubyFilterDebug = true;
+            const debugFilterEvent = (eventName, payload = {}) => {
+                if (!rubyFilterDebug || !window.console) {
+                    return;
+                }
+
+                console.groupCollapsed(`[RUBY Filter Debug] ${eventName}`);
+                Object.entries(payload).forEach(([key, value]) => console.log(key, value));
+                console.groupEnd();
+            };
+
+            function encodeQueryKey(key) {
+                return encodeURIComponent(key).replace(/%5B/g, '[').replace(/%5D/g, ']');
+            }
+
+            function appendFormQuery(segments, key, value) {
+                if (value === null || value === '') {
+                    return;
+                }
+
+                if (key === 'page') {
+                    return;
+                }
+
+                segments.push(encodeQueryKey(key.replace(/\[\d+\]/g, '[]')) + '=' + encodeURIComponent(value));
+            }
+
+            function buildFormQuery(form, skipDefaultPrices) {
+                const formData = new FormData(form);
+                const segments = [];
+
+                formData.forEach((value, key) => {
+                    const field = form.querySelector(`[name="${CSS.escape(key)}"]`);
+
+                    if (skipDefaultPrices && key === 'min_price' && field && String(value) === String(field.dataset.min || '')) {
+                        return;
+                    }
+
+                    if (skipDefaultPrices && key === 'max_price' && field && String(value) === String(field.dataset.max || '')) {
+                        return;
+                    }
+
+                    appendFormQuery(segments, key, value);
+                });
+
+                return segments.join('&');
+            }
+
+            function buildFilterUrl(form) {
+                const targetUrl = new URL(form.action, window.location.origin);
+                const queryString = buildFormQuery(form, true);
+
+                targetUrl.search = queryString ? '?' + queryString : '';
+
+                return targetUrl.toString();
+            }
+
+            filterForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                const targetUrl = buildFilterUrl(filterForm);
+
+                debugFilterEvent('submit filter', {
+                    currentUrl: window.location.href,
+                    formAction: filterForm.action,
+                    targetUrl,
+                    formQuery: buildFormQuery(filterForm, true),
+                    checkedCategories: Array.from(filterForm.querySelectorAll('input[name="categories[]"]:checked')).map(input => input.value),
+                });
+
+                window.location.href = targetUrl;
+            }, true);
+
+            filterForm.querySelectorAll('.clear_all_filter').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const targetUrl = this.href || filterForm.action;
+
+                    debugFilterEvent('clear filter', {
+                        currentUrl: window.location.href,
+                        targetUrl,
+                    });
+
+                    window.location.href = targetUrl;
+                }, true);
+            });
+
+            document.querySelectorAll('.products-listing .pagination-page a.page-link').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+
+                    const targetUrl = new URL(this.href, window.location.origin);
+
+                    debugFilterEvent('pagination click', {
+                        clickedText: this.textContent.trim(),
+                        currentUrl: window.location.href,
+                        href: this.href,
+                        targetPage: targetUrl.searchParams.get('page') || '1',
+                        targetSearch: targetUrl.search,
+                        hasIndexedCategories: /categories%5B\d+%5D|categories\[\d+\]/i.test(this.href),
+                        checkedCategories: Array.from(filterForm.querySelectorAll('input[name="categories[]"]:checked')).map(input => input.value),
+                    });
+
+                    window.location.href = targetUrl.toString();
+                }, true);
+            });
+
             function debounce(func, wait) {
                 let timeout;
                 return function () {
@@ -874,15 +1553,18 @@
                     ? 'change' : 'input';
 
                 input.addEventListener(eventType, debounce(function () {
+                    if (input.closest('.ruby-filter-panel')) {
+                        return;
+                    }
+
                     if (productsContainer) {
                         productsContainer.classList.add('loading');
                     }
 
-                    const formData = new FormData(filterForm);
                     const requestUrl = new URL(filterForm.action, window.location.origin);
-                    formData.forEach((value, key) => {
-                        requestUrl.searchParams.append(key, value);
-                    });
+                    const queryString = buildFormQuery(filterForm, true);
+
+                    requestUrl.search = queryString ? '?' + queryString : '';
 
                     fetch(requestUrl.toString(), {
                         method: 'GET',

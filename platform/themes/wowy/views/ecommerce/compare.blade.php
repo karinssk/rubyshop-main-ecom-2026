@@ -122,9 +122,15 @@
                                         <td class="text-muted font-md fw-600">{{ __('Buy now') }}</td>
                                         @foreach($products as $product)
                                             <td class="row_btn">
-                                                <a href="#" class="btn btn-rounded btn-sm add-to-cart-button" data-id="{{ $product->id }}" data-url="{{ route('public.cart.add-to-cart') }}">
-                                                    <i class="far fa-shopping-bag mr-5"></i>{{ __('Add To Cart') }}
-                                                </a>
+                                                @if ($product->isOutOfStock())
+                                                    <span class="btn btn-rounded btn-sm btn-disabled disabled" aria-disabled="true">
+                                                        <i class="far fa-shopping-bag mr-5"></i>{{ __('Out of stock') }}
+                                                    </span>
+                                                @else
+                                                    <a href="#" class="btn btn-rounded btn-sm add-to-cart-button" data-id="{{ $product->id }}" data-url="{{ route('public.cart.add-to-cart') }}">
+                                                        <i class="far fa-shopping-bag mr-5"></i>{{ __('Add To Cart') }}
+                                                    </a>
+                                                @endif
                                             </td>
                                         @endforeach
                                     </tr>

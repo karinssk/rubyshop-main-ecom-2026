@@ -144,7 +144,7 @@ src="https://www.facebook.com/tr?id=2099959450541151&ev=PageView&noscript=1"
     "https://www.facebook.com/rubyshopthailand",
     "https://www.instagram.com/rubyshopth",
     "https://www.youtube.com/channel/rubyshopthailand",
-    "https://line.me/R/ti/p/@rubyshop"
+    "https://page.line.me/rubyshop168?openQrModal=true"
   ]
 }
 </script>

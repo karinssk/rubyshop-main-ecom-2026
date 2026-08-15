@@ -3,12 +3,12 @@
     $layout = ($layout && in_array($layout, array_keys(get_product_single_layouts()))) ? $layout : 'product-right-sidebar';
     Theme::layout($layout);
 
-    Theme::asset()->usePath()->add('lightGallery-css', 'plugins/lightGallery/css/lightgallery.min.css');
-    Theme::asset()->container('footer')->usePath()
-        ->add('lightGallery-js', 'plugins/lightGallery/js/lightgallery.min.js', ['jquery']);
-
     $productCanonicalUrl = $productCanonicalUrl ?? url()->current();
-    $productSeoDescription = trim(strip_tags((string) ($seoDescription ?? $product->description ?? $product->content ?? '')));
+    $productSeoSource = preg_replace('/<[^>]+>/u', ' ', (string) ($seoDescription ?? $product->description ?? $product->content ?? ''));
+    $productSeoDescription = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags($productSeoSource), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+
+    $productMetaDescription = 'เลือกซื้อ ' . $product->name . ' จาก RUBYSHOP เครื่องมือช่างสำหรับมืออาชีพ พร้อมให้คำแนะนำก่อนซื้อ จัดส่งทั่วไทย และบริการหลังการขาย';
+    SeoHelper::setDescription(\Illuminate\Support\Str::limit($productMetaDescription, 160, ''));
     $productSchemaImages = collect($productImages ?? [$product->image])
         ->filter()
         ->map(fn ($image) => RvMedia::getImageUrl($image, 'origin', false, RvMedia::getDefaultImage()))
@@ -21,6 +21,19 @@
         $productSchemaImages = [RvMedia::getImageUrl($product->image, 'origin', false, RvMedia::getDefaultImage())];
     }
 
+    $merchantReturnPolicySchema = [
+        '@type' => 'MerchantReturnPolicy',
+        'applicableCountry' => 'TH',
+        'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        'merchantReturnDays' => (int) theme_option('merchant_return_days', 7),
+        'returnMethod' => 'https://schema.org/ReturnByMail',
+        'returnFees' => 'https://schema.org/ReturnShippingFees',
+    ];
+
+    if ($merchantReturnPolicyUrl = theme_option('merchant_return_policy_url')) {
+        $merchantReturnPolicySchema['merchantReturnLink'] = url($merchantReturnPolicyUrl);
+    }
+
     $productOfferSchema = [
         '@type' => 'Offer',
         'url' => $productCanonicalUrl,
@@ -28,21 +41,37 @@
         'price' => (string) $product->front_sale_price_with_taxes,
         'availability' => $product->isOutOfStock() ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
         'itemCondition' => 'https://schema.org/NewCondition',
+        'hasMerchantReturnPolicy' => $merchantReturnPolicySchema,
     ];
 
     $productStructuredData = [
         '@type' => 'Product',
         '@id' => $productCanonicalUrl . '#product',
         'name' => $product->name,
+        'url' => $productCanonicalUrl,
         'description' => $productSeoDescription,
         'image' => $productSchemaImages,
         'sku' => $product->sku ?: (string) $product->getKey(),
+        'mpn' => $product->sku ?: (string) $product->getKey(),
         'brand' => [
             '@type' => 'Brand',
             'name' => $product->brand?->name ?: 'RUBYSHOP',
         ],
         'offers' => $productOfferSchema,
     ];
+
+    $productReviewsCount = (int) ($product->reviews_count ?? 0);
+    $productReviewsAverage = (float) ($product->reviews_avg ?? 0);
+
+    if ($productReviewsCount > 0 && $productReviewsAverage > 0) {
+        $productStructuredData['aggregateRating'] = [
+            '@type' => 'AggregateRating',
+            'ratingValue' => round($productReviewsAverage, 1),
+            'reviewCount' => $productReviewsCount,
+            'bestRating' => 5,
+            'worstRating' => 1,
+        ];
+    }
 
     $breadcrumbStructuredData = [
         '@type' => 'BreadcrumbList',
@@ -374,6 +403,36 @@
             border-radius: 8px;
         }
     }
+
+    /* Gap between last related products row and footer */
+    #related-products { margin-bottom: 60px; }
+
+    /* Related products & cross-sell grid fix */
+    #related-products .product-cart-wrap,
+    .row.mt-60 .product-cart-wrap {
+        margin-bottom: 0 !important;
+    }
+    #related-products .col-lg-4,
+    #related-products .col-md-4,
+    #related-products .col-sm-6,
+    #related-products .col-6,
+    .row.mt-60.gy-4 .col-lg-4,
+    .row.mt-60.gy-4 .col-md-4,
+    .row.mt-60.gy-4 .col-sm-6,
+    .row.mt-60.gy-4 .col-12 {
+        display: flex;
+        flex-direction: column;
+    }
+    #related-products .product-item-wrapper,
+    .row.mt-60.gy-4 .product-item-wrapper {
+        height: 100%;
+        max-height: 420px;
+    }
+    #related-products .product-img,
+    .row.mt-60.gy-4 .product-img {
+        height: 180px !important;
+        aspect-ratio: unset !important;
+    }
 </style>
 <div class="product-detail accordion-detail mx-4">
     <div class="row mb-50">
@@ -514,7 +573,7 @@
                         </li>
                     @endif
 
-                    <li><span class="d-inline-block me-1">{{ __('Availability') }}:</span> <span class="in-stock text-success ml-5">{!! BaseHelper::clean($product->stock_status_html) !!}</span></li>
+                    <li><span class="d-inline-block me-1">{{ __('Availability') }}:</span> <span class="ml-5">{!! BaseHelper::clean($product->stock_status_html) !!}</span></li>
                 </ul>
             </div>
             <!-- Detail Info -->
@@ -590,11 +649,13 @@
         </div>
     </div>
 
+    @include(Theme::getThemeNamespace() . '::views.custom.partials.product-upgrade-sections', ['product' => $product])
+
     @php
         $crossSellProducts = get_cross_sale_products($product, $layout == 'product-full-width' ? 4 : 3);
     @endphp
     @if (count($crossSellProducts) > 0)
-        <div class="row mt-60">
+        <div class="row mt-60 gy-4">
             <div class="col-12">
                 <h2 class="section-title style-1 mb-30">{{ __('You may also like') }}</h2>
             </div>
@@ -611,7 +672,7 @@
     @endphp
 
     @if (count($relatedProducts) > 0)
-        <div class="row mt-60" id="related-products">
+        <div class="row mt-60 gy-4" id="related-products">
             <div class="col-12">
                 <h2 class="section-title style-1 mb-30">{{ __('Related products') }}</h2>
             </div>

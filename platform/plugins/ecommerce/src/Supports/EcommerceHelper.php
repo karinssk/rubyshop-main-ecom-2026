@@ -311,7 +311,7 @@ class EcommerceHelper
     public function getSortParams(): array
     {
         $sort = [
-            'default_sorting' => 'defualt',
+            'default_sorting' => __('Default'),
             'date_asc' => __('Oldest'),
             'date_desc' => __('Newest'),
         ];

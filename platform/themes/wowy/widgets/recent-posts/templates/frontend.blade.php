@@ -12,7 +12,7 @@
                     <div class="col-md-6 col-sm-6 sm-grid-content mb-30">
                         <div class="post-thumb d-flex border-radius-5 img-hover-scale mb-15">
                             <a href="{{ $post->url }}">
-                                <img src="{{ RvMedia::getImageUrl($post->image, 'medium', false, RvMedia::getDefaultImage()) }}" alt="{{ $post->name }}">
+                                <img src="{{ RvMedia::getImageUrl($post->image, 'medium', false, RvMedia::getDefaultImage()) }}" alt="{{ $post->name }}" width="800" height="800" loading="lazy" decoding="async">
                             </a>
                         </div>
                         <div class="post-content media-body">

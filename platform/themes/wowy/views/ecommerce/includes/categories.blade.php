@@ -11,18 +11,24 @@
 
 @if($currentCategories)
     @foreach ($currentCategories as $category)
-        <div class="form-check">
+        <li class="form-check ruby-filter-category-item">
             <input class="form-check-input" type="checkbox" name="categories[]" value="{{ $category->id }}" @checked(in_array($category->id, $categoriesRequest)) id="category-filter-{{ $category->id }}">
             <label class="form-check-label" for="category-filter-{{ $category->id }}">
                 {{ $category->name }}
             </label>
 
             @if ($groupedCategories->has($category->id))
-                @include(Theme::getThemeNamespace('views.ecommerce.includes.categories'), [
-                    'categories' => $groupedCategories,
-                    'parentId' => $category->id,
-                ])
+                <ul class="ruby-filter-subcategories">
+                    @include(Theme::getThemeNamespace('views.ecommerce.includes.categories'), [
+                        'categories' => $categories,
+                        'groupedCategories' => $groupedCategories,
+                        'parentId' => $category->id,
+                        'activeCategoryId' => $activeCategoryId,
+                        'categoriesRequest' => $categoriesRequest,
+                        'urlCurrent' => $urlCurrent ?? null,
+                    ])
+                </ul>
             @endif
-        </div>
+        </li>
     @endforeach
 @endif

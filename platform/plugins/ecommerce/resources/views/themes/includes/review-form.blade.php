@@ -57,7 +57,7 @@
 
             <script type="text/x-custom-template" id="review-image-template">
                 <span class="image-viewer__item" data-id="__id__">
-                    <img src="{{ RvMedia::getDefaultImage() }}" alt="Preview" class="img-responsive d-block">
+                    <img src="{{ RvMedia::getDefaultImage() }}" alt="Preview" class="img-responsive d-block" width="150" height="150" loading="lazy" decoding="async">
                     <span class="image-viewer__icon-remove">
                         <x-core::icon name="ti ti-x" />
                     </span>

@@ -63,9 +63,15 @@
             {!! apply_filters('ecommerce_after_product_price_in_listing', null, $product) !!}
             @if (EcommerceHelper::isCartEnabled())
                 <div class="product-action-1 show" @if (!EcommerceHelper::isReviewEnabled()) style="bottom: 10px;" @endif>
-                    <a aria-label="{{ __('Add To Cart') }}" class="action-btn hover-up add-to-cart-button" data-id="{{ $product->id }}" data-url="{{ route('public.cart.add-to-cart') }}" href="#">
-                        <i class="far fa-shopping-bag"></i>
-                    </a>
+                    @if ($product->isOutOfStock())
+                        <span aria-label="{{ __('Out of stock') }}" class="action-btn hover-up is-disabled" role="button" aria-disabled="true">
+                            <i class="far fa-shopping-bag"></i>
+                        </span>
+                    @else
+                        <a aria-label="{{ __('Add To Cart') }}" class="action-btn hover-up add-to-cart-button" data-id="{{ $product->id }}" data-url="{{ route('public.cart.add-to-cart') }}" href="#">
+                            <i class="far fa-shopping-bag"></i>
+                        </a>
+                    @endif
                 </div>
             @endif
         </div>
@@ -108,6 +114,12 @@
                 width: 100%;
                 height: 100%;
                 object-fit: contain;
+            }
+
+            .product-item-wrapper .product-action-1 .action-btn.is-disabled {
+                cursor: not-allowed;
+                opacity: 0.45;
+                pointer-events: none;
             }
 
             .product-item-wrapper .product-content-wrap {

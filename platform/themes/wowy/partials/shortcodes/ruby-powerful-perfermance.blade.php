@@ -29,7 +29,7 @@
         <div class="ruby-performance__grid">
             @foreach ($visibleColumns as $column)
                 @php
-                    $imageUrl = $column['image'] ? RvMedia::getImageUrl($column['image'], null, false, RvMedia::getDefaultImage()) : RvMedia::getDefaultImage();
+                    $imageUrl = $column['image'] ? RvMedia::getImageUrl($column['image'], 'medium', false, RvMedia::getDefaultImage()) : RvMedia::getDefaultImage();
                     $imageUrlSmall = $column['image'] ? RvMedia::getImageUrl($column['image'], 'product-thumb', false, RvMedia::getDefaultImage()) : $imageUrl;
                 @endphp
 
@@ -37,7 +37,7 @@
                     <img
                         class="ruby-performance__image"
                         src="{{ $imageUrl }}"
-                        srcset="{{ $imageUrlSmall }} 400w, {{ $imageUrl }} 900w"
+                        srcset="{{ $imageUrlSmall }} 400w, {{ $imageUrl }} 800w"
                         sizes="(max-width: 991px) 100vw, 50vw"
                         alt="{{ e($column['title'] ?: __('Powerful image')) }}"
                         width="900"
@@ -58,7 +58,7 @@
 
                             @if ($column['buttonText'] && $column['buttonLink'])
                                 <div class="ruby-performance__action">
-                                    <a class="ruby-performance__button" href="{{ e($column['buttonLink']) }}">
+                                    <a class="ruby-performance__button" href="{{ e($column['buttonLink']) }}" aria-label="{{ e(trim(strip_tags((string) $column['buttonText'])) . ($column['title'] ? ': ' . trim(strip_tags((string) $column['title'])) : '')) }}">
                                         {!! BaseHelper::clean($column['buttonText']) !!}
                                     </a>
                                 </div>

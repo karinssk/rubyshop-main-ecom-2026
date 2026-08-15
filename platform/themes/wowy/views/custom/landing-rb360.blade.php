@@ -376,21 +376,27 @@
 </div>
 
 @php
+    $merchantReturnPolicySchema = [
+        '@type' => 'MerchantReturnPolicy',
+        'applicableCountry' => 'TH',
+        'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        'merchantReturnDays' => (int) theme_option('merchant_return_days', 7),
+        'returnMethod' => 'https://schema.org/ReturnByMail',
+        'returnFees' => 'https://schema.org/ReturnShippingFees',
+    ];
+
+    if ($merchantReturnPolicyUrl = theme_option('merchant_return_policy_url')) {
+        $merchantReturnPolicySchema['merchantReturnLink'] = url($merchantReturnPolicyUrl);
+    }
+
     $rb360OfferSchema = [
         '@type' => 'Offer',
         'priceCurrency' => 'THB',
         'price' => (float) ($salePrice ?: 0),
         'availability' => 'https://schema.org/InStock',
         'url' => $productUrl,
+        'hasMerchantReturnPolicy' => $merchantReturnPolicySchema,
     ];
-
-    if ($merchantReturnPolicyUrl = theme_option('merchant_return_policy_url')) {
-        $rb360OfferSchema['hasMerchantReturnPolicy'] = [
-            '@type' => 'MerchantReturnPolicy',
-            'returnPolicyCategory' => $merchantReturnPolicyUrl,
-            'merchantReturnDays' => (int) theme_option('merchant_return_days', 30),
-        ];
-    }
 
     $rb360ProductSchema = [
         '@context' => 'https://schema.org',

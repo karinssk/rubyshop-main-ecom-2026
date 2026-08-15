@@ -9,7 +9,7 @@
     @foreach(get_featured_products($params) as $item)
         <div class="single-post clearfix">
             <div class="image">
-                <a href="{{ $item->url }}"><img src="{{ RvMedia::getImageUrl($item->image, 'thumb', false, RvMedia::getDefaultImage()) }}" alt="{{ $item->name }}"></a>
+                <a href="{{ $item->url }}"><img src="{{ RvMedia::getImageUrl($item->image, 'thumb', false, RvMedia::getDefaultImage()) }}" alt="{{ $item->name }}" width="150" height="150" loading="lazy" decoding="async"></a>
             </div>
             <div class="content pt-10">
                 <h5><a href="{{ $item->url }}">{{ $item->name }}</a></h5>

@@ -5,7 +5,7 @@
     <div class="container mx-auto px-4 ruby-footer-container">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 ruby-footer-grid">
             <div>
-                <img src="https://www.rubyshop.co.th/storage/logo/rubyshop-no-bg-white.png" alt="RUBYSHOP Logo" class="h-12 mb-6" width="160" height="48" loading="lazy" decoding="async">
+                <img src="https://www.rubyshop.co.th/storage/logo/rubyshop-no-bg-white-footer.webp" alt="RUBYSHOP Logo" class="h-12 mb-6" width="160" height="48" loading="lazy" decoding="async">
                 <p class="text-gray-400 ruby-footer-about-text">เครื่องมือช่างคุณภาพ สำหรับงานมืออาชีพ</p>
                 <div class="flex space-x-4 mt-6 text-xl ruby-social-links">
                     <a href="https://www.facebook.com/rubyshopcoth" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i><span class="sr-only">Facebook</span></a>
@@ -16,7 +16,7 @@
             </div>
 
             <div>
-                <h4 class="text-lg font-semibold mb-6 text-white">เมนูหลัก</h4>
+                <h2 class="text-lg font-semibold mb-6 text-white">เมนูหลัก</h2>
                 <ul class="space-y-3 text-gray-400 text-sm ruby-contact-list">
                     <li><a href="/" class="hover:text-white text-white">หน้าแรก</a></li>
                     <li><a href="https://www.rubyshop.co.th/products" class="hover:text-white">สินค้าทั้งหมด</a></li>
@@ -26,7 +26,7 @@
             </div>
 
             <div>
-                <h4 class="text-lg font-semibold mb-6 text-white">ผลิตภัณฑ์อื่นๆ</h4>
+                <h2 class="text-lg font-semibold mb-6 text-white">ผลิตภัณฑ์อื่นๆ</h2>
                 <ul class="space-y-3 text-gray-400 text-sm">
                     <li><a href="https://www.rubyshop.co.th/products/rubyshop-rb-32-3000-rebar-bending-machine" class="hover:text-white">เครื่องตัดเหล็ก</a></li>
                     <li><a href="https://www.rubyshop.co.th/product-categories/airless-sprayer" class="hover:text-white">เครื่องพ่นสี</a></li>
@@ -36,7 +36,7 @@
             </div>
 
             <div>
-                <h4 class="text-lg font-semibold mb-6 text-white">ติดต่อเรา</h4>
+                <h2 class="text-lg font-semibold mb-6 text-white">ติดต่อเรา</h2>
                 <ul class="space-y-3 text-gray-400 text-sm">
                     <li class="flex items-start">
                         <a class="hover:text-white hover:underline" href="https://www.google.com/maps/place/%E0%B8%AB%E0%B8%88%E0%B8%81.%E0%B8%A3%E0%B8%B9%E0%B8%9A%E0%B8%B5%E0%B9%89%E0%B8%8A%E0%B9%8A%E0%B8%AD%E0%B8%9B/@13.9105948,100.5740356,20z/data=!4m6!3m5!1s0x30e28301fbf17fbd:0x806362f26ffe576f!8m2!3d13.9104803!4d100.5742382!16s%2Fg%2F12m9309nd?entry=ttu">
@@ -56,7 +56,7 @@
             </div>
 
             <div>
-                <h4 class="text-lg font-semibold mb-6 text-white">ลิงก์แนะนำ</h4>
+                <h2 class="text-lg font-semibold mb-6 text-white">ลิงก์แนะนำ</h2>
                 <ul class="space-y-3 text-gray-400 text-sm">
                     <li><a href="https://www.rubyshop.co.th/product-categories/airless-sprayer" class="hover:text-white">เครื่องพ่นสีแรงดันสูง Airless Sprayer</a></li>
                     <li><a href="https://www.rubyshop.co.th/product-categories/wallcheser" class="hover:text-white">เครื่องกรีดผนัง Wall Chaser</a></li>
@@ -66,7 +66,7 @@
             </div>
 
             <div>
-                <h4 class="text-lg font-semibold mb-6 text-white">บัญชี</h4>
+                <h2 class="text-lg font-semibold mb-6 text-white">บัญชี</h2>
                 <ul class="space-y-3 text-gray-400 text-sm">
                     <li><a href="https://www.rubyshop.co.th/th/login" class="hover:text-white">เข้าสู่ระบบ (TH)</a></li>
                     <li><a href="https://www.rubyshop.co.th/register" class="hover:text-white">สมัครสมาชิก</a></li>
@@ -110,8 +110,16 @@
 
 @php
     $isHomePageFooter = request()->path() === '/' || request()->routeIs('public.index') || request()->routeIs('home');
+    $footerPath = trim(request()->path(), '/');
+    $isLeanAssetFooter = $isHomePageFooter
+        || $footerPath === 'blog'
+        || str_starts_with($footerPath, 'blog/')
+        || $footerPath === 'products'
+        || str_starts_with($footerPath, 'products/')
+        || $footerPath === 'product-categories'
+        || str_starts_with($footerPath, 'product-categories/');
 
-    if ($isHomePageFooter) {
+    if ($isLeanAssetFooter) {
         Theme::asset()->container('footer')->remove('custom-scrollbar-js');
     }
 @endphp
@@ -150,11 +158,6 @@
 @endif
 
 <div id="scrollUp"><i class="fal fa-long-arrow-up"></i></div>
-
-<noscript>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1073208261615128&ev=PageView&noscript=1" alt="Meta Pixel tracking">
-</noscript>
-
 
 <!-- Messenger Float Button — raised above bottom nav on mobile -->
 <a href="https://m.me/816184855086392" target="_blank" rel="noopener noreferrer" id="messenger-float-btn" title="Chat with us on Messenger">
@@ -216,7 +219,58 @@
 
 <script src="{{ Theme::asset()->url('js/rubyshop-csrf.js') }}?v=20260604-1"></script>
 
-<script src="{{ Theme::asset()->url('js/rubyshop-footer-events.js') }}?v=20260604-1"></script>
+<script src="{{ Theme::asset()->url('js/rubyshop-footer-events.js') }}?v=20260606-2"></script>
 
+@if ($isHomePageFooter)
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "RubyShop",
+  "url": "https://www.rubyshop.co.th",
+  "logo": "https://www.rubyshop.co.th/storage/general/logo.png",
+  "description": "RubyShop จำหน่ายเครื่องมือช่างและอุปกรณ์ก่อสร้างมืออาชีพ เครื่องพ่นสีแรงดันสูง เครื่องกรีดผนัง เครื่องขัดผนัง",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "availableLanguage": "Thai"
+  },
+  "sameAs": [
+    "https://www.facebook.com/rubyshopcoth"
+  ]
+}
+</script>
+@endif
+
+
+<script>
+// RubyShop CTA Event Tracking
+document.addEventListener('DOMContentLoaded', function() {
+    // Track LINE clicks
+    document.querySelectorAll('a[href*="line.me"]').forEach(function(el) {
+        el.addEventListener('click', function() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'line_click', {
+                    event_category: 'CTA',
+                    event_label: window.location.pathname,
+                    page_path: window.location.pathname
+                });
+            }
+        });
+    });
+    // Track phone clicks
+    document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
+        el.addEventListener('click', function() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'phone_click', {
+                    event_category: 'CTA',
+                    event_label: window.location.pathname,
+                    page_path: window.location.pathname
+                });
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

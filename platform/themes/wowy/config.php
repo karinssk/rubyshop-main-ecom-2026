@@ -41,6 +41,19 @@ return [
         'beforeRenderTheme' => function (Theme $theme): void {
             $version = get_cms_version() . '.2';
             $isHomePage = request()->path() === '/' || request()->routeIs('public.index') || request()->routeIs('home');
+            $path = trim(request()->path(), '/');
+            $isBlogLitePage = $path === 'blog' || str_starts_with($path, 'blog/');
+            $isEcommerceLitePage = request()->routeIs([
+                'product.detail.slug',
+                'product.detail',
+                'product.categories.index',
+                'product.categories.slug',
+                'public.products',
+            ]) || $path === 'products'
+                || str_starts_with($path, 'products/')
+                || $path === 'product-categories'
+                || str_starts_with($path, 'product-categories/');
+            $isLeanContentPage = $isHomePage || $isEcommerceLitePage || $isBlogLitePage;
 
             /*import vendors*/
             $theme->asset()->usePath()->add('normalize-css', 'css/vendors/normalize.css');
@@ -54,7 +67,9 @@ return [
             $theme->asset()->usePath()->add('wowy-font-css', 'css/vendors/wowy-font.css');
 
             /*import plugins*/
-            $theme->asset()->usePath()->add('animate-css', 'css/plugins/animate.css');
+            if (! $isLeanContentPage) {
+                $theme->asset()->usePath()->add('animate-css', 'css/plugins/animate.css');
+            }
             if (! $isHomePage) {
                 $theme->asset()->usePath()->add('slick-css', 'css/plugins/slick.css');
             }
@@ -71,18 +86,19 @@ return [
                 $theme->asset()->container('footer')->usePath()->add('home-lite-guards', 'js/home-lite-guards.js', ['jquery'], [], '20260604-5');
                 $theme->asset()->container('footer')->usePath()->add('main', 'js/main.js', ['jquery', 'home-lite-guards'], [], $version);
             } else {
-                $theme->asset()->container('footer')->usePath()->add('jquery-migrate', 'js/vendor/jquery-migrate.min.js');
                 $theme->asset()->container('footer')->usePath()->add('slick-js', 'js/plugins/slick.js');
-                $theme->asset()->container('footer')->usePath()->add('modernizr', 'js/vendor/modernizr-3.6.0.min.js');
-                $theme->asset()->container('footer')->usePath()->add('jquery.syotimer-js', 'js/plugins/jquery.syotimer.min.js');
-                $theme->asset()->container('footer')->usePath()->add('wow-js', 'js/plugins/wow.js');
-                $theme->asset()->container('footer')->usePath()->add('waypoints-js', 'js/plugins/waypoints.js');
-                $theme->asset()->container('footer')->usePath()->add('jquery.countdown-js', 'js/plugins/jquery.countdown.min.js');
-                $theme->asset()->container('footer')->usePath()->add('jquery.vticker-js', 'js/plugins/jquery.vticker-min.js');
+                if (! $isLeanContentPage) {
+                    $theme->asset()->container('footer')->usePath()->add('wow-js', 'js/plugins/wow.js');
+                    $theme->asset()->container('footer')->usePath()->add('jquery.countdown-js', 'js/plugins/jquery.countdown.min.js');
+                    $theme->asset()->container('footer')->usePath()->add('jquery.vticker-js', 'js/plugins/jquery.vticker-min.js');
+                }
                 $theme->asset()->container('footer')->usePath()->add('jquery.theia.sticky-js', 'js/plugins/jquery.theia.sticky.js');
-                $theme->asset()->container('footer')->usePath()->add('jquery.elevatezoom-js', 'js/plugins/jquery.elevatezoom.js');
-                $theme->asset()->container('footer')->usePath()->add('imagesloaded-js', 'js/plugins/imagesloaded.pkgd.min.js', ['jquery']);
-                $theme->asset()->container('footer')->usePath()->add('main', 'js/main.js', ['jquery', 'jquery-migrate', 'imagesloaded-js', 'jquery.theia.sticky-js', 'jquery.elevatezoom-js'], [], $version);
+                if ($isLeanContentPage) {
+                    $theme->asset()->container('footer')->usePath()->add('main', 'js/main.js', ['jquery', 'jquery.theia.sticky-js'], [], $version);
+                } else {
+                    $theme->asset()->container('footer')->usePath()->add('imagesloaded-js', 'js/plugins/imagesloaded.pkgd.min.js', ['jquery']);
+                    $theme->asset()->container('footer')->usePath()->add('main', 'js/main.js', ['jquery', 'imagesloaded-js', 'jquery.theia.sticky-js'], [], $version);
+                }
             }
             if (! $isHomePage) {
                 $theme->asset()->container('footer')->usePath()->add('backend', 'js/backend.js', [], [], $version);
@@ -98,7 +114,7 @@ return [
                 if ($isHomePage) {
                     $theme->asset()
                         ->add('front-ecommerce-css', 'vendor/core/plugins/ecommerce/css/front-ecommerce.css', version: get_cms_version() . '.3');
-                } else {
+                } elseif (! $isBlogLitePage) {
                     EcommerceHelper::registerThemeAssets();
                 }
             }

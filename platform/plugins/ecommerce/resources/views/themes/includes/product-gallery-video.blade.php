@@ -23,6 +23,7 @@
                     style="max-width: 100%;"
                 >
                     <source src="{{ $video['url'] }}" type="video/{{ $fileExtension }}">
+                    <track kind="captions" srclang="th" label="คำบรรยายภาษาไทย" src="{{ Theme::asset()->url('captions/rubyshop-hero-th.vtt') }}" default>
                     <img src="{{ $video['thumbnail'] }}" alt="{{ $video['url'] }}">
                 </video>
                 <button class="bb-button-trigger-play-video" data-target="{{ md5($video['url']) }}">

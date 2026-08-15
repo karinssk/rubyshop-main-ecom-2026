@@ -11,6 +11,7 @@ use App\Http\Controllers\AllProductsController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ProductLandingController;
 use App\Http\Controllers\Rb360LandingController;
+use App\Http\Controllers\AirlessHubController;
 use App\Http\Controllers\Auth\LineAuthController;
 use App\Http\Controllers\HealthController;
 use Illuminate\Http\Request;
@@ -54,11 +55,9 @@ Route::get('/blogs/{slug}', [BlogsController::class, 'show'])
 
 
 
-// All products listing page
-Route::redirect('/allproducts', '/categories', 301)->name('allproducts');
-
-// All categories page
-Route::get('/categories', [AllProductsController::class, 'categories'])->name('categories');
+// Legacy category indexes. Canonical category index is /product-categories.
+Route::redirect('/allproducts', '/product-categories', 301)->name('allproducts');
+Route::redirect('/categories', '/product-categories', 301)->name('categories');
 
 // Product landing pages
 Route::get('/landing', [ProductLandingController::class, 'index'])->name('landing.index');
@@ -69,6 +68,12 @@ Route::get('/lp/rb-360-quote', [Rb360LandingController::class, 'show'])->name('l
 Route::get('/lp/rb-899-v2', [PromotionController::class, 'show'])
     ->defaults('slug', 'rb-899-v2')
     ->name('landing.rb899.v2');
+Route::get('/lp/airless-sprayer-thailand', [AirlessHubController::class, 'index'])->name('lp.airless-sprayer');
+Route::get('/lp/airless-sprayer-price', [AirlessHubController::class, 'priceGuide'])->name('lp.airless-price');
+Route::get('/lp/drywall-sander', [App\Http\Controllers\ToolHubController::class, 'drywallSander'])->name('lp.drywall-sander');
+Route::get('/lp/wall-chaser', [App\Http\Controllers\ToolHubController::class, 'wallChaser'])->name('lp.wall-chaser');
+Route::get('/lp/airless-spray-gun', [App\Http\Controllers\ToolHubController::class, 'sprayGun'])->name('lp.spray-gun');
+Route::get('/lp/airless-hose', [App\Http\Controllers\ToolHubController::class, 'airlessHose'])->name('lp.airless-hose');
 
 // Catalog pages
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
@@ -81,22 +86,28 @@ Route::get('/catalog/file', [CatalogController::class, 'file'])->name('catalog.f
 Route::get('/sub/{slug}', [AllProductsController::class, 'mainCategory'])->name('main.category');
 
 // Individual category page (shows products)
-Route::redirect('/product-categories-test/{slug}', '/allproducts/category/{slug}', 301)
+Route::redirect('/product-categories-test/{slug}', '/product-categories/{slug}', 301)
     ->where('slug', '.*')
     ->name('legacy.product.category');
+Route::redirect('/product-categories/motar-sprayer-220v-380v', '/product-categories/mortar-sprayer-220v-380v', 301)
+    ->name('legacy.product.category.motar-sprayer');
+Route::redirect('/blog/rb-mt9001-motar-sprayer-pre-order', '/blog/rb-mt9001-mortar-sprayer-pre-order', 301)
+    ->name('legacy.blog.motar-sprayer');
 
 // Categories overview page
 Route::get('/product-categories', [AllProductsController::class, 'categories'])->name('product.categories.index');
 Route::get('/product-categories/{slug}', [AllProductsController::class, 'category'])->name('product.categories.slug');
 
 // Product detail page - product cards use Botble slug URLs such as /products/ruby-shop-rb899.
+Route::redirect('/products/filter-motar-sprayer-220v', '/products/filter-mortar-sprayer-220v', 301)
+    ->name('legacy.product.filter-motar-sprayer');
 Route::get('/products/{slug}', [AllProductsController::class, 'show'])->name('product.detail.slug');
 
-// Product detail page - use your existing controller/route
-
+// Legacy product/detail and category URLs. Keep them as 301-only to avoid duplicate indexable pages.
 Route::get('/allproducts/{id}', [AllProductsController::class, 'show'])->name('product.detail');
-// Add this route for category pages
-Route::get('/allproducts/category/{slug}', [AllProductsController::class, 'category'])->name('allproducts.category');
+Route::redirect('/allproducts/category/{slug}', '/product-categories/{slug}', 301)
+    ->where('slug', '.*')
+    ->name('allproducts.category');
 
 
 // Main category page (shows subcategories)

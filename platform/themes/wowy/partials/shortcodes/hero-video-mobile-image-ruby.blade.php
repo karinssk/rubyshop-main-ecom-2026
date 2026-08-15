@@ -17,6 +17,15 @@
     $defaultImage   = RvMedia::getDefaultImage();
 
     $desktopVideoUrl = $desktopVideo ? RvMedia::url($desktopVideo) : null;
+    if ($desktopVideoUrl) {
+        $desktopVideoPathForVersion = parse_url($desktopVideo, PHP_URL_PATH) ?: $desktopVideo;
+        $desktopVideoPathForVersion = preg_replace('#^/?storage/#', '', ltrim($desktopVideoPathForVersion, '/'));
+        $desktopVideoFile = public_path('storage/' . $desktopVideoPathForVersion);
+
+        if (is_file($desktopVideoFile)) {
+            $desktopVideoUrl .= (str_contains($desktopVideoUrl, '?') ? '&' : '?') . 'v=' . filemtime($desktopVideoFile);
+        }
+    }
     $desktopPosterUrl = $desktopPoster
         ? RvMedia::getImageUrl($desktopPoster, null, false, $defaultImage)
         : ($mobileImage ? RvMedia::getImageUrl($mobileImage, null, false, $defaultImage) : $defaultImage);
@@ -57,6 +66,7 @@
                 disablepictureinpicture disableremoteplayback
                 controlslist="nodownload,nofullscreen,noremoteplayback">
                 <source src="{{ $desktopVideoUrl }}" type="video/mp4">
+                <track kind="captions" srclang="th" label="คำบรรยายภาษาไทย" src="{{ Theme::asset()->url('captions/rubyshop-hero-th.vtt') }}" default>
             </video>
             <div class="ruby-hero__media__fallback" aria-hidden="true">
                 <span class="ruby-hero__loader"></span>

@@ -26,7 +26,7 @@ class ProductLandingController extends Controller
         ['type' => 'video_demo', 'title' => 'Live Demonstration', 'content' => ''],
         ['type' => 'testimonials_reviews', 'title' => 'Customer Reviews', 'content' => ''],
         ['type' => 'comparison', 'title' => 'Why Rubyshop', 'content' => ''],
-        ['type' => 'use_cases', 'title' => 'Who It’s For', 'content' => ''],
+        ['type' => 'use_cases', 'title' => 'Who It\'s For', 'content' => ''],
         ['type' => 'pricing_offer', 'title' => 'Pricing & Offer', 'content' => ''],
         ['type' => 'risk_reversal', 'title' => 'Warranty & Guarantee', 'content' => ''],
         ['type' => 'faq_section', 'title' => 'FAQ', 'content' => ''],
@@ -114,6 +114,7 @@ class ProductLandingController extends Controller
 
         SeoHelper::setTitle($product->name . ' | Rubyshop')
             ->setDescription(BaseHelper::clean(strip_tags((string) $product->description)));
+        SeoHelper::meta()->setUrl(url('/products/' . $product->slug));
 
         return Theme::scope('custom.product-landing', [
             'product' => $product,

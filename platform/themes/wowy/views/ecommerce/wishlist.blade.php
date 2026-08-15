@@ -38,7 +38,11 @@
                                         </td>
 
                                         <td class="text-right" data-title="{{ __('Action') }}">
-                                            <a href="#" class="btn btn-rounded btn-sm add-to-cart-button" data-id="{{ $product->id }}" data-url="{{ route('public.cart.add-to-cart') }}"><i class="far fa-shopping-bag mr-5"></i>{{ __('Add to cart') }}</a>
+                                            @if ($product->isOutOfStock())
+                                                <span class="btn btn-rounded btn-sm btn-disabled disabled" aria-disabled="true"><i class="far fa-shopping-bag mr-5"></i>{{ __('Out of stock') }}</span>
+                                            @else
+                                                <a href="#" class="btn btn-rounded btn-sm add-to-cart-button" data-id="{{ $product->id }}" data-url="{{ route('public.cart.add-to-cart') }}"><i class="far fa-shopping-bag mr-5"></i>{{ __('Add to cart') }}</a>
+                                            @endif
                                         </td>
 
                                         <td class="action" data-title="{{ __('Remove') }}">

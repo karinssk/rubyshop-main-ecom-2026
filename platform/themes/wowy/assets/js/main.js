@@ -430,7 +430,7 @@
     --------------------- */
 
     // Isotope active
-    if ($('.grid').length) {
+    if ($('.grid').length && $.fn.imagesLoaded) {
         $('.grid').imagesLoaded(function () {
             // init Isotope
             var $grid = $('.grid').isotope({

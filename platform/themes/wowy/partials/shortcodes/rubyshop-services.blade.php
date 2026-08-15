@@ -1,6 +1,6 @@
 @once
     @unless (request()->path() === '/' || request()->routeIs('public.index') || request()->routeIs('home'))
-        <link rel="stylesheet" href="{{ Theme::asset()->url('css/rubyshop-services.css') }}?v=20260604-1">
+        <link rel="stylesheet" href="{{ Theme::asset()->url('css/rubyshop-services.css') }}?v=20260606-a11y">
     @endunless
 @endonce
 
@@ -54,7 +54,7 @@
 
                             @if ($card['buttonText'] && $card['buttonLink'])
                                 <div class="ruby-services__action">
-                                    <a class="ruby-services__button" href="{{ e($card['buttonLink']) }}">
+                                    <a class="ruby-services__button" href="{{ e($card['buttonLink']) }}" aria-label="{{ e(trim(strip_tags((string) $card['buttonText'])) . ($card['title'] ? ': ' . trim(strip_tags((string) $card['title'])) : '')) }}">
                                         {!! BaseHelper::clean($card['buttonText']) !!}
                                     </a>
                                 </div>
@@ -84,7 +84,7 @@
 
                     @if ($ctaButtonText && $ctaButtonLink)
                         <div class="ruby-services__cta-action">
-                            <a class="ruby-services__cta-button" href="{{ e($ctaButtonLink) }}">
+                            <a class="ruby-services__cta-button" href="{{ e($ctaButtonLink) }}" aria-label="{{ e(trim(strip_tags((string) $ctaButtonText)) . ($ctaTitle ? ': ' . trim(strip_tags((string) $ctaTitle)) : '')) }}">
                                 {!! BaseHelper::clean($ctaButtonText) !!}
                             </a>
                         </div>

@@ -12,15 +12,13 @@ class SecurityHeadersMiddleware
     private const BASE_SCRIPT_SRC = [
         "'self'",
         "'unsafe-inline'",
-        "'unsafe-eval'",
-        'https://cdn.tailwindcss.com',
         'https://cdnjs.cloudflare.com',
         'https://cdn.jsdelivr.net',
         'https://www.googletagmanager.com',
         'https://www.google-analytics.com',
         'https://analytics.google.com',
         'https://connect.facebook.net',
-        'https://a.plerdy.com',
+        'https://static.cloudflareinsights.com',
         'https://embed.tawk.to',
         'https://tawk.to',
     ];
@@ -43,6 +41,9 @@ class SecurityHeadersMiddleware
     private const BASE_FRAME_SRC = [
         "'self'",
         'https://www.google.com',
+        'https://maps.google.com',
+        'https://www.google.co.th',
+        'https://www.openstreetmap.org',
         'https://www.youtube.com',
         'https://www.youtube-nocookie.com',
         'https://embed.tawk.to',
@@ -72,8 +73,8 @@ class SecurityHeadersMiddleware
         $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
         $response->headers->set('Cross-Origin-Resource-Policy', 'same-site');
         $response->headers->set('X-Permitted-Cross-Domain-Policies', 'none');
-        $response->headers->set('Content-Security-Policy', $this->buildContentSecurityPolicy());
-        $response->headers->set('X-Robots-Tag', $this->buildRobotsHeader($request));
+        $response->headers->set('Content-Security-Policy', $this->buildContentSecurityPolicy($request));
+        $response->headers->set('X-Robots-Tag', $this->buildRobotsHeader($request, $response));
 
         if ($request->isSecure()) {
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
@@ -112,12 +113,20 @@ class SecurityHeadersMiddleware
         return null;
     }
 
-    private function buildRobotsHeader(Request $request): string
+    private function buildRobotsHeader(Request $request, Response $response): string
     {
         $host = Str::lower($request->getHost());
         $path = $this->withoutLocalePrefix(trim($request->path(), '/'));
 
+        if ($response->isClientError() || $response->isServerError()) {
+            return 'noindex, follow';
+        }
+
         if ($host === 'shopdee198.rubyshop.co.th') {
+            return 'noindex, nofollow';
+        }
+
+        if (Str::startsWith($path, 'admin')) {
             return 'noindex, nofollow';
         }
 
@@ -186,15 +195,22 @@ class SecurityHeadersMiddleware
         return $path;
     }
 
-    private function buildContentSecurityPolicy(): string
+    private function buildContentSecurityPolicy(Request $request): string
     {
+        $scriptSrc = self::BASE_SCRIPT_SRC;
+        $path = $this->withoutLocalePrefix(trim($request->path(), '/'));
+
+        if (Str::startsWith($path, 'admin')) {
+            $scriptSrc[] = "'unsafe-eval'";
+        }
+
         $directives = [
             "default-src 'self'",
             "base-uri 'self'",
             "object-src 'none'",
             "frame-ancestors 'self'",
             "form-action 'self'",
-            'script-src ' . implode(' ', self::BASE_SCRIPT_SRC),
+            'script-src ' . implode(' ', $scriptSrc),
             'style-src ' . implode(' ', self::BASE_STYLE_SRC),
             "img-src 'self' data: blob: https:",
             "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",

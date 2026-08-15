@@ -4,7 +4,7 @@
     @endphp
 
     @if ($showPageHeader)
-        <div class="single-header mb-80 mx-4 sm:mx-0">
+        <div class="single-header rs-blog-header">
             <h1 class="font-xxl text-brand">{{ SeoHelper::getTitle() }}</h1>
 
             <div class="entry-meta meta-1 font-xs mt-15 mb-15">
@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    <div class="loop-grid pr-30 mx-4 sm:mx-0">
+    <div class="loop-grid rs-blog-grid">
         <div class="row">
             @foreach ($posts as $post)
                 @if ($loop->first)
@@ -25,7 +25,7 @@
                                 <span class="top-right-icon bg-dark"><i class="far fa-bookmark"></i></span>
                                 <div class="post-thumb img-hover-scale">
                                     <a href="{{ $post->url }}">
-                                        <img src="{{ RvMedia::getImageUrl($post->image, null, false, RvMedia::getDefaultImage()) }}" alt="{{ $post->name }}">
+                                        <img src="{{ RvMedia::getImageUrl($post->image, 'medium', false, RvMedia::getDefaultImage()) }}" alt="{{ $post->name }}" width="800" @if ($loop->first) loading="eager" fetchpriority="high" @else loading="lazy" @endif decoding="async">
                                     </a>
                                 </div>
                             </div>
@@ -50,7 +50,7 @@
                                         <span class="time-reading has-dot ms-2">{{ __(':count mins read', ['count' => get_time_to_read($post)]) }}</span>
                                         <span class="hit-count has-dot ms-2">{{ __(':count Views', ['count' => number_format($post->views)]) }}</span>
                                     </div>
-                                    <div class="float-right">
+                                    <div class="rs-read-more">
                                         <a href="{{ $post->url }}" class="read-more">{{ __('Read more') }} <span class="ml-10"><i class="fa fa-arrow-right fw-300 text-brand ml-5" aria-hidden="true"></i></span></a>
                                     </div>
                                 </div>
@@ -58,11 +58,11 @@
                         </article>
                     </div>
                 @else
-                    <div class="col-lg-6">
+                    <div class="col-md-6 col-sm-6">
                         <article class="wow fadeIn animated hover-up mb-30">
                             <div class="post-thumb img-hover-scale">
                                 <a href="{{ $post->url }}">
-                                    <img src="{{ RvMedia::getImageUrl($post->image, 'medium', false, RvMedia::getDefaultImage()) }}" alt="{{ $post->name }}">
+                                    <img src="{{ RvMedia::getImageUrl($post->image, 'medium', false, RvMedia::getDefaultImage()) }}" alt="{{ $post->name }}" width="800" loading="lazy" decoding="async">
                                 </a>
                                 @if ($post->first_category && $post->first_category->name)
                                     <div class="entry-meta">

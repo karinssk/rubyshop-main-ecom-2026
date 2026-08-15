@@ -3,7 +3,7 @@
 
     $hotline = theme_option('hotline') ?: '021234567';
     $hotlineDigits = preg_replace('/\D+/', '', $hotline);
-    $lineUrl = 'https://line.me/R/ti/p/@rubyshop';
+    $lineUrl = 'https://page.line.me/rubyshop168?openQrModal=true';
 @endphp
 
 <div class="w-full bg-gray-50 text-gray-900">
@@ -40,6 +40,10 @@
                         src="{{ RvMedia::getImageUrl($heroBackground, 'origin', false, RvMedia::getDefaultImage()) }}"
                         alt="{{ $product->name }}"
                         class="absolute inset-0 -z-20 h-full w-full object-cover"
+                        width="1600"
+                        height="900"
+                        decoding="async"
+                        fetchpriority="high"
                     >
                     <div
                         class="absolute inset-0 -z-10"
@@ -153,6 +157,10 @@
                                         src="{{ RvMedia::getImageUrl($gallery->first() ?: $product->image, 'medium', false, RvMedia::getDefaultImage()) }}"
                                         alt="{{ $product->name }}"
                                         class="mx-auto h-auto max-h-[520px] w-full object-cover"
+                                        width="800"
+                                        height="800"
+                                        loading="lazy"
+                                        decoding="async"
                                     >
                                 </div>
                             </div>
@@ -335,7 +343,7 @@
                                 @foreach ($relatedProducts as $relatedProduct)
                                     <article class="overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-md">
                                         <a href="{{ route('landing.product', ['slug' => $relatedProduct->slug]) }}" class="block p-4">
-                                            <img src="{{ RvMedia::getImageUrl($relatedProduct->image, 'thumb', false, RvMedia::getDefaultImage()) }}" alt="{{ $relatedProduct->name }}" class="mb-3 h-40 w-full object-contain">
+                                            <img src="{{ RvMedia::getImageUrl($relatedProduct->image, 'thumb', false, RvMedia::getDefaultImage()) }}" alt="{{ $relatedProduct->name }}" class="mb-3 h-40 w-full object-contain" width="150" height="150" loading="lazy" decoding="async">
                                             <h3 class="mb-2 line-clamp-2 text-sm font-semibold text-gray-900">{{ $relatedProduct->name }}</h3>
                                             <p class="text-sm font-bold text-red-600">{{ format_price($relatedProduct->front_sale_price_with_taxes) }}</p>
                                         </a>
@@ -381,6 +389,10 @@
                                         src="{{ RvMedia::getImageUrl($product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
                                         alt="{{ $product->name }}"
                                         class="mx-auto h-24 w-24 object-contain"
+                                        width="150"
+                                        height="150"
+                                        loading="lazy"
+                                        decoding="async"
                                     >
                                     <div class="mt-2 text-xs font-semibold uppercase tracking-wide text-gray-500">{{ __('Current Price') }}</div>
                                     <div class="mt-1 text-2xl font-extrabold text-red-600">{{ format_price($product->front_sale_price_with_taxes) }}</div>
@@ -479,21 +491,27 @@
 </div>
 
 @php
+    $merchantReturnPolicySchema = [
+        '@type' => 'MerchantReturnPolicy',
+        'applicableCountry' => 'TH',
+        'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        'merchantReturnDays' => (int) theme_option('merchant_return_days', 7),
+        'returnMethod' => 'https://schema.org/ReturnByMail',
+        'returnFees' => 'https://schema.org/ReturnShippingFees',
+    ];
+
+    if ($merchantReturnPolicyUrl = theme_option('merchant_return_policy_url')) {
+        $merchantReturnPolicySchema['merchantReturnLink'] = url($merchantReturnPolicyUrl);
+    }
+
     $productLandingOfferSchema = [
         '@type' => 'Offer',
         'priceCurrency' => get_application_currency()->title ?: 'THB',
         'price' => (string) $product->front_sale_price_with_taxes,
         'availability' => $product->isOutOfStock() ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
         'url' => $productUrlWithQuery,
+        'hasMerchantReturnPolicy' => $merchantReturnPolicySchema,
     ];
-
-    if ($merchantReturnPolicyUrl = theme_option('merchant_return_policy_url')) {
-        $productLandingOfferSchema['hasMerchantReturnPolicy'] = [
-            '@type' => 'MerchantReturnPolicy',
-            'returnPolicyCategory' => $merchantReturnPolicyUrl,
-            'merchantReturnDays' => (int) theme_option('merchant_return_days', 30),
-        ];
-    }
 
     $productLandingSchema = [
         '@context' => 'https://schema.org',

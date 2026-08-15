@@ -12,11 +12,11 @@
                 <article class="p-2 bg-white text-xs">
                     <a href="{{ url($categoryUrl) }}" class="block">
                         @if ($category->image)
-                            <img class="w-full h-24 object-contain rounded-lg mx-auto" src="{{ RvMedia::url($category->image) }}" alt="{{ $category->name }}" loading="lazy">
+                            <img class="w-full h-24 object-contain rounded-lg mx-auto" src="{{ RvMedia::url($category->image) }}" alt="{{ $category->name }}" width="192" height="192" loading="lazy" decoding="async">
                         @elseif ($category->icon_image)
-                            <img class="w-full h-24 object-contain rounded-lg mx-auto" src="{{ RvMedia::url($category->icon_image) }}" alt="{{ $category->name }}" loading="lazy">
+                            <img class="w-full h-24 object-contain rounded-lg mx-auto" src="{{ RvMedia::url($category->icon_image) }}" alt="{{ $category->name }}" width="192" height="192" loading="lazy" decoding="async">
                         @else
-                            <img class="w-full h-24 object-contain rounded-lg mx-auto" src="{{ RvMedia::getDefaultImage() }}" alt="{{ $category->name }}" loading="lazy">
+                            <img class="w-full h-24 object-contain rounded-lg mx-auto" src="{{ RvMedia::getDefaultImage() }}" alt="{{ $category->name }}" width="192" height="192" loading="lazy" decoding="async">
                         @endif
                         <p class="text-[11px] font-semibold text-gray-800 mt-2 leading-normal">
                             {{ $category->name }}

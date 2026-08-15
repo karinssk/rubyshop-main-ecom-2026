@@ -63,3 +63,13 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Server-local backups, evidence, and working artifacts
+*.bak
+*.backup-*
+/Screenshot *.png
+/storage/*.html
+/storage/*.png
+/storage/contact-map/
+/storage/security-quarantine/
+/rubyshop_google_top1_seo_agent_plan.md

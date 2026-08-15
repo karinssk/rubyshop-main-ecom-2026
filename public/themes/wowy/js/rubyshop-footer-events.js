@@ -32,6 +32,10 @@
     var isHomepage = document.body.classList.contains('ruby-homepage');
 
     function enforceNavHide() {
+        if (isHomepage) {
+            return;
+        }
+
         var width = window.innerWidth;
         var cats = document.querySelector('.header-bottom .header-nav-categories');
         var hot = document.querySelector('.header-bottom .header-nav-hotline');

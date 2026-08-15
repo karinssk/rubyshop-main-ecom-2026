@@ -74,9 +74,30 @@
         '#b91c1c',
         '#c81e1e',
     ];
+    $preferOptimizedVariant = function (string $url): string {
+        $path = parse_url($url, PHP_URL_PATH);
+
+        if (! $path) {
+            return $url;
+        }
+
+        $compactPath = preg_replace('/-400x400\.(webp|png|jpe?g)$/i', '-320x320.webp', $path);
+
+        if ($compactPath && $compactPath !== $path && file_exists(public_path(ltrim($compactPath, '/')))) {
+            return url($compactPath);
+        }
+
+        $webpPath = preg_replace('/\.(png|jpe?g)$/i', '.webp', $path);
+
+        if ($webpPath && $webpPath !== $path && file_exists(public_path(ltrim($webpPath, '/')))) {
+            return url($webpPath);
+        }
+
+        return $url;
+    };
 
     $cards = collect($rawCards)
-        ->map(function ($item, $index) use ($accentColors) {
+        ->map(function ($item, $index) use ($accentColors, $preferOptimizedVariant) {
             $card = is_array($item) ? $item : [];
 
             $title = Arr::get($card, 'title');
@@ -89,8 +110,9 @@
             }
 
             $resolvedImage = $image
-                ? RvMedia::getImageUrl($image, 'medium', false, RvMedia::getDefaultImage())
+                ? RvMedia::getImageUrl($image, 'product-thumb', false, RvMedia::getDefaultImage())
                 : RvMedia::getDefaultImage();
+            $resolvedImage = $preferOptimizedVariant($resolvedImage);
 
             return [
                 'title' => $title,
@@ -134,6 +156,8 @@
                                     src="{{ $card['image'] }}"
                                     alt="{{ $card['title'] ?: __('Category image') }}"
                                     class="shop-by-category-cards__image"
+                                    width="320"
+                                    height="320"
                                     loading="lazy"
                                     decoding="async"
                                 >

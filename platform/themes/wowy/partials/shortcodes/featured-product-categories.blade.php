@@ -36,7 +36,7 @@
                                 <img
                                     class="featured-categories__image imgMixBlendMode"
                                     src="{{ RvMedia::getImageUrl($category->image, 'product-thumb', false, RvMedia::getDefaultImage()) }}"
-                                    alt="{{ e($category->name) }}"
+                                    alt=""
                                     width="400"
                                     height="400"
                                     loading="lazy"

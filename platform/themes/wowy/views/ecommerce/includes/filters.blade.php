@@ -99,19 +99,20 @@
                     @include(Theme::getThemeNamespace('views.ecommerce.includes.filter-by-price'))
                 </div>
             @endif
-        </div>
+            <div class="ruby-filter-advanced-block">
+                <a class="show-advanced-filters" href="#">
+                    <span class="title">{{ __('Advanced filters') }}</span>
+                    <i class="fal fa-angle-up angle-down"></i>
+                    <i class="fal fa-angle-down angle-up"></i>
+                </a>
 
-        <a class="show-advanced-filters" href="#">
-            <span class="title">{{ __('Advanced filters') }}</span>
-            <i class="fal fa-angle-up angle-down"></i>
-            <i class="fal fa-angle-down angle-up"></i>
-        </a>
-
-        <div class="advanced-search-widgets" style="display: none">
-            <div class="row">
-                {!! render_product_swatches_filter([
-                    'view' => Theme::getThemeNamespace() . '::views.ecommerce.attributes.attributes-filter-renderer'
-                ]) !!}
+                <div class="advanced-search-widgets" style="display: none">
+                    <div class="row">
+                        {!! render_product_swatches_filter([
+                            'view' => Theme::getThemeNamespace() . '::views.ecommerce.attributes.attributes-filter-renderer'
+                        ]) !!}
+                    </div>
+                </div>
             </div>
         </div>
 
