@@ -86,7 +86,9 @@ class Analytics extends AnalyticsAbstract implements AnalyticsContract
 
     public function fetchMostVisitedPages(Period $period, int $maxResults = 20): Collection
     {
-        return $this->dateRange($period)
+        $query = clone $this;
+
+        return $query->dateRange($period)
             ->metrics([
                 'screenPageViews',
                 'activeUsers',
@@ -106,7 +108,9 @@ class Analytics extends AnalyticsAbstract implements AnalyticsContract
 
     public function fetchTopReferrers(Period $period, int $maxResults = 20): Collection
     {
-        return $this->dateRange($period)
+        $query = clone $this;
+
+        return $query->dateRange($period)
             ->metrics('screenPageViews')
             ->dimensions('sessionSource')
             ->orderByMetricDesc('screenPageViews')
@@ -117,7 +121,9 @@ class Analytics extends AnalyticsAbstract implements AnalyticsContract
 
     public function fetchSectionEngagement(Period $period, int $maxResults = 30): Collection
     {
-        return $this->dateRange($period)
+        $query = clone $this;
+
+        return $query->dateRange($period)
             ->metrics(['eventCount', 'eventValue'])
             ->dimensions(['eventName', 'pagePath'])
             ->whereDimension('eventName', MatchType::BEGINS_WITH, 'section_time_')
@@ -129,7 +135,9 @@ class Analytics extends AnalyticsAbstract implements AnalyticsContract
 
     public function fetchTopBrowsers(Period $period, int $maxResults = 10): Collection
     {
-        return $this->dateRange($period)
+        $query = clone $this;
+
+        return $query->dateRange($period)
             ->metrics('sessions')
             ->dimensions('browser')
             ->orderByMetricDesc('sessions')
