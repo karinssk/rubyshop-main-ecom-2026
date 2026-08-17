@@ -16,6 +16,7 @@ use Botble\Analytics\Traits\OrderByMetricTrait;
 use Botble\Analytics\Traits\ResponseTrait;
 use Botble\Analytics\Traits\RowOperationTrait;
 use Google\Analytics\Data\V1beta\BetaAnalyticsDataClient;
+use Google\Analytics\Data\V1beta\Filter\StringFilter\MatchType;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
@@ -86,7 +87,16 @@ class Analytics extends AnalyticsAbstract implements AnalyticsContract
     public function fetchMostVisitedPages(Period $period, int $maxResults = 20): Collection
     {
         return $this->dateRange($period)
-            ->metrics('screenPageViews')
+            ->metrics([
+                'screenPageViews',
+                'activeUsers',
+                'screenPageViewsPerUser',
+                'userEngagementDuration',
+                'engagementRate',
+                'scrolledUsers',
+                'eventCount',
+                'keyEvents',
+            ])
             ->dimensions(['pageTitle', 'fullPageUrl'])
             ->orderByMetricDesc('screenPageViews')
             ->limit($maxResults)
@@ -100,6 +110,18 @@ class Analytics extends AnalyticsAbstract implements AnalyticsContract
             ->metrics('screenPageViews')
             ->dimensions('sessionSource')
             ->orderByMetricDesc('screenPageViews')
+            ->limit($maxResults)
+            ->get()
+            ->table;
+    }
+
+    public function fetchSectionEngagement(Period $period, int $maxResults = 30): Collection
+    {
+        return $this->dateRange($period)
+            ->metrics(['eventCount', 'eventValue'])
+            ->dimensions(['eventName', 'pagePath'])
+            ->whereDimension('eventName', MatchType::BEGINS_WITH, 'section_time_')
+            ->orderByMetricDesc('eventValue')
             ->limit($maxResults)
             ->get()
             ->table;

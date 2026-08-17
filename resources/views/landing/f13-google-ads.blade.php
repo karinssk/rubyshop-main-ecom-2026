@@ -312,6 +312,6 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/rb-mt-f13-landing.js') }}?v=20260815-2" defer></script>
+    <script src="{{ asset('js/rb-mt-f13-landing.js') }}?v=20260817-1" defer></script>
 </body>
 </html>

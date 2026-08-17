@@ -28,6 +28,77 @@
         });
     });
 
+    const sectionTimers = new Map();
+    const trackedSections = document.querySelectorAll('main > section');
+
+    const sectionName = function (section, index) {
+        return section.id || section.classList[1] || 'section-' + (index + 1);
+    };
+
+    const flushSectionTime = function (section, timer) {
+        if (!timer.startedAt) {
+            return;
+        }
+
+        timer.elapsed += performance.now() - timer.startedAt;
+        timer.startedAt = null;
+
+        const seconds = Math.round(timer.elapsed / 1000);
+        if (seconds < 1) {
+            return;
+        }
+
+        track('section_time_' + timer.name.replace(/[^a-z0-9_]+/gi, '_').toLowerCase(), {
+            event_category: 'Section engagement',
+            value: seconds,
+            section_name: timer.name,
+            non_interaction: true
+        });
+        timer.elapsed = 0;
+    };
+
+    if ('IntersectionObserver' in window && trackedSections.length) {
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                const timer = sectionTimers.get(entry.target);
+                if (!timer) {
+                    return;
+                }
+
+                if (entry.isIntersecting && !document.hidden && !timer.startedAt) {
+                    timer.startedAt = performance.now();
+                } else if (!entry.isIntersecting) {
+                    flushSectionTime(entry.target, timer);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        trackedSections.forEach(function (section, index) {
+            sectionTimers.set(section, { name: sectionName(section, index), startedAt: null, elapsed: 0 });
+            observer.observe(section);
+        });
+
+        document.addEventListener('visibilitychange', function () {
+            sectionTimers.forEach(function (timer, section) {
+                if (document.hidden) {
+                    flushSectionTime(section, timer);
+                } else {
+                    const rect = section.getBoundingClientRect();
+                    const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+                    if (visibleHeight >= Math.min(rect.height, window.innerHeight) * 0.5) {
+                        timer.startedAt = performance.now();
+                    }
+                }
+            });
+        });
+
+        window.addEventListener('pagehide', function () {
+            sectionTimers.forEach(function (timer, section) {
+                flushSectionTime(section, timer);
+            });
+        });
+    }
+
     const modal = document.getElementById('video-modal');
     const videoFrame = document.getElementById('video-frame');
 

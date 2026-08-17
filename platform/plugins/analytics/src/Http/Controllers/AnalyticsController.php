@@ -130,7 +130,8 @@ class AnalyticsController extends BaseController
         try {
             $period = $this->getPeriodFromRequest($request);
 
-            $query = Analytics::fetchMostVisitedPages($period, 10);
+            $query = Analytics::fetchMostVisitedPages($period, 20);
+            $sectionQuery = Analytics::fetchSectionEngagement($period);
 
             $pages = [];
 
@@ -151,12 +152,30 @@ class AnalyticsController extends BaseController
                     'pageTitle' => $item['pageTitle'],
                     'url' => $pageUrl,
                     'pageViews' => $item['screenPageViews'] ?? $item['pageViews'],
+                    'activeUsers' => (int) ($item['activeUsers'] ?? 0),
+                    'viewsPerUser' => (float) ($item['screenPageViewsPerUser'] ?? 0),
+                    'averageEngagementTime' => (float) ($item['userEngagementDuration'] ?? 0) / max(1, (int) ($item['activeUsers'] ?? 0)),
+                    'engagementRate' => (float) ($item['engagementRate'] ?? 0),
+                    'scrolledUsers' => (int) ($item['scrolledUsers'] ?? 0),
+                    'eventCount' => (int) ($item['eventCount'] ?? 0),
+                    'keyEvents' => (float) ($item['keyEvents'] ?? 0),
                 ];
             }
 
+            $sections = $sectionQuery->map(function (array $item): array {
+                $count = max(1, (int) ($item['eventCount'] ?? 0));
+
+                return [
+                    'pagePath' => $item['pagePath'] ?? '/',
+                    'name' => Str::headline(Str::after($item['eventName'] ?? '', 'section_time_')),
+                    'views' => (int) ($item['eventCount'] ?? 0),
+                    'averageTime' => (float) ($item['eventValue'] ?? 0) / $count,
+                ];
+            })->all();
+
             return $this
                 ->httpResponse()
-                ->setData(view('plugins/analytics::widgets.page', compact('pages'))->render());
+                ->setData(view('plugins/analytics::widgets.page', compact('pages', 'sections'))->render());
         } catch (InvalidConfiguration $exception) {
             return $this->handleInvalidConfigException($exception);
         } catch (Throwable $exception) {
