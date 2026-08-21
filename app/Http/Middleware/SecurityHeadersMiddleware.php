@@ -64,6 +64,8 @@ class SecurityHeadersMiddleware
 
         $response = $next($request);
 
+        $this->injectFastForwardTracker($request, $response);
+
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -82,6 +84,26 @@ class SecurityHeadersMiddleware
         }
 
         return $response;
+    }
+
+    private function injectFastForwardTracker(Request $request, Response $response): void
+    {
+        $path = $this->withoutLocalePrefix(trim($request->path(), '/'));
+        $content = $response->getContent();
+
+        if (
+            Str::startsWith($path, 'admin')
+            || ! is_string($content)
+            || ! Str::contains((string) $response->headers->get('Content-Type'), 'text/html')
+            || ! Str::contains($content, '</head>')
+            || Str::contains($content, 'data-site="pub_1wqI5My7qHml"')
+        ) {
+            return;
+        }
+
+        $tracker = '<script async src="https://cdn.fastforwardssl.com/tracker.js" data-site="pub_1wqI5My7qHml"></script>';
+
+        $response->setContent(Str::replaceFirst('</head>', $tracker . "\n</head>", $content));
     }
 
     private function canonicalHostRedirect(Request $request): ?Response
