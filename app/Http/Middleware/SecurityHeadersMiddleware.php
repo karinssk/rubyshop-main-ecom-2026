@@ -19,6 +19,7 @@ class SecurityHeadersMiddleware
         'https://analytics.google.com',
         'https://connect.facebook.net',
         'https://static.cloudflareinsights.com',
+        'https://cdn.fastforwardssl.com',
         'https://embed.tawk.to',
         'https://tawk.to',
     ];
